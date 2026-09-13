@@ -34,3 +34,32 @@
 .cursor-pointer {
   cursor: pointer;
 }
+/* WELCOME  SECTION(FED-04) */
+.welcome-card {
+    background-color: #f0f5ff; 
+    border: 1px solid #e0eafd;
+}
+
+.welcome-badge {
+    color: #0d6efd;
+    letter-spacing: 0.5px;
+}
+
+.book-img-wrapper {
+    width: 100%;
+    max-width: 280px; 
+    margin: 0 auto 0 auto;
+}
+
+@media (min-width: 768px) {
+    .book-img-wrapper {
+        margin: 0 0 0 auto; 
+    }
+}
+
+.book-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    display: block;
+}
