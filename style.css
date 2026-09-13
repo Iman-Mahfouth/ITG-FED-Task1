@@ -58,16 +58,10 @@
     .navbar-nav .nav-item .nav-link {
         width: 100%;
     }
-}
-    @media (max-width: 991.98px){
+
 .navbar-nav .nav-item {
-        border-bottom: 1px solid #e9ecef;
-    }}
-   
-    @media (max-width: 991.98px){
-    .navbar-nav .nav-item:not(:last-child) {
-        border-bottom: 1px solid #e9ecef;
-    }}
+    border-bottom: 1px solid #e9ecef;
+}}
 
 /* WELCOME  SECTION(FED-04) */
 .welcome-card {
