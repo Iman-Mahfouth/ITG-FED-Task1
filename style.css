@@ -22,7 +22,23 @@
 
 .custom-nav-item:hover {
     color: #0d6efd !important; 
+   
 }
+
+.custom-nav-item:hover,
+.custom-nav-item:hover i,
+.custom-nav-item.active,
+.custom-nav-item.active i {
+    color: #0d6efd !important;
+}
+    
+    .navbar-nav .nav-item {
+        width: 100%;
+    }
+    .navbar-nav .nav-link {
+        width: 100%;
+    }
+
 
 .custom-nav-item:hover::after {
     width: 100%; 
@@ -34,6 +50,25 @@
 .cursor-pointer {
   cursor: pointer;
 }
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .navbar-nav .nav-item .nav-link {
+        width: 100%;
+    }
+}
+    @media (max-width: 991.98px){
+.navbar-nav .nav-item {
+        border-bottom: 1px solid #e9ecef;
+    }}
+   
+    @media (max-width: 991.98px){
+    .navbar-nav .nav-item:not(:last-child) {
+        border-bottom: 1px solid #e9ecef;
+    }}
+
 /* WELCOME  SECTION(FED-04) */
 .welcome-card {
     background-color: #f0f5ff; 
