@@ -27,3 +27,10 @@
 .custom-nav-item:hover::after {
     width: 100%; 
 }
+.avatar-icon {
+  width: 36px;
+  height: 36px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
