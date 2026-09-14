@@ -102,3 +102,10 @@
         padding-inline: 24px;
     }
 }
+/* COURSES SECTION (FED-09) mobile  */
+
+.course-icon-mobile {
+    width: 80px ;
+    height: 80px ;
+    font-size: 2.25rem;
+}
