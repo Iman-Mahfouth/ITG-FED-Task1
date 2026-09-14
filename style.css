@@ -92,3 +92,13 @@
     object-fit: contain; 
     display: block;
 }
+.course-icon {
+    width: 48px;
+    height: 48px;
+}
+.course-card-item {
+    max-width: 380px;
+}
+.course-card-item {
+    max-width: 380px;
+}
