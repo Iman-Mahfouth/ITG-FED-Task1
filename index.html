@@ -12,7 +12,7 @@
     </head>
     <body class="bg-light">
     <!--header section (FED-02)-->   
-    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 fixed-top">
     <div class="container">
         <!-- Logo  -->
         <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="#">
@@ -83,8 +83,12 @@
     </div>
 </section>
 
-<!-- Course Search Section (FED-9) -->
+
+<!-- Courses Header & Search Section -->
 <section class="container my-3">
+    <h2 class="fw-bold text-dark mb-1">Courses</h2>
+    <p class="text-muted fs-6 mb-3 d-block d-lg-none">Discover and learn new skills</p>
+    
     <div class="input-group search-bar rounded-3 overflow-hidden border bg-white shadow-sm">
         <span class="input-group-text bg-white border-0 ps-3 text-muted">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -93,262 +97,270 @@
     </div>
 </section>
 
+
 <!-- Courses Grid Section (FED-06) -->
 <section class="container my-3">
     <div class="row g-4">
         
         <!-- 1. HTML Fundamentals -->
-<div class="col-12 col-md-6 col-lg-4">
-    <div class="card border-0 shadow-sm p-3 rounded-4 h-100 course-card-item">
-        <!--mobile view-->
-        <div class="d-flex d-md-none align-items-center gap-3">
-            <div class="course-icon-mobile bg-warning-subtle text-warning rounded-4 d-flex align-items-center justify-content-center fw-bold">
-                <i class="fa-brands fa-html5"></i>
-            </div>
-            <div class="flex-grow-1">
-                <h6 class="fw-bold text-dark mb-1 fs-5">HTML Fundamentals</h6>
-                <p class="text-muted mb-1 fs-6">Frontend &bull; John Doe</p>
-                <p class="text-muted mb-0 fs-6">Beginner &bull; 6 hours</p>
-            </div>
-        </div>
-        <!--desktop view -->
-        <div class="d-none d-md-flex flex-column h-100">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <div class="course-icon bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center fw-bold fs-5">
-                    <i class="fa-solid fa-code"></i>
-                </div>
-                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-medium">Frontend</span>
-            </div>
-            <h5 class="card-title fw-bold text-dark mb-3">HTML Fundamentals</h5>
-            <ul class="list-unstyled text-muted small mb-4">
-                <li class="mb-2 d-flex align-items-center">
-                    <i class="fa-solid fa-user me-2 text-secondary course-list-icon"></i>
-                    <span>Sarah Ali</span>
-                </li>
-                <li class="mb-2 d-flex align-items-center">
-                    <i class="fa-solid fa-clock me-2 text-secondary course-list-icon"></i>
-                    <span>6 Hours</span>
-                </li>
-                <li class="d-flex align-items-center">
-                    <i class="fa-solid fa-chart-bar me-2 text-secondary course-list-icon"></i>
-                    <span>Beginner</span>
-                </li>
-            </ul>
-            <button class="btn btn-primary w-100 rounded-pill py-2 fw-medium mt-auto">View Details</button>
-        </div>
-
-    </div>
-</div>
-
-        <!-- 2. CSS & Responsive Design -->
-<div class="col-12 col-md-6 col-lg-4">
-    <div class="card border-0 shadow-sm p-3 rounded-4 h-100 course-card-item">
-        <!--mobile view-->
-        <div class="d-flex d-md-none align-items-center gap-3">
-            <div class="course-icon-mobile bg-info-subtle text-info rounded-4 d-flex align-items-center justify-content-center fw-bold">
-                <i class="fa-brands fa-css3-alt"></i>
-            </div>
-            <div class="flex-grow-1">
-                <h6 class="fw-bold text-dark mb-1 fs-5">CSS & Responsive Design</h6>
-                <p class="text-muted mb-1 fs-6">Frontend &bull; Omar Khalil</p>
-                <p class="text-muted mb-0 fs-6">Beginner &bull; 8 Hours</p>
-            </div>
-        </div>
-        <!--desktop view -->
-        <div class="d-none d-md-flex flex-column h-100">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <div class="course-icon bg-info-subtle text-info rounded-3 d-flex align-items-center justify-content-center fw-bold fs-5">
-                    <i class="fa-solid fa-paintbrush"></i>
-                </div>
-                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-medium">Frontend</span>
-            </div>
-            <h5 class="card-title fw-bold text-dark mb-3">CSS & Responsive Design</h5>
-            <ul class="list-unstyled text-muted small mb-4">
-                <li class="mb-2 d-flex align-items-center">
-                    <i class="fa-solid fa-user me-2 text-secondary course-list-icon"></i>
-                    <span>Omar Khalil</span>
-                </li>
-                <li class="mb-2 d-flex align-items-center">
-                    <i class="fa-solid fa-clock me-2 text-secondary course-list-icon"></i>
-                    <span>8 Hours</span>
-                </li>
-                <li class="d-flex align-items-center">
-                    <i class="fa-solid fa-chart-bar me-2 text-secondary course-list-icon"></i>
-                    <span>Beginner</span>
-                </li>
-            </ul>
-            <button class="btn btn-primary w-100 rounded-pill py-2 fw-medium mt-auto">View Details</button>
-        </div>
-    </div>
-</div>
-
-    <!-- 3. JavaScript Basics -->
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card border-0 shadow-sm p-3 rounded-4 h-100 course-card-item">
-                <!--mobile view-->
+            <div class="card border-0 shadow-sm p-3 rounded-4 h-100">
+                <!-- 📱 Mobile View -->
+                <div class="d-flex d-md-none align-items-center gap-3">
+                    <div class="course-icon-mobile bg-warning-subtle text-warning rounded-4 d-flex align-items-center justify-content-center fw-bold">
+                        <i class="fa-brands fa-html5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold text-dark mb-1 fs-6">HTML Fundamentals</h6>
+                        <p class="text-muted mb-1 small">Frontend &bull; John Doe</p>
+                        <p class="text-muted mb-0 small">Beginner &bull; 6 hours</p>
+                    </div>
+                </div>
+
+                <!-- 💻 Desktop & Tablet View -->
+                <div class="d-none d-md-flex flex-row align-items-center gap-3 h-100">
+                    <div class="course-icon bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center fw-bold fs-4">
+                        <i class="fa-brands fa-html5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="card-title fw-bold text-dark mb-1">HTML Fundamentals</h5>
+                        <div class="mb-2">
+                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 fw-medium">Frontend</span>
+                        </div>
+                        <p class="text-muted small mb-2 d-flex align-items-center">
+                            <i class="fa-solid fa-user me-2 text-secondary"></i>
+                            <span>John Doe</span>
+                        </p>
+                        <div class="d-flex align-items-center gap-4 text-muted small mb-0">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-clock me-2 text-secondary"></i>
+                                <span>6 hours</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-chart-bar me-2 text-secondary"></i>
+                                <span>Beginner</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. CSS Essentials -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm p-3 rounded-4 h-100">
+                <!-- Mobile View -->
+                <div class="d-flex d-md-none align-items-center gap-3">
+                    <div class="course-icon-mobile bg-info-subtle text-info rounded-4 d-flex align-items-center justify-content-center fw-bold">
+                        <i class="fa-brands fa-css3-alt"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold text-dark mb-1 fs-6">CSS Essentials</h6>
+                        <p class="text-muted mb-1 small">Frontend &bull; Sarah Smith</p>
+                        <p class="text-muted mb-0 small">Beginner &bull; 5 hours</p>
+                    </div>
+                </div>
+                <!-- Desktop View -->
+                <div class="d-none d-md-flex flex-row align-items-center gap-3 h-100">
+                    <div class="course-icon bg-info-subtle text-info rounded-3 d-flex align-items-center justify-content-center fw-bold fs-4">
+                        <i class="fa-brands fa-css3-alt"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="card-title fw-bold text-dark mb-1">CSS Essentials</h5>
+                        <div class="mb-2">
+                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 fw-medium">Frontend</span>
+                        </div>
+                        <p class="text-muted small mb-2 d-flex align-items-center">
+                            <i class="fa-solid fa-user me-2 text-secondary"></i>
+                            <span>Sarah Smith</span>
+                        </p>
+                        <div class="d-flex align-items-center gap-4 text-muted small mb-0">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-clock me-2 text-secondary"></i>
+                                <span>5 hours</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-chart-bar me-2 text-secondary"></i>
+                                <span>Beginner</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. JavaScript Basics -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm p-3 rounded-4 h-100">
+                <!-- Mobile View -->
                 <div class="d-flex d-md-none align-items-center gap-3">
                     <div class="course-icon-mobile bg-warning text-dark rounded-4 d-flex align-items-center justify-content-center fw-bold">
                         JS
                     </div>
                     <div class="flex-grow-1">
-                        <h6 class="fw-bold text-dark mb-1 fs-5">JavaScript Basics</h6>
-                        <p class="text-muted mb-1 fs-6">Frontend &bull; Lina Ahmad</p>
-                        <p class="text-muted mb-0 fs-6">Intermediate &bull; 10 Hours</p>
+                        <h6 class="fw-bold text-dark mb-1 fs-6">JavaScript Basics</h6>
+                        <p class="text-muted mb-1 small">Frontend &bull; Mike Johnson</p>
+                        <p class="text-muted mb-0 small">Intermediate &bull; 8 hours</p>
                     </div>
                 </div>
-                <!--desktop view -->
-                <div class="d-none d-md-flex flex-column h-100">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="course-icon bg-warning text-dark rounded-3 d-flex align-items-center justify-content-center fw-bold fs-5">
-                            JS
-                        </div>
-                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-medium">Frontend</span>
-                    </div>
-                    <h5 class="card-title fw-bold text-dark mb-3">JavaScript Basics</h5>
-                    <ul class="list-unstyled text-muted small mb-4">
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-user me-2 text-secondary course-list-icon"></i>
-                            <span>Lina Ahmad</span>
-                        </li>
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-clock me-2 text-secondary course-list-icon"></i>
-                            <span>10 Hours</span>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <i class="fa-solid fa-chart-bar me-2 text-secondary course-list-icon"></i>
-                            <span>Intermediate</span>
-                        </li>
-                    </ul>
-                    <button class="btn btn-primary w-100 rounded-pill py-2 fw-medium mt-auto">View Details</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. C# Fundamentals -->
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card border-0 shadow-sm p-3 rounded-4 h-100 course-card-item">
-                <!--mobile view-->
-                <div class="d-flex d-md-none align-items-center gap-3">
-                    <div class="course-icon-mobile bg-secondary-subtle text-dark rounded-4 d-flex align-items-center justify-content-center fw-bold">
-                        C#
+                <!-- Desktop View -->
+                <div class="d-none d-md-flex flex-row align-items-center gap-3 h-100">
+                    <div class="course-icon bg-warning text-dark rounded-3 d-flex align-items-center justify-content-center fw-bold fs-5">
+                        JS
                     </div>
                     <div class="flex-grow-1">
-                        <h6 class="fw-bold text-dark mb-1 fs-5">C# Fundamentals</h6>
-                        <p class="text-muted mb-1 fs-6">Backend &bull; Ahmad Saleh</p>
-                        <p class="text-muted mb-0 fs-6">Intermediate &bull; 12 Hours</p>
-                    </div>
-                </div>
-                <!--desktop view -->
-                <div class="d-none d-md-flex flex-column h-100">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="course-icon bg-secondary-subtle text-dark rounded-3 d-flex align-items-center justify-content-center fw-bold fs-5">
-                            C#
+                        <h5 class="card-title fw-bold text-dark mb-1">JavaScript Basics</h5>
+                        <div class="mb-2">
+                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 fw-medium">Frontend</span>
                         </div>
-                        <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2 fw-medium">Backend</span>
+                        <p class="text-muted small mb-2 d-flex align-items-center">
+                            <i class="fa-solid fa-user me-2 text-secondary"></i>
+                            <span>Mike Johnson</span>
+                        </p>
+                        <div class="d-flex align-items-center gap-4 text-muted small mb-0">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-clock me-2 text-secondary"></i>
+                                <span>8 hours</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-chart-bar me-2 text-secondary"></i>
+                                <span>Intermediate</span>
+                            </div>
+                        </div>
                     </div>
-                    <h5 class="card-title fw-bold text-dark mb-3">C# Fundamentals</h5>
-                    <ul class="list-unstyled text-muted small mb-4">
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-user me-2 text-secondary course-list-icon"></i>
-                            <span>Ahmad Saleh</span>
-                        </li>
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-clock me-2 text-secondary course-list-icon"></i>
-                            <span>12 Hours</span>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <i class="fa-solid fa-chart-bar me-2 text-secondary course-list-icon"></i>
-                            <span>Intermediate</span>
-                        </li>
-                    </ul>
-                    <button class="btn btn-primary w-100 rounded-pill py-2 fw-medium mt-auto">View Details</button>
                 </div>
             </div>
         </div>
 
-        <!-- 5. ASP.NET Core -->
+        <!-- 4. ASP.NET Core -->
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card border-0 shadow-sm p-3 rounded-4 h-100 course-card-item">
-                <!--mobile view-->
+            <div class="card border-0 shadow-sm p-3 rounded-4 h-100">
+                <!-- Mobile View -->
                 <div class="d-flex d-md-none align-items-center gap-3">
                     <div class="course-icon-mobile bg-danger-subtle text-danger rounded-4 d-flex align-items-center justify-content-center fw-bold">
                         .NET
                     </div>
                     <div class="flex-grow-1">
-                        <h6 class="fw-bold text-dark mb-1 fs-5">ASP.NET Core</h6>
-                        <p class="text-muted mb-1 fs-6">Backend &bull; Dana Nasser</p>
-                        <p class="text-muted mb-0 fs-6">Advanced &bull; 14 Hours</p>
+                        <h6 class="fw-bold text-dark mb-1 fs-6">ASP.NET Core</h6>
+                        <p class="text-muted mb-1 small">Backend &bull; Emily Davis</p>
+                        <p class="text-muted mb-0 small">Intermediate &bull; 10 hours</p>
                     </div>
                 </div>
-                <!--desktop view -->
-                <div class="d-none d-md-flex flex-column h-100">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="course-icon bg-danger-subtle text-danger rounded-3 d-flex align-items-center justify-content-center fw-bold fs-5">
-                            .NET
-                        </div>
-                        <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2 fw-medium">Backend</span>
+                <!-- Desktop View -->
+                <div class="d-none d-md-flex flex-row align-items-center gap-3 h-100">
+                    <div class="course-icon bg-danger-subtle text-danger rounded-3 d-flex align-items-center justify-content-center fw-bold fs-6">
+                        .NET
                     </div>
-                    <h5 class="card-title fw-bold text-dark mb-3">ASP.NET Core</h5>
-                    <ul class="list-unstyled text-muted small mb-4">
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-user me-2 text-secondary course-list-icon"></i>
-                            <span>Dana Nasser</span>
-                        </li>
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-clock me-2 text-secondary course-list-icon"></i>
-                            <span>14 Hours</span>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <i class="fa-solid fa-chart-bar me-2 text-secondary course-list-icon"></i>
-                            <span>Advanced</span>
-                        </li>
-                    </ul>
-                    <button class="btn btn-primary w-100 rounded-pill py-2 fw-medium mt-auto">View Details</button>
+                    <div class="flex-grow-1">
+                        <h5 class="card-title fw-bold text-dark mb-1">ASP.NET Core</h5>
+                        <div class="mb-2">
+                            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1 fw-medium">Backend</span>
+                        </div>
+                        <p class="text-muted small mb-2 d-flex align-items-center">
+                            <i class="fa-solid fa-user me-2 text-secondary"></i>
+                            <span>Emily Davis</span>
+                        </p>
+                        <div class="d-flex align-items-center gap-4 text-muted small mb-0">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-clock me-2 text-secondary"></i>
+                                <span>10 hours</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-chart-bar me-2 text-secondary"></i>
+                                <span>Intermediate</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 6. Database Design -->
+        <!-- 5. C# for Beginners -->
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card border-0 shadow-sm p-3 rounded-4 h-100 course-card-item">
-                <!--mobile view-->
+            <div class="card border-0 shadow-sm p-3 rounded-4 h-100">
+                <!-- Mobile View -->
+                <div class="d-flex d-md-none align-items-center gap-3">
+                    <div class="course-icon-mobile bg-secondary-subtle text-dark rounded-4 d-flex align-items-center justify-content-center fw-bold">
+                        C#
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold text-dark mb-1 fs-6">C# for Beginners</h6>
+                        <p class="text-muted mb-1 small">Backend &bull; David Wilson</p>
+                        <p class="text-muted mb-0 small">Beginner &bull; 8 hours</p>
+                    </div>
+                </div>
+                <!-- Desktop View -->
+                <div class="d-none d-md-flex flex-row align-items-center gap-3 h-100">
+                    <div class="course-icon bg-secondary-subtle text-dark rounded-3 d-flex align-items-center justify-content-center fw-bold fs-6">
+                        C#
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="card-title fw-bold text-dark mb-1">C# for Beginners</h5>
+                        <div class="mb-2">
+                            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1 fw-medium">Backend</span>
+                        </div>
+                        <p class="text-muted small mb-2 d-flex align-items-center">
+                            <i class="fa-solid fa-user me-2 text-secondary"></i>
+                            <span>David Wilson</span>
+                        </p>
+                        <div class="d-flex align-items-center gap-4 text-muted small mb-0">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-clock me-2 text-secondary"></i>
+                                <span>8 hours</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-chart-bar me-2 text-secondary"></i>
+                                <span>Beginner</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. SQL Fundamentals -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm p-3 rounded-4 h-100">
+                <!-- Mobile View -->
                 <div class="d-flex d-md-none align-items-center gap-3">
                     <div class="course-icon-mobile bg-success-subtle text-success rounded-4 d-flex align-items-center justify-content-center fw-bold">
                         <i class="fa-solid fa-database"></i>
                     </div>
                     <div class="flex-grow-1">
-                        <h6 class="fw-bold text-dark mb-1 fs-5">Database Design</h6>
-                        <p class="text-muted mb-1 fs-6">Database &bull; Rami Hasan</p>
-                        <p class="text-muted mb-0 fs-6">Intermediate &bull; 9 Hours</p>
+                        <h6 class="fw-bold text-dark mb-1 fs-6">SQL Fundamentals</h6>
+                        <p class="text-muted mb-1 small">Database &bull; Lisa Brown</p>
+                        <p class="text-muted mb-0 small">Beginner &bull; 6 hours</p>
                     </div>
                 </div>
-                <!--desktop view -->
-                <div class="d-none d-md-flex flex-column h-100">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="course-icon bg-success-subtle text-success rounded-3 d-flex align-items-center justify-content-center fw-bold fs-5">
-                            <i class="fa-solid fa-database"></i>
-                        </div>
-                        <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-2 fw-medium">Database</span>
+                <!-- Desktop View -->
+                <div class="d-none d-md-flex flex-row align-items-center gap-3 h-100">
+                    <div class="course-icon bg-success-subtle text-success rounded-3 d-flex align-items-center justify-content-center fw-bold fs-4">
+                        <i class="fa-solid fa-database"></i>
                     </div>
-                    <h5 class="card-title fw-bold text-dark mb-3">Database Design</h5>
-                    <ul class="list-unstyled text-muted small mb-4">
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-user me-2 text-secondary course-list-icon"></i>
-                            <span>Rami Hasan</span>
-                        </li>
-                        <li class="mb-2 d-flex align-items-center">
-                            <i class="fa-solid fa-clock me-2 text-secondary course-list-icon"></i>
-                            <span>9 Hours</span>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <i class="fa-solid fa-chart-bar me-2 text-secondary course-list-icon"></i>
-                            <span>Intermediate</span>
-                        </li>
-                    </ul>
-                    <button class="btn btn-primary w-100 rounded-pill py-2 fw-medium mt-auto">View Details</button>
+                    <div class="flex-grow-1">
+                        <h5 class="card-title fw-bold text-dark mb-1">SQL Fundamentals</h5>
+                        <div class="mb-2">
+                            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-1 fw-medium">Database</span>
+                        </div>
+                        <p class="text-muted small mb-2 d-flex align-items-center">
+                            <i class="fa-solid fa-user me-2 text-secondary"></i>
+                            <span>Lisa Brown</span>
+                        </p>
+                        <div class="d-flex align-items-center gap-4 text-muted small mb-0">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-clock me-2 text-secondary"></i>
+                                <span>6 hours</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-chart-bar me-2 text-secondary"></i>
+                                <span>Beginner</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
