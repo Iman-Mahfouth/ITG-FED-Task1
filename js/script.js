@@ -13,26 +13,33 @@ async function loadCourses() {
         throw error; 
     }
 }
-
+const categoryStyles = {
+    'Frontend': 'bg-primary-subtle text-primary',
+    'Backend': 'bg-success-subtle text-success',
+    'Database': 'bg-secondary-subtle text-secondary'
+};
+const courseVisuals = {
+    1: { icon: '<i class="fa-brands fa-html5"></i>', color: 'bg-warning-subtle text-warning' },
+    2: { icon: '<i class="fa-brands fa-css3-alt"></i>', color: 'bg-info-subtle text-info' },
+    3: { icon: 'JS', color: 'bg-warning text-dark' },
+    4: { icon: '.NET', color: 'bg-danger-subtle text-danger' },
+    5: { icon: 'C#', color: 'bg-secondary-subtle text-dark' },
+    6: { icon: '<i class="fa-solid fa-database"></i>', color: 'bg-success-subtle text-success' }
+};
 
 function getCourseStyles(courseId, category) {
-    let iconHtml = '<i class="fa-solid fa-book"></i>';
-    let iconColorClass = 'bg-secondary-subtle text-dark';
-    let badgeColorClass = 'bg-secondary-subtle text-secondary';
+    const defaultVisual = { icon: '<i class="fa-solid fa-book"></i>', color: 'bg-secondary-subtle text-dark' };
+    const defaultBadge = 'bg-secondary-subtle text-secondary';
 
-    if (category === 'Frontend') badgeColorClass = 'bg-primary-subtle text-primary';
-    else if (category === 'Backend') badgeColorClass = 'bg-success-subtle text-success';
-    switch (courseId) {
-        case 1: iconHtml = '<i class="fa-brands fa-html5"></i>'; iconColorClass = 'bg-warning-subtle text-warning'; break;
-        case 2: iconHtml = '<i class="fa-brands fa-css3-alt"></i>'; iconColorClass = 'bg-info-subtle text-info'; break;
-        case 3: iconHtml = 'JS'; iconColorClass = 'bg-warning text-dark'; break;
-        case 4: iconHtml = '.NET'; iconColorClass = 'bg-danger-subtle text-danger'; break;
-        case 5: iconHtml = 'C#'; iconColorClass = 'bg-secondary-subtle text-dark'; break;
-        case 6: iconHtml = '<i class="fa-solid fa-database"></i>'; iconColorClass = 'bg-success-subtle text-success'; break;
-    }
-    return { iconHtml, iconColorClass, badgeColorClass };
+    const visual = courseVisuals[courseId] || defaultVisual;
+    const badgeColorClass = categoryStyles[category] || defaultBadge;
+
+    return { 
+        iconHtml: visual.icon, 
+        iconColorClass: visual.color, 
+        badgeColorClass: badgeColorClass 
+    };
 }
-
 function renderCourses(courses) {
     const container = document.getElementById('courses-container');
     container.innerHTML = '';
