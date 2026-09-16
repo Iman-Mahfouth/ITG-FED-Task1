@@ -92,10 +92,7 @@
     object-fit: contain; 
     display: block;
 }
-.course-icon {
-    width: 70px;
-    height: 70px;
-}
+
 @media (min-width: 900px) {
     .container {
         max-width: 1440px;
@@ -104,8 +101,140 @@
 }
 /* COURSES SECTION (FED-09) mobile  */
 
+
+.card {
+    padding: 1.5rem !important; 
+}
+
+
+
+.card-title {
+    margin-top: 0;
+    line-height: 1.2; 
+}
+
+.card .d-flex.align-items-center.gap-4.text-muted.small.mb-0 > div {
+    white-space: nowrap; 
+}
+
+.course-content {
+    gap: 16px;
+}
+
+.course-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+    align-items: start;
+}
+
+.course-icon,
 .course-icon-mobile {
-    width: 80px ;
-    height: 80px ;
-    font-size: 2.25rem;
+    width: 75px;
+    height: 75px;
+    font-size: 2.2rem;
+}
+
+.course-icon.bg-danger-subtle, 
+.course-icon-mobile.bg-danger-subtle {
+    font-size: 1.6rem;    
+    font-weight: 800;
+}
+
+.course-info {
+    min-width: 0;
+}
+
+.course-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.instructor,
+.course-meta {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.instructor i,
+.course-meta i {
+    margin-right: 8px;
+    width: 14px;
+}
+
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+    .card-title {
+        font-size: 1.1rem; 
+    }
+
+    .course-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .course-content {
+        display: grid;
+        grid-template-columns: 70px 1fr; 
+        column-gap: 16px;
+        row-gap: 10px;
+    }
+
+
+
+    .course-header {
+        display: contents;
+    }
+
+    .course-icon {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .course-info {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .course-details {
+        grid-column: 2;
+        grid-row: 2;
+        gap: 8px;
+    }
+
+    .instructor {
+        font-size: 13px;
+    }
+
+    .course-meta {
+        font-size: 13px;
+        gap: 14px !important;
+    }
+}
+
+
+/*  DESKTOP */
+
+@media (min-width: 992px) {
+
+    .course-content {
+        height: 100%;
+    }
+
+    .course-header {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 16px;
+    }
+
+    .course-details {
+        margin-top: auto;
+    }
+
+    .instructor {
+        margin-bottom: 4px;
+    }
 }
