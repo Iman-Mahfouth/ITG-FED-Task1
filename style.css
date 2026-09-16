@@ -221,8 +221,6 @@
 @media (min-width: 992px) {
 
     .course-content {
-        display: flex;
-        flex-direction: column;
         height: 100%;
     }
 
