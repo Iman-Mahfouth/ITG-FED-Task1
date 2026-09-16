@@ -1,0 +1,50 @@
+[
+{
+    "id": 1,
+    "title": "HTML Fundamentals",
+    "category": "Frontend",
+    "instructor": "John Doe",
+    "duration": "6 hours",
+    "level": "Beginner"
+},
+{
+    "id": 2,
+    "title": "CSS Essentials",
+    "category": "Frontend",
+    "instructor": "Sarah Smith",
+    "duration": "5 hours",
+    "level": "Beginner"
+},
+{
+    "id": 3,
+    "title": "JavaScript Basics",
+    "category": "Frontend",
+    "instructor": "Mike Johnson",
+    "duration": "8 hours",
+    "level": "Intermediate"
+},
+{
+    "id": 4,
+    "title": "ASP.NET Core",
+    "category": "Backend",
+    "instructor": "Emily Davis",
+    "duration": "10 hours",
+    "level": "Intermediate"
+},
+{
+    "id": 5,
+    "title": "C# for Beginners",
+    "category": "Backend",
+    "instructor": "David Wilson",
+    "duration": "8 hours",
+    "level": "Beginner"
+},
+{
+    "id": 6,
+    "title": "SQL Fundamentals",
+    "category": "Backend",
+    "instructor": "Lisa Brown",
+    "duration": "6 hours",
+    "level": "Beginner"
+}
+]
