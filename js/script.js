@@ -182,14 +182,25 @@ function renderCourses(courses) {
 
 function filterCourses(courses, searchTerm,selectedCategory) {
     const lowerCaseTerm = searchTerm.toLowerCase().trim();
-
+    
     return courses.filter(course => {
     const matchesSearch = (course.title || '').toLowerCase().includes(lowerCaseTerm);
     const matchesCategory = selectedCategory === 'All' || course.category === selectedCategory;
-      
+    
     return matchesSearch && matchesCategory;
     });
 }
+function updateEmptyState(hasResults) {
+    const noResultsElement = document.getElementById('no-results');
+
+    if (!noResultsElement) {
+        console.error("Empty state element 'no-results' not found in the DOM.");
+        return;
+    }
+
+    noResultsElement.classList.toggle('d-none', hasResults);
+}
+
 function applyFilters(courses) {
     const searchInput = document.getElementById('search-input');
     const categoryFilter = document.getElementById('category-filter');
@@ -201,10 +212,7 @@ function applyFilters(courses) {
     const selectedCategory = categoryFilter.value;
     const filteredCourses = filterCourses(courses, searchTerm, selectedCategory);
     renderCourses(filteredCourses);
-
-    if (filteredCourses.length === 0) {
-        console.log("No courses found matching your criteria."); 
-    }
+    updateEmptyState(filteredCourses.length > 0);
     
     if (clearButton) {
         clearButton.classList.toggle('d-none', !searchTerm.trim());
@@ -254,11 +262,9 @@ function setupCategoryFilter(courses) {
 async function init() { 
     try {
         const courses = await loadCourses();
-        console.log('Courses loaded successfully:', courses);
-
-        renderCourses(courses);
         setupSearch(courses); 
         setupCategoryFilter(courses);
+        applyFilters(courses);
 
         return courses;
     } catch (error) {
