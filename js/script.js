@@ -161,6 +161,7 @@ function createCourseCard(course) {
 
     return col; 
 }
+
 function renderCourses(courses) {
     const container = document.getElementById('courses-container');
 
@@ -169,8 +170,6 @@ function renderCourses(courses) {
         return; 
     }
 
-    container.innerHTML = '';
-    
     const fragment = document.createDocumentFragment();
 
     courses.forEach(course => {
@@ -178,7 +177,53 @@ function renderCourses(courses) {
         fragment.appendChild(courseCard);
     });
 
-    container.appendChild(fragment);
+    container.replaceChildren(fragment);
+}
+
+function filterCourses(courses, searchTerm) {
+    const lowerCaseTerm = searchTerm.toLowerCase().trim();
+
+    if (!lowerCaseTerm) return courses; 
+
+    
+    return courses.filter(course => 
+        (course.title || '').toLowerCase().includes(lowerCaseTerm)
+    );
+}
+
+function setupSearch(courses) {
+    const searchInput = document.getElementById('search-input');
+    const clearButton = document.getElementById('clear-search');
+
+    if (!searchInput) {
+        console.error("Search setup failed: 'search-input' element not found in the DOM.");
+        return;
+    }
+
+    let debounceTimer;
+    
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        
+        debounceTimer = setTimeout(() => {
+            const searchTerm = e.target.value;
+            const filteredCourses = filterCourses(courses, searchTerm);         
+            renderCourses(filteredCourses);
+            if (clearButton) {
+                clearButton.classList.toggle('d-none', !searchTerm);
+            }
+        }, 300); 
+    });
+
+    if (clearButton) {
+        clearButton.addEventListener('click', () => {
+            clearTimeout(debounceTimer); 
+            searchInput.value = '';
+            renderCourses(courses); 
+            clearButton.classList.add('d-none');
+            searchInput.focus(); 
+        });
+    }
 }
 
 async function init() { 
@@ -186,12 +231,14 @@ async function init() {
         const courses = await loadCourses();
         console.log('Courses loaded successfully:', courses);
         console.log(`Number of courses: ${courses.length}`);
+        
         renderCourses(courses);
+        setupSearch(courses); 
+        
         return courses;
     } catch (error) {
         console.error('Failed to initialize app:', error);
         return []; 
     }
 }
-
 init();
