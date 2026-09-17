@@ -181,9 +181,10 @@ function renderCourses(courses) {
 }
 
 function filterCourses(courses, searchTerm) {
-    if (!searchTerm) return courses; 
-
     const lowerCaseTerm = searchTerm.toLowerCase().trim();
+
+    if (!lowerCaseTerm) return courses; 
+
     
     return courses.filter(course => 
         (course.title || '').toLowerCase().includes(lowerCaseTerm)
@@ -216,6 +217,7 @@ function setupSearch(courses) {
 
     if (clearButton) {
         clearButton.addEventListener('click', () => {
+            clearTimeout(debounceTimer); 
             searchInput.value = '';
             renderCourses(courses); 
             clearButton.classList.add('d-none');
