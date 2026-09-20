@@ -1,4 +1,3 @@
-console.log("FED-13: JS file loaded successfully!");
 
 async function loadCourses() {
     try {
@@ -237,6 +236,7 @@ function openCourseDetails(course) {
 
     modal.show();
 }
+
 function filterCourses(courses, searchTerm, selectedCategory) {
     const lowerCaseTerm = searchTerm.toLowerCase().trim();
     
@@ -247,6 +247,7 @@ function filterCourses(courses, searchTerm, selectedCategory) {
         return matchesSearch && matchesCategory;
     });
 }
+
 function updateEmptyState(hasResults) {
     const noResultsElement = document.getElementById('no-results');
 
@@ -275,6 +276,24 @@ function applyFilters(courses) {
         clearButton.classList.toggle('d-none', !searchTerm.trim());
     }
 }
+
+function resetFilters(courses, { resetCategory = false } = {}) {
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+
+    if (!searchInput || !categoryFilter) return;
+
+    clearTimeout(searchDebounceTimer);
+    searchInput.value = '';
+
+    if (resetCategory) {
+        categoryFilter.value = 'All';
+    }
+
+    applyFilters(courses);
+    searchInput.focus();
+}
+
 function setupSearch(courses) {
     const searchInput = document.getElementById('search-input');
     const clearButton = document.getElementById('clear-search');
@@ -292,12 +311,7 @@ function setupSearch(courses) {
     });
 
     if (clearButton) {
-        clearButton.addEventListener('click', () => {
-            clearTimeout(searchDebounceTimer); 
-            searchInput.value = '';
-            applyFilters(courses); 
-            searchInput.focus(); 
-        });
+        clearButton.addEventListener('click', () => resetFilters(courses));
     }
 }
 
@@ -338,29 +352,17 @@ function setupCourseActions(courses) {
         openCourseDetails(selectedCourse);
     });
 }
+
 function setupClearFilters(courses) {
     const clearFiltersButton = document.getElementById('clear-filters');
-    const searchInput = document.getElementById('search-input');
-    const categoryFilter = document.getElementById('category-filter');
 
-    if (!clearFiltersButton || !searchInput || !categoryFilter) {
-        console.error("Clear filters setup failed: required elements not found in the DOM.");
+    if (!clearFiltersButton) {
+        console.error("Clear filters setup failed: 'clear-filters' button not found.");
         return;
     }
 
     clearFiltersButton.addEventListener('click', () => {
-        // Cancel any pending search debounce to prevent stale re-renders (race condition)
-        clearTimeout(searchDebounceTimer);
-
-        // Reset both filter controls
-        searchInput.value = '';
-        categoryFilter.value = 'All';
-
-        // Delegate to the single source of truth
-        applyFilters(courses);
-
-        // Return focus to search input for smoother UX
-        searchInput.focus();
+        resetFilters(courses, { resetCategory: true });
     });
 }
 
