@@ -36,6 +36,9 @@ const DEFAULT_VISUAL = {
 };
 const DEFAULT_BADGE = 'bg-secondary-subtle text-secondary';
 
+// Shared between search typing and clear actions to prevent stale renders.
+let searchDebounceTimer;
+
 function getCourseStyles(courseId, category) {
     const visual = courseVisuals[courseId] || DEFAULT_VISUAL;
     const badgeColorClass = categoryStyles[category] || DEFAULT_BADGE;
@@ -233,19 +236,17 @@ function setupSearch(courses) {
         console.error("Search setup failed: 'search-input' element not found");
         return;
     }
-
-    let debounceTimer;
     
     searchInput.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
             applyFilters(courses);
         }, 300); 
     });
 
     if (clearButton) {
         clearButton.addEventListener('click', () => {
-            clearTimeout(debounceTimer); 
+            clearTimeout(searchDebounceTimer); 
             searchInput.value = '';
             applyFilters(courses); 
             searchInput.focus(); 
@@ -288,6 +289,29 @@ function setupCourseActions(courses) {
         }
 
         console.log('Selected course:', selectedCourse);
+function setupClearFilters(courses) {
+    const clearFiltersButton = document.getElementById('clear-filters');
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+
+    if (!clearFiltersButton || !searchInput || !categoryFilter) {
+        console.error("Clear filters setup failed: required elements not found in the DOM.");
+        return;
+    }
+
+    clearFiltersButton.addEventListener('click', () => {
+        // Cancel any pending search debounce to prevent stale re-renders (race condition)
+        clearTimeout(searchDebounceTimer);
+
+        // Reset both filter controls
+        searchInput.value = '';
+        categoryFilter.value = 'All';
+
+        // Delegate to the single source of truth
+        applyFilters(courses);
+
+        // Return focus to search input for smoother UX
+        searchInput.focus();
     });
 }
 
@@ -297,6 +321,7 @@ async function init() {
         setupSearch(courses); 
         setupCategoryFilter(courses);
         setupCourseActions(courses);
+        setupClearFilters(courses);
         applyFilters(courses);
 
         return courses;
