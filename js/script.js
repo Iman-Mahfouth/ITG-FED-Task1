@@ -289,6 +289,8 @@ function setupCourseActions(courses) {
         }
 
         console.log('Selected course:', selectedCourse);
+    });
+}
 function setupClearFilters(courses) {
     const clearFiltersButton = document.getElementById('clear-filters');
     const searchInput = document.getElementById('search-input');
