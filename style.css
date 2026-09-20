@@ -238,3 +238,63 @@
         margin-bottom: 4px;
     }
 }
+.modal-icon-fixed { width: 20px; }
+
+/*Course Details Modal (FED-22)*/
+
+#course-details-modal .modal-header {
+    border-bottom: 1px solid #e9ecef;
+    padding: 0.5rem 1rem;
+}
+
+#course-details-modal .btn-close {
+    font-size: 0.7rem;
+    opacity: 0.55;
+    transition: opacity 0.2s ease;
+}
+#course-details-modal .btn-close:hover {
+    opacity: 1;
+}
+
+#course-details-modal .course-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 1.75rem;
+}
+
+.modal-info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modal-info-row .label {
+    color: #6c757d;
+}
+
+.modal-info-row .value {
+    font-weight: 500;
+    color: #212529;
+}
+
+.modal-icon-fixed {
+    width: 20px;
+    text-align: center;
+}
+
+.modal-close-btn {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+
+    .modal-info-row .label {
+        min-width: 90px;
+    }
+
+    .modal-close-btn {
+        width: auto;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+}

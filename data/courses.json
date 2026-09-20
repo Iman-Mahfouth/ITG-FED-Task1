@@ -5,7 +5,8 @@
     "category": "Frontend",
     "instructor": "John Doe",
     "duration": "6 hours",
-    "level": "Beginner"
+    "level": "Beginner",
+    "description": "Learn the fundamentals of HTML, including structure, elements, forms, and best practices for building modern web pages."
 },
 {
     "id": 2,
@@ -13,7 +14,8 @@
     "category": "Frontend",
     "instructor": "Sarah Smith",
     "duration": "5 hours",
-    "level": "Beginner"
+    "level": "Beginner",
+    "description": "Master CSS layout techniques, flexbox, grid, animations, and responsive design principles to build beautiful interfaces."
 },
 {
     "id": 3,
@@ -21,7 +23,9 @@
     "category": "Frontend",
     "instructor": "Mike Johnson",
     "duration": "8 hours",
-    "level": "Intermediate"
+    "level": "Intermediate",
+    "description": "Dive into JavaScript fundamentals, including variables, functions, DOM manipulation, and event handling to create interactive web applications."
+
 },
 {
     "id": 4,
@@ -29,7 +33,8 @@
     "category": "Backend",
     "instructor": "Emily Davis",
     "duration": "10 hours",
-    "level": "Intermediate"
+    "level": "Intermediate",
+    "description": "Learn to build robust web applications using ASP.NET Core, including MVC architecture, routing, middleware, and database integration."
 },
 {
     "id": 5,
@@ -37,7 +42,8 @@
     "category": "Backend",
     "instructor": "David Wilson",
     "duration": "8 hours",
-    "level": "Beginner"
+    "level": "Beginner",
+    "description": "Get started with C# programming, covering syntax, data types, control structures, object-oriented programming, and basic application development."
 },
 {
     "id": 6,
@@ -45,6 +51,7 @@
     "category": "Backend",
     "instructor": "Lisa Brown",
     "duration": "6 hours",
-    "level": "Beginner"
+    "level": "Beginner",
+    "description": "Learn the basics of SQL, including querying databases, creating tables, inserting data, and performing joins to manage relational data effectively."
 }
 ]

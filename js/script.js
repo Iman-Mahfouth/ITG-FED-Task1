@@ -190,6 +190,53 @@ function renderCourses(courses) {
     container.replaceChildren(fragment);
 }
 
+function populateModal(course) {
+    const styles = getCourseStyles(course.id, course.category);
+
+    const iconContainer = document.getElementById('modal-icon');
+    if (iconContainer) {
+        iconContainer.className = `course-icon ${styles.iconColorClass} rounded-3 d-flex align-items-center justify-content-center fw-bold`;
+        iconContainer.replaceChildren(createIconElement(styles.visualData));
+    }
+
+    const titleEl = document.getElementById('modal-title');
+    if (titleEl) titleEl.textContent = course.title;
+
+    const badgeEl = document.getElementById('modal-category-badge');
+    if (badgeEl) {
+        badgeEl.textContent = course.category;
+        badgeEl.className = `badge rounded-pill px-3 py-1 fw-medium ${styles.badgeColorClass}`;
+    }
+
+    const instructorEl = document.getElementById('modal-instructor');
+    if (instructorEl) instructorEl.textContent = course.instructor || 'N/A';
+
+    const durationEl = document.getElementById('modal-duration');
+    if (durationEl) durationEl.textContent = course.duration || 'N/A';
+
+    const levelEl = document.getElementById('modal-level');
+    if (levelEl) levelEl.textContent = course.level || 'N/A';
+
+    const descEl = document.getElementById('modal-description');
+    if (descEl) {
+        descEl.textContent = course.description || 'No description available for this course.';
+    }
+}
+
+function openCourseDetails(course) {
+    const modalEl = document.getElementById('course-details-modal');
+
+    if (!modalEl) {
+        console.error("Course details modal not found in the DOM.");
+        return;
+    }
+
+    populateModal(course);
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+    modal.show();
+}
 function filterCourses(courses, searchTerm, selectedCategory) {
     const lowerCaseTerm = searchTerm.toLowerCase().trim();
     
@@ -288,7 +335,7 @@ function setupCourseActions(courses) {
             return;
         }
 
-        console.log('Selected course:', selectedCourse);
+        openCourseDetails(selectedCourse);
     });
 }
 function setupClearFilters(courses) {
