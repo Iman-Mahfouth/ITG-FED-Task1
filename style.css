@@ -242,10 +242,9 @@
 /*Course Details Modal (FED-22)*/
 
 #course-details-modal .modal-header {
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: none;   /* ← إلغاء Bootstrap default */
     padding: 0.5rem 1rem;
 }
-
 #course-details-modal .btn-close {
     font-size: 0.7rem;
     opacity: 0.55;
@@ -269,6 +268,7 @@
 
 .modal-info-row .label {
     color: #6c757d;
+    min-width: 90px;
 }
 
 .modal-info-row .value {
@@ -287,9 +287,6 @@
 
 @media (min-width: 768px) {
 
-    .modal-info-row .label {
-        min-width: 90px;
-    }
 
     .modal-close-btn {
         width: auto;
