@@ -156,10 +156,17 @@ function createCourseCard(course) {
     detailsDiv.append(instructorDiv, metaDiv);
     desktopDiv.append(headerDiv, detailsDiv);
 
-    card.append(mobileDiv, desktopDiv);
-    col.appendChild(card);
+    const viewDetailsButton = document.createElement('button');
+    viewDetailsButton.type = 'button';
+    viewDetailsButton.className = 'btn btn-outline-primary w-100 rounded-3 py-2 fw-medium mt-3';
+    viewDetailsButton.textContent = 'View Details';
+    viewDetailsButton.dataset.action = 'view-details';
+    viewDetailsButton.dataset.courseId = course.id;
+    viewDetailsButton.setAttribute('aria-label', `View details for ${course.title}`);
 
-    return col; 
+    card.append(mobileDiv, desktopDiv, viewDetailsButton);
+    col.appendChild(card);
+    return col;
 }
 
 function renderCourses(courses) {
@@ -180,14 +187,14 @@ function renderCourses(courses) {
     container.replaceChildren(fragment);
 }
 
-function filterCourses(courses, searchTerm,selectedCategory) {
+function filterCourses(courses, searchTerm, selectedCategory) {
     const lowerCaseTerm = searchTerm.toLowerCase().trim();
     
     return courses.filter(course => {
-    const matchesSearch = (course.title || '').toLowerCase().includes(lowerCaseTerm);
-    const matchesCategory = selectedCategory === 'All' || course.category === selectedCategory;
+        const matchesSearch = (course.title || '').toLowerCase().includes(lowerCaseTerm);
+        const matchesCategory = selectedCategory === 'All' || course.category === selectedCategory;
     
-    return matchesSearch && matchesCategory;
+        return matchesSearch && matchesCategory;
     });
 }
 function updateEmptyState(hasResults) {
@@ -259,11 +266,37 @@ function setupCategoryFilter(courses) {
     });
 }
 
+function setupCourseActions(courses) {
+    const container = document.getElementById('courses-container');
+
+    if (!container) {
+        console.error("Course actions setup failed: 'courses-container' element not found in the DOM.");
+        return;
+    }
+
+    container.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-action="view-details"]');
+
+        if (!button) return;
+
+        const courseId = Number(button.dataset.courseId);
+        const selectedCourse = courses.find(course => course.id === courseId);
+
+        if (!selectedCourse) {
+            console.error(`Course with id ${courseId} not found.`);
+            return;
+        }
+
+        console.log('Selected course:', selectedCourse);
+    });
+}
+
 async function init() { 
     try {
         const courses = await loadCourses();
         setupSearch(courses); 
         setupCategoryFilter(courses);
+        setupCourseActions(courses);
         applyFilters(courses);
 
         return courses;
