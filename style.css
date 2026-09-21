@@ -246,7 +246,7 @@
     --app-sidebar-width-lg: 260px;
 }
 header.navbar {
-    height: var(--app-header-height);
+    min-height: var(--app-header-height);
     box-sizing: border-box;
 }
 
@@ -322,4 +322,48 @@ header.navbar {
         width: 100%;             
         border-bottom: 1px solid #e9ecef;
     }
+}
+
+/* ============================================
+   Header Global Search (FED-36) */
+
+.global-search .input-group {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.global-search .input-group:focus-within {
+    background-color: #fff !important;
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+}
+
+.global-search .form-control {
+    font-size: 0.875rem;
+    height: calc(1.5em + 0.5rem + 2px);   
+}
+
+.global-search .form-control::placeholder {
+    color: #adb5bd;
+    font-size: 0.875rem;
+}
+
+header .input-group.rounded-pill {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+header .input-group.rounded-pill:focus-within {
+    background-color: #fff !important;
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+}
+
+header .input-group.rounded-pill .form-control::placeholder {
+    color: #adb5bd;
+    font-size: 0.9rem;
+}
+
+.global-search .form-control:focus,
+header .input-group.rounded-pill .form-control:focus {
+    box-shadow: none;
+    border-color: transparent;
 }
