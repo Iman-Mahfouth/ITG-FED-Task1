@@ -242,22 +242,25 @@
 /*Course Details Modal (FED-22)*/
 
 #course-details-modal .modal-header {
-    border-bottom: none;   /* ← إلغاء Bootstrap default */
-    padding: 0.5rem 1rem;
+    border-bottom: none;  
+    padding: 0.5rem 1.5rem;
+    align-items: center;
 }
 #course-details-modal .btn-close {
-    font-size: 0.7rem;
-    opacity: 0.55;
+    font-size: 0.9rem;
+    opacity: 0.85;
     transition: opacity 0.2s ease;
+    padding: 1rem;
+    margin: -0.5rem -0.5rem -0.5rem 0;
 }
 #course-details-modal .btn-close:hover {
     opacity: 1;
 }
 
 #course-details-modal .course-icon {
-    width: 64px;
-    height: 64px;
-    font-size: 1.75rem;
+    width: 72px;
+    height: 72px;
+    font-size: 2rem;
 }
 
 .modal-info-row {
