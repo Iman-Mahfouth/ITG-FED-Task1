@@ -243,6 +243,10 @@
     --app-sidebar-width: 250px;
     --app-sidebar-width-lg: 260px;
 }
+header.navbar {
+    height: var(--app-header-height);
+    box-sizing: border-box;
+}
 
 .app-layout {
     display: flex;
