@@ -37,12 +37,6 @@
     display: block;
 }
 
-@media (min-width: 900px) {
-    .container {
-        max-width: 1440px;
-        padding-inline: 24px;
-    }
-}
 /* COURSES SECTION (FED-09) mobile  */
 
 
@@ -387,4 +381,19 @@ header .input-group.rounded-pill .form-control::placeholder {
 header .input-group.rounded-pill .form-control:focus {
     box-shadow: none;
     border-color: transparent;
+}
+.app-main > .container {
+    max-width: 100%;
+}
+
+@media (min-width: 1200px) {
+    .app-main > .container {
+        max-width: 1200px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .app-main > .container {
+        max-width: 1320px;
+    }
 }
