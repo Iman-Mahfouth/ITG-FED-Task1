@@ -10,43 +10,30 @@
 </head>
 <body class="bg-light">
     <!-- Header (same as index.html) -->
-    <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
-        <div class="container">
-            <div class="d-flex align-items-center gap-2 gap-md-3 w-100">
-                <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#mainSidebar"
-                        aria-controls="mainSidebar"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0" href="#">
-                    <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
-                    <span class="text-dark">My</span><span class="text-primary">Courses</span>
-                </a>
-                <div class="global-search d-none d-md-block flex-grow-1 mx-md-3">
-                    <div class="input-group input-group-sm rounded-pill overflow-hidden border bg-light">
-                        <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
-                            <i class="fa-solid fa-magnifying-glass small"></i>
-                        </span>
-                        <input type="search"
-                               class="form-control border-0 shadow-none bg-transparent"
-                               placeholder="Search courses, instructors, levels..."
-                               aria-label="Global search">
-                    </div>
-                </div>
-                <div class="profile-section d-none d-md-flex align-items-center gap-2 cursor-pointer flex-shrink-0 ms-auto">
-                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center avatar-icon">
-                        <i class="fa-solid fa-user text-secondary"></i>
-                    </div>
-                    <span class="fw-medium text-secondary fs-6 d-none d-lg-inline">Hi, Learner!</span>
-                    <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
-                </div>
-            </div>
-            <div class="d-md-none w-100 mt-3">
-                <div class="input-group rounded-pill overflow-hidden border bg-light">
+<header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
+    <div class="container">
+        <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
+
+            <!-- Mobile: Hamburger -->
+            <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainSidebar"
+                    aria-controls="mainSidebar"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0" href="#">
+                <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
+                <span class="text-dark">My</span><span class="text-primary">Courses</span>
+            </a>
+
+            <!-- Global Search (ONE component only) -->
+            <div class="header-search" dir="ltr">
+                <div class="input-group rounded-3 overflow-hidden border bg-light">
                     <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
@@ -56,9 +43,19 @@
                            aria-label="Global search">
                 </div>
             </div>
-        </div>
-    </header>
 
+            <!-- Profile (hidden on mobile) -->
+            <div class="profile-section d-none d-md-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center avatar-icon">
+                    <i class="fa-solid fa-user text-secondary"></i>
+                </div>
+                <span class="fw-medium text-secondary fs-6 d-none d-lg-inline">Hi, Learner!</span>
+                <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
+            </div>
+
+        </div>
+    </div>
+</header>
     <!-- App Layout -->
     <div class="app-layout">
         <!-- Side Navigation -->

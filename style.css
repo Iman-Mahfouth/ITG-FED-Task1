@@ -382,3 +382,20 @@ header.navbar {
     box-shadow: none;
     border-color: transparent;
 }
+
+.app-main > .container {
+    max-width: 100%;
+    padding-inline: 24px;
+}
+
+@media (min-width: 1200px) {
+    .app-main > .container {
+        max-width: 1200px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .app-main > .container {
+        max-width: 1320px;
+    }
+}
