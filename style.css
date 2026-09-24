@@ -30,6 +30,73 @@
     }
 }
 
+/* My Learning course cards (FED-26) */
+.ml-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0.625rem;
+}
+
+.ml-card-banner {
+    background: #f5ddce;
+    border-radius: 0.9rem;
+    min-height: 14rem;
+    overflow: hidden;
+    padding: 1rem;
+    position: relative;
+}
+
+.ml-card-banner--purple { background: #e5def4; }
+.ml-card-banner--blue { background: #d9edf6; }
+
+.ml-card-tag,
+.ml-card-favorite {
+    background: rgba(255, 255, 255, 0.82);
+    border: 0;
+    border-radius: 0.5rem;
+    color: #59615b;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.4rem 0.65rem;
+    position: absolute;
+    z-index: 1;
+}
+
+.ml-card-tag { left: 1rem; top: 1rem; }
+.ml-card-favorite { border-radius: 50%; font-size: 1rem; height: 2.7rem; padding: 0; right: 1rem; top: 0.75rem; width: 2.7rem; }
+.ml-card-editor-art { align-items: end; bottom: 1.2rem; display: flex; gap: 1.25rem; left: 2rem; position: absolute; right: 2rem; }
+.ml-card-tech-badge { align-items: center; background: rgba(255,255,255,.7); border-radius: 1rem; color: #9a6847; display: flex; flex: 0 0 4.5rem; font-size: 2rem; height: 4.5rem; justify-content: center; transform: rotate(8deg); }
+.ml-card-banner--purple .ml-card-tech-badge { color: #805aa0; }
+.ml-card-banner--blue .ml-card-tech-badge { color: #5d9fbd; }
+.ml-card-editor { background: rgba(255,255,255,.85); border-radius: 0.65rem; box-shadow: 0.5rem 0.5rem 0 rgba(0,0,0,.08); color: #a16443; display: flex; flex: 1; flex-direction: column; gap: 1.3rem; min-height: 8.75rem; padding: 1rem; transform: rotate(-9deg); }
+.ml-card-banner--purple .ml-card-editor { color: #76508b; }
+.ml-card-banner--blue .ml-card-editor { color: #4f8cad; }
+.ml-card-editor-dots { color: #a5a5a5; font-size: .75rem; letter-spacing: .3rem; }
+.ml-card-editor-code { font-family: ui-monospace, 'SF Mono', Consolas, 'Courier New', monospace; font-size: clamp(.65rem, 1vw, .8rem); }
+.ml-card-body { display: flex; flex: 1; flex-direction: column; gap: 1rem; padding: 1.4rem 1rem 1rem; }
+.ml-card-meta { align-items: center; display: flex; justify-content: space-between; }
+.ml-card-category { color: #647d1d; font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.ml-card-rating { color: #536273; font-size: .8rem; font-weight: 600; }
+.ml-card-rating i { color: #d2a33d; margin-right: .3rem; }
+.ml-card-title { color: #212529; font-size: 1.15rem; font-weight: 700; margin: 0; }
+.ml-card-instructor { align-items: center; color: #68707a; display: flex; font-size: .85rem; gap: .55rem; }
+.ml-card-avatar { align-items: center; background: #f1eee7; border-radius: 50%; color: #806a4c; display: flex; font-size: .62rem; font-weight: 700; height: 1.8rem; justify-content: center; width: 1.8rem; }
+.ml-card-progress { align-items: center; display: flex; gap: .75rem; margin-top: auto; }
+.ml-card-progress-track { background: #e7eadf; border-radius: 10rem; flex: 1; height: .4rem; overflow: hidden; }
+.ml-card-progress-fill { background: #8ba354; border-radius: inherit; height: 100%; width: var(--progress); }
+.ml-card-progress-label { color: #586235; font-size: .75rem; white-space: nowrap; }
+.ml-card-footer { padding: 0 1rem 1rem; }
+.ml-card-action { background: #252d31; border: 0; border-radius: .75rem; color: #fff; font-size: .9rem; font-weight: 700; min-height: 3.35rem; width: 100%; }
+.ml-card-action i { margin-right: .7rem; }
+
+@media (max-width: 575.98px) {
+    .ml-card-editor-art { left: 1.5rem; right: 1.5rem; }
+}
+
 .book-img {
     width: 100%;
     height: auto;
@@ -108,7 +175,7 @@
     }
 
     .card {
-        padding: 1rem !important;
+        padding: 1rem;
     }
 
     .course-content {
@@ -398,4 +465,147 @@ header.navbar {
     .app-main > .container {
         max-width: 1320px;
     }
+}
+
+/* My Learning Top Sections (FED-26) */
+.my-learning-page {
+    --ml-green: #c4e538;
+    --ml-green-dark: #496714;
+    --ml-green-bg: #e8f3e0;
+}
+
+.my-learning-hero-title,
+.my-learning-momentum-title,
+.my-learning-stat-number {
+    color: #212529;
+    font-weight: 700;
+}
+
+.my-learning-hero-title {
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+}
+
+.my-learning-hero-subtitle,
+.my-learning-momentum-subtitle,
+.my-learning-stat-label,
+.my-learning-tab {
+    color: #6c757d;
+}
+
+.my-learning-hero-subtitle {
+    font-size: 0.9375rem;
+}
+
+.my-learning-momentum-card {
+    background-color: var(--ml-green-bg);
+    border: 1px solid #d5e7c8;
+}
+
+.my-learning-momentum-badge {
+    color: var(--ml-green-dark);
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.my-learning-momentum-title {
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    line-height: 1.2;
+}
+
+.my-learning-momentum-subtitle {
+    font-size: 0.875rem;
+}
+
+.my-learning-stat-card {
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    display: flex;
+    gap: 0.875rem;
+    padding: 0.875rem 1rem;
+}
+
+.my-learning-stat-icon {
+    align-items: center;
+    border-radius: 0.75rem;
+    display: flex;
+    flex: 0 0 2.75rem;
+    font-size: 1rem;
+    height: 2.75rem;
+    justify-content: center;
+}
+
+.my-learning-stat-icon--green {
+    background-color: var(--ml-green-bg);
+    color: #496714;
+}
+
+.my-learning-stat-icon--purple {
+    background-color: #f0e8f7;
+    color: #76508b;
+}
+
+.my-learning-stat-icon--yellow {
+    background-color: #f8f0d9;
+    color: #80651f;
+}
+
+.my-learning-stat-icon--blue {
+    background-color: #e0f1f4;
+    color: #286775;
+}
+
+.my-learning-stat-number {
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.my-learning-stat-label {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.my-learning-tabs {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.my-learning-tabs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+.my-learning-tab {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 0 0.75rem;
+}
+
+.my-learning-tab--active {
+    border-bottom: 2px solid var(--ml-green);
+    color: #212529;
+    font-weight: 700;
+    margin-bottom: -1px;
+}
+
+@media (min-width: 768px) {
+    .my-learning-hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .my-learning-stat-card {
+        padding: 1rem 1.25rem;
+    }
+}
+.ml-card-favorite.is-active,
+.ml-card-favorite.is-active i {
+    color: rgb(161, 72, 95);
 }
