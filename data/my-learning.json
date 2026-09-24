@@ -1,0 +1,5 @@
+[
+  { "courseId": 1, "lessonsCompleted": 3, "totalLessons": 5 },
+  { "courseId": 2, "lessonsCompleted": 1, "totalLessons": 5 },
+  { "courseId": 7, "lessonsCompleted": 0, "totalLessons": 5 }
+]

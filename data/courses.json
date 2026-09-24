@@ -1,57 +1,114 @@
 [
-{
+  {
     "id": 1,
     "title": "HTML Fundamentals",
     "category": "Frontend",
     "instructor": "John Doe",
     "duration": "6 hours",
     "level": "Beginner",
-    "description": "Learn the fundamentals of HTML, including structure, elements, forms, and best practices for building modern web pages."
-},
-{
+    "description": "Learn the fundamentals of HTML, including structure, elements, forms, and best practices for building modern web pages.",
+    "rating": 4.9,
+    "tag": "Bestseller",
+    "bannerTheme": "orange",
+    "techIcon": "fa-brands fa-html5",
+    "techColor": "bg-warning-subtle text-warning",
+    "codeSnippet": "<main>\n  <h1>Hello, world.</h1>\n</main>",
+    "bannerCaption": "START WITH THE FOUNDATIONS"
+  },
+  {
     "id": 2,
     "title": "CSS Essentials",
     "category": "Frontend",
     "instructor": "Sarah Smith",
     "duration": "5 hours",
     "level": "Beginner",
-    "description": "Master CSS layout techniques, flexbox, grid, animations, and responsive design principles to build beautiful interfaces."
-},
-{
+    "description": "Master CSS layout techniques, flexbox, grid, animations, and responsive design principles to build beautiful interfaces.",
+    "rating": 4.8,
+    "tag": "Popular",
+    "bannerTheme": "purple",
+    "techIcon": "fa-brands fa-css3-alt",
+    "techColor": "bg-info-subtle text-info",
+    "codeSnippet": ".your-next-idea {\n  color: var(--purple);\n}",
+    "bannerCaption": "STYLE WITH INTENTION"
+  },
+  {
     "id": 3,
     "title": "JavaScript Basics",
     "category": "Frontend",
     "instructor": "Mike Johnson",
     "duration": "8 hours",
     "level": "Intermediate",
-    "description": "Dive into JavaScript fundamentals, including variables, functions, DOM manipulation, and event handling to create interactive web applications."
-
-},
-{
+    "description": "Dive into JavaScript fundamentals, including variables, functions, DOM manipulation, and event handling to create interactive web applications.",
+    "rating": 4.9,
+    "tag": "Bestseller",
+    "bannerTheme": "yellow",
+    "techIcon": "JS",
+    "techColor": "bg-warning text-dark",
+    "codeSnippet": "const idea = 'make it work';\nconsole.log(idea);",
+    "bannerCaption": "MAKE THE WEB MOVE"
+  },
+  {
     "id": 4,
     "title": "ASP.NET Core",
     "category": "Backend",
     "instructor": "Emily Davis",
     "duration": "10 hours",
     "level": "Intermediate",
-    "description": "Learn to build robust web applications using ASP.NET Core, including MVC architecture, routing, middleware, and database integration."
-},
-{
+    "description": "Learn to build robust web applications using ASP.NET Core, including MVC architecture, routing, middleware, and database integration.",
+    "rating": 4.7,
+    "tag": "New",
+    "bannerTheme": "orange",
+    "techIcon": ".NET",
+    "techColor": "bg-danger-subtle text-danger",
+    "codeSnippet": "app.MapGet('/', () =>\n  \"Hello, ASP.NET Core!\");",
+    "bannerCaption": "BUILD SCALABLE APPLICATIONS"
+  },
+  {
     "id": 5,
     "title": "C# for Beginners",
     "category": "Backend",
     "instructor": "David Wilson",
     "duration": "8 hours",
     "level": "Beginner",
-    "description": "Get started with C# programming, covering syntax, data types, control structures, object-oriented programming, and basic application development."
-},
-{
+    "description": "Get started with C# programming, covering syntax, data types, control structures, object-oriented programming, and basic application development.",
+    "rating": 4.8,
+    "tag": "Popular",
+    "bannerTheme": "purple",
+    "techIcon": "C#",
+    "techColor": "bg-secondary-subtle text-dark",
+    "codeSnippet": "Console.WriteLine(\n  \"Hello, C#!\");",
+    "bannerCaption": "WRITE CLEAN CODE"
+  },
+  {
     "id": 6,
     "title": "SQL Fundamentals",
     "category": "Backend",
     "instructor": "Lisa Brown",
     "duration": "6 hours",
     "level": "Beginner",
-    "description": "Learn the basics of SQL, including querying databases, creating tables, inserting data, and performing joins to manage relational data effectively."
-}
+    "description": "Learn the basics of SQL, including querying databases, creating tables, inserting data, and performing joins to manage relational data effectively.",
+    "rating": 4.6,
+    "tag": "New",
+    "bannerTheme": "blue",
+    "techIcon": "fa-solid fa-database",
+    "techColor": "bg-success-subtle text-success",
+    "codeSnippet": "SELECT course_name\nFROM learning_paths;",
+    "bannerCaption": "QUERY WITH CONFIDENCE"
+  },
+  {
+    "id": 7,
+    "title": "React: From Idea to Interface",
+    "category": "Frontend",
+    "instructor": "Sarah Smith",
+    "duration": "8 hours",
+    "level": "Intermediate",
+    "description": "Build modern interfaces with React, from component composition to state management.",
+    "rating": 4.9,
+    "tag": "New",
+    "bannerTheme": "blue",
+    "techIcon": "fa-brands fa-react",
+    "techColor": "bg-info-subtle text-info",
+    "codeSnippet": "function YourNextIdea() {\n  return <SomethingGreat />;\n}",
+    "bannerCaption": "THINK IN COMPONENTS"
+  }
 ]
