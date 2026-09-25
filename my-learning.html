@@ -81,170 +81,72 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="app-main">
-            <!-- My Learning Header -->
-            <section class="container my-3">
-                <div class="welcome-card rounded-4 py-3 px-4 py-md-4 px-md-5">
-                    <div class="row align-items-center gy-4">
-                        <div class="col-12 col-md-7 col-lg-8">
-                            <span class="welcome-badge fw-bold text-uppercase small d-block mb-2">
-                                KEEP GOING
-                            </span>
-                            <h1 class="fw-bold text-dark display-6 mb-3">
-                                My Learning
-                            </h1>
-                            <p class="text-muted fs-6 mb-0 pe-md-4">
-                                Continue where you left off.
-                            </p>
+        <main class="app-main my-learning-page">
+            <!-- My Learning Top Sections (FED-26) -->
+            <section class="container my-learning-hero my-3 my-lg-4" aria-labelledby="my-learning-title">
+                <h1 id="my-learning-title" class="my-learning-hero-title">Your learning, your pace.</h1>
+                <p class="my-learning-hero-subtitle mb-0">Every lesson is a little investment in the person you want to become.</p>
+            </section>
+
+            <section class="container my-learning-momentum-section mb-4" aria-labelledby="momentum-title">
+                <div class="my-learning-momentum-card rounded-4 py-4 px-4">
+                    <p class="my-learning-momentum-badge mb-3">Keep your momentum</p>
+                    <h2 id="momentum-title" class="my-learning-momentum-title mb-2">Consistency looks good on you.</h2>
+                    <p class="my-learning-momentum-subtitle mb-0">0 of 5 lessons completed toward your weekly goal.</p>
+                </div>
+            </section>
+
+            <section class="container my-learning-stats-section mb-4" aria-label="Learning statistics">
+                <div class="row g-3 g-lg-4">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="my-learning-stat-card rounded-3 h-100">
+                            <div class="my-learning-stat-icon my-learning-stat-icon--green" aria-hidden="true"><i class="fa-solid fa-book-open"></i></div>
+                            <div>
+                                <p class="my-learning-stat-number mb-0">03</p>
+                                <p class="my-learning-stat-label mb-0">Enrolled courses</p>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-5 col-lg-4 text-center text-md-end">
-                            <div class="book-img-wrapper">
-                                <img src="assets/images/hero-img.webp" alt="Online learning and courses illustration" class="book-img">
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="my-learning-stat-card rounded-3 h-100">
+                            <div class="my-learning-stat-icon my-learning-stat-icon--purple" aria-hidden="true"><i class="fa-solid fa-play"></i></div>
+                            <div>
+                                <p class="my-learning-stat-number mb-0">03</p>
+                                <p class="my-learning-stat-label mb-0">In progress</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="my-learning-stat-card rounded-3 h-100">
+                            <div class="my-learning-stat-icon my-learning-stat-icon--yellow" aria-hidden="true"><i class="fa-regular fa-bookmark"></i></div>
+                            <div>
+                                <p class="my-learning-stat-number mb-0">00</p>
+                                <p class="my-learning-stat-label mb-0">Completed courses</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="my-learning-stat-card rounded-3 h-100">
+                            <div class="my-learning-stat-icon my-learning-stat-icon--blue" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+                            <div>
+                                <p class="my-learning-stat-number mb-0">04</p>
+                                <p class="my-learning-stat-label mb-0">Lessons completed</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Learning Cards Grid -->
-            <section class="container my-3">
-                <div class="row g-4" id="learning-container">
-                    <!-- Card 1 -->
-<div class="col-12 col-md-6 col-lg-4">
-    <div class="card border-0 shadow-sm p-3 p-lg-4 rounded-4 h-100 learning-card">
-        <div class="d-flex align-items-start gap-3 mb-3 learning-card-header">
-            <div class="course-icon bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center fw-bold flex-shrink-0">
-                <i class="fa-brands fa-html5"></i>
-            </div>
-            <div class="learning-card-titles">
-                <h5 class="card-title fw-bold text-dark mb-2">HTML Fundamentals</h5>
-                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 fw-medium">Frontend</span>
-            </div>
-        </div>
-        <div class="d-flex flex-column gap-2 mb-3 text-secondary small learning-info">
-            <div class="learning-info-item">
-                <i class="fa-regular fa-user modal-icon-fixed"></i>
-                <span>John Doe</span>
-            </div>
-            <div class="learning-info-item">
-                <i class="fa-regular fa-clock modal-icon-fixed"></i>
-                <span>6 hours</span>
-            </div>
-            <div class="learning-info-item">
-                <i class="fa-solid fa-chart-simple modal-icon-fixed"></i>
-                <span>Beginner</span>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="text-secondary small fw-medium">Progress</span>
-                <span class="text-dark small fw-bold">65%</span>
-            </div>
-            <div class="progress progress-65"role="progressbar" aria-label="HTML Fundamentals progress" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar bg-primary"></div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1 fw-medium">
-                <i class="fa-solid fa-circle-check me-1"></i>In Progress
-            </span>
-        </div>
-        <button type="button" class="btn btn-primary w-100 rounded-3 py-2 fw-medium mt-auto">
-            Continue <i class="fa-solid fa-arrow-right ms-1"></i>
-        </button>
-    </div>
-</div>
-                   <!-- Card 2 -->
-<div class="col-12 col-md-6 col-lg-4">
-    <div class="card border-0 shadow-sm p-3 p-lg-4 rounded-4 h-100 learning-card">
-        <div class="d-flex align-items-start gap-3 mb-3 learning-card-header">
-            <div class="course-icon bg-info-subtle text-info rounded-3 d-flex align-items-center justify-content-center fw-bold flex-shrink-0">
-                <i class="fa-brands fa-css3-alt"></i>
-            </div>
-            <div class="learning-card-titles">
-                <h5 class="card-title fw-bold text-dark mb-2">CSS Essentials</h5>
-                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 fw-medium">Frontend</span>
-            </div>
-        </div>
-        <div class="d-flex flex-column gap-2 mb-3 text-secondary small learning-info">
-            <div class="learning-info-item">
-                <i class="fa-regular fa-user modal-icon-fixed"></i>
-                <span>Sarah Smith</span>
-            </div>
-            <div class="learning-info-item">
-                <i class="fa-regular fa-clock modal-icon-fixed"></i>
-                <span>5 hours</span>
-            </div>
-            <div class="learning-info-item">
-                <i class="fa-solid fa-chart-simple modal-icon-fixed"></i>
-                <span>Beginner</span>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="text-secondary small fw-medium">Progress</span>
-                <span class="text-dark small fw-bold">35%</span>
-            </div>
-            <div class="progress progress-35" role="progressbar" aria-label="CSS Essentials progress" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar bg-primary"></div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1 fw-medium">
-                <i class="fa-solid fa-circle-check me-1"></i>In Progress
-            </span>
-        </div>
-        <button type="button" class="btn btn-primary w-100 rounded-3 py-2 fw-medium mt-auto">
-            Continue <i class="fa-solid fa-arrow-right ms-1"></i>
-        </button>
-    </div>
-</div>
-                  <!-- Card 3 -->
-<div class="col-12 col-md-6 col-lg-4">
-    <div class="card border-0 shadow-sm p-3 p-lg-4 rounded-4 h-100 learning-card">
-        <div class="d-flex align-items-start gap-3 mb-3 learning-card-header">
-            <div class="course-icon bg-warning text-dark rounded-3 d-flex align-items-center justify-content-center fw-bold flex-shrink-0">
-                <span class="fs-6">JS</span>
-            </div>
-            <div class="learning-card-titles">
-                <h5 class="card-title fw-bold text-dark mb-2">JavaScript Basics</h5>
-                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 fw-medium">Frontend</span>
-            </div>
-        </div>
-        <div class="d-flex flex-column gap-2 mb-3 text-secondary small learning-info">
-            <div class="learning-info-item">
-                <i class="fa-regular fa-user modal-icon-fixed"></i>
-                <span>Mike Johnson</span>
-            </div>
-            <div class="learning-info-item">
-                <i class="fa-regular fa-clock modal-icon-fixed"></i>
-                <span>8 hours</span>
-            </div>
-            <div class="learning-info-item">
-                <i class="fa-solid fa-chart-simple modal-icon-fixed"></i>
-                <span>Intermediate</span>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="text-secondary small fw-medium">Progress</span>
-                <span class="text-dark small fw-bold">80%</span>
-            </div>
-            <div class="progress progress-80" role="progressbar" aria-label="JavaScript Basics progress" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar bg-primary"></div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1 fw-medium">
-                <i class="fa-solid fa-circle-check me-1"></i>In Progress
-            </span>
-        </div>
-        <button type="button" class="btn btn-primary w-100 rounded-3 py-2 fw-medium mt-auto">
-            Continue <i class="fa-solid fa-arrow-right ms-1"></i>
-        </button>
-    </div>
-</div>
-                </div>
+            <nav class="container my-learning-tabs" aria-label="Course status">
+                <ul class="my-learning-tabs-list mb-4">
+                    <li><span class="my-learning-tab my-learning-tab--active" aria-current="page">In progress (3)</span></li>
+                    <li><span class="my-learning-tab">Completed (0)</span></li>
+                    <li><span class="my-learning-tab">All courses (3)</span></li>
+                </ul>
+            </nav>
+
+            <section class="container my-4">
+                <div class="row g-4" id="learning-container"></div>
             </section>
         </main>
     </div>
@@ -258,5 +160,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/course-card.js"></script>
+    <script src="js/my-learning.js"></script>
 </body>
 </html>
