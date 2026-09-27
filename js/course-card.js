@@ -1,3 +1,13 @@
+const TECH_THEME_CLASSES = {
+    warning: 'bg-warning-subtle text-warning',
+    info: 'bg-info-subtle text-info',
+    danger: 'bg-danger-subtle text-danger',
+    secondary: 'bg-secondary-subtle text-dark',
+    success: 'bg-success-subtle text-success',
+    default: 'bg-light text-dark'
+};
+
+
 function createElement(tagName, className, text) {
     const element = document.createElement(tagName);
     element.className = className || '';
@@ -5,12 +15,13 @@ function createElement(tagName, className, text) {
     return element;
 }
 
+const EMPTY_PROGRESS = { lessonsCompleted: 0, totalLessons: 0 };
+
 function getProgress(progress) {
-    const lessonsCompleted = Number(progress?.lessonsCompleted);
-    const totalLessons = Number(progress?.totalLessons);
-    if (!Number.isFinite(lessonsCompleted) || !Number.isFinite(totalLessons) || totalLessons <= 0) return 0;
-    return Math.max(0, Math.min(100, Math.round((lessonsCompleted / totalLessons) * 100)));
+    if (!progress || progress.totalLessons === 0) return 0;
+    return Math.round((progress.lessonsCompleted / progress.totalLessons) * 100);
 }
+
 
 function getInstructorInitials(instructor) {
     return String(instructor || '').trim().split(/\s+/).filter(Boolean)
@@ -32,8 +43,9 @@ function createCardBanner(course) {
     const favoriteButton = document.createElement('button');
     const heart = createElement('i', 'fa-regular fa-heart');
     const art = createElement('div', 'ml-card-editor-art');
-    const techBadge = createElement('div', `ml-card-tech-badge ${course.techColor || ''}`.trim());
-    const editor = createElement('div', 'ml-card-editor');
+    const themeKey = course.techTheme || 'default';
+    const themeClass = TECH_THEME_CLASSES[themeKey] || TECH_THEME_CLASSES.default;
+    const techBadge = createElement('div', `ml-card-tech-badge ${themeClass}`.trim());    const editor = createElement('div', 'ml-card-editor');
 
     favoriteButton.type = 'button';
     favoriteButton.className = 'ml-card-favorite';
@@ -55,15 +67,13 @@ function createCardBanner(course) {
 }
 
 function createProgressBar(course, progress) {
-    const safeProgress = {
-        lessonsCompleted: Number.isFinite(Number(progress?.lessonsCompleted)) ? Number(progress.lessonsCompleted) : 0,
-        totalLessons: Number.isFinite(Number(progress?.totalLessons)) ? Number(progress.totalLessons) : 0
-    };
+    const safeProgress = progress;
     const percentage = getProgress(safeProgress);
     const progressWrapper = createElement('div', 'ml-card-progress');
     const progressTrack = createElement('div', 'ml-card-progress-track');
     const progressFill = createElement('div', 'ml-card-progress-fill');
-    const progressLabel = createElement('span', 'ml-card-progress-label', `${safeProgress.lessonsCompleted} / ${safeProgress.totalLessons} lessons`);
+    const progressLabel = createElement('span', 'ml-card-progress-label', 
+        `${safeProgress.lessonsCompleted} / ${safeProgress.totalLessons} lessons`);
 
     progressFill.style.setProperty('--progress', `${percentage}%`);
     progressTrack.setAttribute('role', 'progressbar');
@@ -93,21 +103,35 @@ function createCardBody(course, progress) {
     return body;
 }
 
-function createLearningCard(course, progress) {
+function createLearningCard(course, progress, options = {}) {
     if (!course || typeof course !== 'object' || !course.title) return null;
 
-    const lessonsCompleted = Number.isFinite(Number(progress?.lessonsCompleted)) ? Number(progress.lessonsCompleted) : 0;
+    const safeProgress = progress;
+    const lessonsCompleted = safeProgress.lessonsCompleted;
+
     const column = createElement('div', 'col-12 col-md-6 col-lg-4');
     const card = createElement('article', 'ml-card h-100');
     const footer = createElement('div', 'ml-card-footer');
-    const action = createElement('button', 'ml-card-action', lessonsCompleted > 0 ? 'Continue learning' : 'Start first lesson');
+    const action = createElement(
+        'button',
+        'ml-card-action',
+        lessonsCompleted > 0 ? 'Continue learning' : 'Start first lesson'
+    );
     const actionIcon = createElement('i', 'fa-solid fa-play');
 
     action.type = 'button';
     actionIcon.setAttribute('aria-hidden', 'true');
     action.prepend(actionIcon);
     footer.appendChild(action);
-    card.append(createCardBanner(course), createCardBody(course, progress), footer);
+
+    card.append(
+        createCardBanner(course),
+        createCardBody(course, safeProgress, options)
+    );
+    card.append(
+        options.variant === 'favorites' ? createFavoritesFooter(course) : footer
+    );
     column.appendChild(card);
+
     return column;
 }

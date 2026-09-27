@@ -6,7 +6,8 @@
     <title>My Learning - Student Courses Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/my-learning.css">
 </head>
 <body class="bg-light">
     <!-- Header (same as index.html) -->
@@ -96,53 +97,76 @@
                 </div>
             </section>
 
-            <section class="container my-learning-stats-section mb-4" aria-label="Learning statistics">
-                <div class="row g-3 g-lg-4">
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="my-learning-stat-card rounded-3 h-100">
-                            <div class="my-learning-stat-icon my-learning-stat-icon--green" aria-hidden="true"><i class="fa-solid fa-book-open"></i></div>
-                            <div>
-                                <p class="my-learning-stat-number mb-0">03</p>
-                                <p class="my-learning-stat-label mb-0">Enrolled courses</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="my-learning-stat-card rounded-3 h-100">
-                            <div class="my-learning-stat-icon my-learning-stat-icon--purple" aria-hidden="true"><i class="fa-solid fa-play"></i></div>
-                            <div>
-                                <p class="my-learning-stat-number mb-0">03</p>
-                                <p class="my-learning-stat-label mb-0">In progress</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="my-learning-stat-card rounded-3 h-100">
-                            <div class="my-learning-stat-icon my-learning-stat-icon--yellow" aria-hidden="true"><i class="fa-regular fa-bookmark"></i></div>
-                            <div>
-                                <p class="my-learning-stat-number mb-0">00</p>
-                                <p class="my-learning-stat-label mb-0">Completed courses</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="my-learning-stat-card rounded-3 h-100">
-                            <div class="my-learning-stat-icon my-learning-stat-icon--blue" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
-                            <div>
-                                <p class="my-learning-stat-number mb-0">04</p>
-                                <p class="my-learning-stat-label mb-0">Lessons completed</p>
-                            </div>
-                        </div>
-                    </div>
+        <section class="container my-learning-stats-section mb-4" aria-label="Learning statistics">
+            <div class="row g-3 g-lg-4">
+
+        <!-- Card 1: Enrolled -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="my-learning-stat-card rounded-3 h-100">
+                <div class="my-learning-stat-icon my-learning-stat-icon--green" aria-hidden="true">
+                    <i class="fa-solid fa-book-open"></i>
                 </div>
-            </section>
+                <div>
+                    <p class="my-learning-stat-number mb-0" id="stat-enrolled">03</p>
+                    <p class="my-learning-stat-label mb-0">Enrolled courses</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: In progress -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="my-learning-stat-card rounded-3 h-100">
+                <div class="my-learning-stat-icon my-learning-stat-icon--purple" aria-hidden="true">
+                    <i class="fa-solid fa-play"></i>
+                </div>
+                <div>
+                    <p class="my-learning-stat-number mb-0" id="stat-in-progress">03</p>
+                    <p class="my-learning-stat-label mb-0">In progress</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Completed -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="my-learning-stat-card rounded-3 h-100">
+                <div class="my-learning-stat-icon my-learning-stat-icon--yellow" aria-hidden="true">
+                    <i class="fa-regular fa-bookmark"></i>
+                </div>
+                <div>
+                    <p class="my-learning-stat-number mb-0" id="stat-completed">00</p>
+                    <p class="my-learning-stat-label mb-0">Completed courses</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Lessons completed -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="my-learning-stat-card rounded-3 h-100">
+                <div class="my-learning-stat-icon my-learning-stat-icon--blue" aria-hidden="true">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <p class="my-learning-stat-number mb-0" id="stat-lessons-completed">04</p>
+                    <p class="my-learning-stat-label mb-0">Lessons completed</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+        </section>
 
             <nav class="container my-learning-tabs" aria-label="Course status">
-                <ul class="my-learning-tabs-list mb-4">
-                    <li><span class="my-learning-tab my-learning-tab--active" aria-current="page">In progress (3)</span></li>
-                    <li><span class="my-learning-tab">Completed (0)</span></li>
-                    <li><span class="my-learning-tab">All courses (3)</span></li>
-                </ul>
+            <div class="my-learning-tabs-list mb-4" role="tablist">
+            <button class="my-learning-tab my-learning-tab--active" role="tab" aria-selected="true" data-tab="in-progress" id="tab-in-progress">
+            In progress (<span id="tab-count-in-progress">0</span>)
+            </button>
+            <button class="my-learning-tab" role="tab" aria-selected="false" data-tab="completed" id="tab-completed">
+            Completed (<span id="tab-count-completed">0</span>)
+            </button>
+            <button class="my-learning-tab" role="tab" aria-selected="false" data-tab="all" id="tab-all">
+            All courses (<span id="tab-count-all">0</span>)
+            </button>
+            </div>
             </nav>
 
             <section class="container my-4">

@@ -11,10 +11,9 @@
     "tag": "Bestseller",
     "bannerTheme": "orange",
     "techIcon": "fa-brands fa-html5",
-    "techColor": "bg-warning-subtle text-warning",
-    "codeSnippet": "<main>\n  <h1>Hello, world.</h1>\n</main>",
-    "bannerCaption": "START WITH THE FOUNDATIONS"
-  },
+    "techTheme": "warning",
+    "codeSnippet": "<main>\n  <h1>Hello, world.</h1>\n</main>"
+    },
   {
     "id": 2,
     "title": "CSS Essentials",
@@ -27,9 +26,8 @@
     "tag": "Popular",
     "bannerTheme": "purple",
     "techIcon": "fa-brands fa-css3-alt",
-    "techColor": "bg-info-subtle text-info",
-    "codeSnippet": ".your-next-idea {\n  color: var(--purple);\n}",
-    "bannerCaption": "STYLE WITH INTENTION"
+    "techTheme": "info",
+    "codeSnippet": ".your-next-idea {\n  color: var(--purple);\n}"
   },
   {
     "id": 3,
@@ -43,9 +41,8 @@
     "tag": "Bestseller",
     "bannerTheme": "yellow",
     "techIcon": "JS",
-    "techColor": "bg-warning text-dark",
-    "codeSnippet": "const idea = 'make it work';\nconsole.log(idea);",
-    "bannerCaption": "MAKE THE WEB MOVE"
+    "techTheme": "warning",
+    "codeSnippet": "const idea = 'make it work';\nconsole.log(idea);"
   },
   {
     "id": 4,
@@ -59,9 +56,8 @@
     "tag": "New",
     "bannerTheme": "orange",
     "techIcon": ".NET",
-    "techColor": "bg-danger-subtle text-danger",
-    "codeSnippet": "app.MapGet('/', () =>\n  \"Hello, ASP.NET Core!\");",
-    "bannerCaption": "BUILD SCALABLE APPLICATIONS"
+    "techTheme": "danger",
+    "codeSnippet": "app.MapGet('/', () =>\n  \"Hello, ASP.NET Core!\");"
   },
   {
     "id": 5,
@@ -75,9 +71,8 @@
     "tag": "Popular",
     "bannerTheme": "purple",
     "techIcon": "C#",
-    "techColor": "bg-secondary-subtle text-dark",
-    "codeSnippet": "Console.WriteLine(\n  \"Hello, C#!\");",
-    "bannerCaption": "WRITE CLEAN CODE"
+    "techTheme": "secondary",
+    "codeSnippet": "Console.WriteLine(\n  \"Hello, C#!\");" 
   },
   {
     "id": 6,
@@ -91,10 +86,9 @@
     "tag": "New",
     "bannerTheme": "blue",
     "techIcon": "fa-solid fa-database",
-    "techColor": "bg-success-subtle text-success",
-    "codeSnippet": "SELECT course_name\nFROM learning_paths;",
-    "bannerCaption": "QUERY WITH CONFIDENCE"
-  },
+    "techTheme": "success",
+    "codeSnippet": "SELECT course_name\nFROM learning_paths;"
+    },
   {
     "id": 7,
     "title": "React: From Idea to Interface",
@@ -107,8 +101,7 @@
     "tag": "New",
     "bannerTheme": "blue",
     "techIcon": "fa-brands fa-react",
-    "techColor": "bg-info-subtle text-info",
-    "codeSnippet": "function YourNextIdea() {\n  return <SomethingGreat />;\n}",
-    "bannerCaption": "THINK IN COMPONENTS"
-  }
+    "techTheme": "info",
+    "codeSnippet": "function YourNextIdea() {\n  return <SomethingGreat />;\n}"
+    }
 ]
