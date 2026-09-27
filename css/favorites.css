@@ -1,0 +1,185 @@
+/* ==========================================================================
+   Favorites Page Styles (FED-27)
+   ========================================================================== */
+
+.ml-favorites-hero-title {
+    color: var(--app-ink);
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+}
+
+.ml-favorites-hero-subtitle,
+.ml-favorites-count-line {
+    color: var(--app-muted);
+    font-size: 0.875rem;
+}
+
+.ml-favorites-filter-bar,
+.ml-favorites-filter-left,
+.ml-favorites-filter-right {
+    align-items: center;
+    display: flex;
+    gap: 0.625rem;
+}
+
+.ml-favorites-filter-bar {
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.ml-favorites-filter-left {
+    flex-wrap: wrap;
+}
+
+.ml-favorites-filter-right {
+    width: 100%;
+}
+
+.ml-favorites-filter-pill,
+.ml-favorites-dropdown {
+    background: #fff;
+    border: 1px solid #dfe4df;
+    border-radius: 0.6rem;
+    color: var(--app-ink);
+    font-size: 0.8rem;
+    min-height: 2.6rem;
+    padding: 0.55rem 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.ml-favorites-filter-pill--active {
+    background: var(--app-ink);
+    border-color: var(--app-ink);
+    color: #fff;
+}
+
+.ml-favorites-browse-link {
+    align-items: center;
+    color: var(--app-ink);
+    display: inline-flex;
+    font-size: 0.8rem;
+    font-weight: 600;
+    gap: 0.55rem;
+    min-height: 2.6rem;
+    padding: 0.55rem 0.25rem;
+    text-decoration: none;
+}
+
+.ml-favorites-dropdown {
+    width: 100%;
+}
+
+.ml-favorites-filter-right .dropdown {
+    flex: 1;
+}
+
+.ml-favorites-count-line {
+    margin-bottom: 1rem;
+}
+
+.ml-favorites-card-footer {
+    align-items: center;
+    border-top: 1px solid #e8ebe8;
+    color: var(--app-muted);
+    display: flex;
+    font-size: 0.75rem;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin: 0 1rem 1rem;
+    padding-top: 1rem;
+}
+
+.ml-favorites-card-details {
+    align-items: center;
+    display: flex;
+    gap: 0.35rem;
+}
+
+.ml-favorites-card-details i + span + i {
+    margin-left: 0.25rem;
+}
+
+.ml-favorites-card-action {
+    color: var(--app-green-dark);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.ml-favorites-card-action i {
+    margin-left: 0.25rem;
+}
+
+.ml-empty-state {
+    align-items: center;
+    background: #fff;
+    border: 1px dashed #d6ddd2;
+    border-radius: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 17rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.ml-empty-state-icon {
+    color: var(--app-green-dark);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.ml-empty-state-title {
+    color: var(--app-ink);
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.ml-empty-state-subtitle {
+    color: var(--app-muted);
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+    max-width: 34rem;
+}
+
+.ml-empty-state-action {
+    background: var(--app-ink);
+    border-radius: 0.6rem;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+}
+
+.ml-empty-state-action i {
+    margin-left: 0.5rem;
+}
+
+.ml-favorites-toast {
+    background: var(--app-ink);
+    border-radius: 0.9rem;
+    color: #fff;
+    min-width: 16rem;
+}
+
+@media (min-width: 768px) {
+    .ml-favorites-filter-bar {
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .ml-favorites-filter-right {
+        justify-content: flex-end;
+        width: auto;
+    }
+
+    .ml-favorites-filter-right .dropdown {
+        flex: 0 0 7.5rem;
+    }
+}

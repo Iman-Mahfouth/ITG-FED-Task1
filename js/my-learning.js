@@ -2,11 +2,6 @@ let activeTab = 'in-progress';
 let allLearningItems = []; 
 
 
-async function loadCoursesCatalog() {
-    const response = await fetch('data/courses.json');
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return response.json();
-}
 
 async function loadMyLearningProgress() {
     const response = await fetch('data/my-learning.json');
@@ -52,23 +47,6 @@ function renderLearningCards(items) {
     container.replaceChildren(fragment);
 }
 
-function setupFavoriteActions() {
-    const container = document.getElementById('learning-container');
-    if (!container) return;
-
-    container.addEventListener('click', (event) => {
-        const button = event.target.closest('[data-action="favorite"]');
-        if (!button) return;
-
-        const icon = button.querySelector('i');
-        if (!icon) return;
-
-        const isActive = button.classList.toggle('is-active');
-        icon.classList.toggle('fa-regular', !isActive);
-        icon.classList.toggle('fa-solid', isActive);
-        button.setAttribute('aria-pressed', String(isActive));
-    });
-}
 
 function formatStatNumber(value) {
     const n = Number(value);
@@ -166,14 +144,14 @@ function setupTabs() {
 async function initMyLearning() {
     try {
         const [catalog, progressList] = await Promise.all([
-            loadCoursesCatalog(),
+            fetchCourses(),
             loadMyLearningProgress()
         ]);
         allLearningItems = mergeLearningData(catalog, progressList);
         const filteredItems = filterItemsByTab(allLearningItems, activeTab);
         renderLearningCards(filteredItems);
         updateLearningStats(allLearningItems);
-        setupFavoriteActions();
+        setupFavoriteActions({ containerId: 'learning-container' });
         setupTabs();
     } catch (error) {
         console.error('Failed to initialize My Learning:', error);

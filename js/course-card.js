@@ -7,7 +7,6 @@ const TECH_THEME_CLASSES = {
     default: 'bg-light text-dark'
 };
 
-
 function createElement(tagName, className, text) {
     const element = document.createElement(tagName);
     element.className = className || '';
@@ -21,7 +20,6 @@ function getProgress(progress) {
     if (!progress || progress.totalLessons === 0) return 0;
     return Math.round((progress.lessonsCompleted / progress.totalLessons) * 100);
 }
-
 
 function getInstructorInitials(instructor) {
     return String(instructor || '').trim().split(/\s+/).filter(Boolean)
@@ -45,7 +43,8 @@ function createCardBanner(course) {
     const art = createElement('div', 'ml-card-editor-art');
     const themeKey = course.techTheme || 'default';
     const themeClass = TECH_THEME_CLASSES[themeKey] || TECH_THEME_CLASSES.default;
-    const techBadge = createElement('div', `ml-card-tech-badge ${themeClass}`.trim());    const editor = createElement('div', 'ml-card-editor');
+    const techBadge = createElement('div', `ml-card-tech-badge ${themeClass}`.trim());
+    const editor = createElement('div', 'ml-card-editor');
 
     favoriteButton.type = 'button';
     favoriteButton.className = 'ml-card-favorite';
@@ -55,6 +54,14 @@ function createCardBanner(course) {
     favoriteButton.setAttribute('aria-pressed', 'false');
     heart.setAttribute('aria-hidden', 'true');
     favoriteButton.appendChild(heart);
+
+    const favorited = typeof isFavorite === 'function' ? isFavorite(course.id) : false;
+    if (favorited) {
+        favoriteButton.classList.add('is-active');
+        heart.classList.remove('fa-regular');
+        heart.classList.add('fa-solid');
+        favoriteButton.setAttribute('aria-pressed', 'true');
+    }
 
     techBadge.appendChild(createTechContent(course.techIcon));
     editor.append(
@@ -67,13 +74,13 @@ function createCardBanner(course) {
 }
 
 function createProgressBar(course, progress) {
-    const safeProgress = progress;
+    const safeProgress = progress || EMPTY_PROGRESS;
     const percentage = getProgress(safeProgress);
     const progressWrapper = createElement('div', 'ml-card-progress');
     const progressTrack = createElement('div', 'ml-card-progress-track');
     const progressFill = createElement('div', 'ml-card-progress-fill');
     const progressLabel = createElement('span', 'ml-card-progress-label', 
-        `${safeProgress.lessonsCompleted} / ${safeProgress.totalLessons} lessons`);
+        `${safeProgress.lessonsCompleted || 0} / ${safeProgress.totalLessons || 0} lessons`);
 
     progressFill.style.setProperty('--progress', `${percentage}%`);
     progressTrack.setAttribute('role', 'progressbar');
@@ -86,7 +93,7 @@ function createProgressBar(course, progress) {
     return progressWrapper;
 }
 
-function createCardBody(course, progress) {
+function createCardBody(course, progress, options = {}) {
     const body = createElement('div', 'ml-card-body');
     const meta = createElement('div', 'ml-card-meta');
     const rating = createElement('span', 'ml-card-rating');
@@ -99,17 +106,44 @@ function createCardBody(course, progress) {
     rating.append(ratingIcon, createElement('span', '', String(course.rating ?? '')));
     meta.append(createElement('span', 'ml-card-category', course.category || ''), rating);
     instructor.append(avatar, createElement('span', 'ml-card-instructor-name', course.instructor || ''));
-    body.append(meta, createElement('h2', 'ml-card-title', course.title || ''), instructor, createProgressBar(course, progress));
+    body.append(meta, createElement('h2', 'ml-card-title', course.title || ''), instructor);
+
+    if (options.variant !== 'favorites' && progress) {
+        body.appendChild(createProgressBar(course, progress));
+    }
     return body;
+}
+
+function createFavoritesFooter(course) {
+    const footer = createElement('div', 'ml-favorites-card-footer');
+    const details = createElement('div', 'ml-favorites-card-details');
+    const clockIcon = createElement('i', 'fa-regular fa-clock');
+    clockIcon.setAttribute('aria-hidden', 'true');
+    const durationSpan = createElement('span', '', course.duration || '');
+    const levelIcon = createElement('i', 'fa-solid fa-chart-simple');
+    levelIcon.setAttribute('aria-hidden', 'true');
+    const levelSpan = createElement('span', '', course.level || '');
+    details.append(clockIcon, durationSpan, levelIcon, levelSpan);
+
+    const action = createElement('a', 'ml-favorites-card-action', 'Start course');
+    action.href = '#';
+    const actionIcon = createElement('i', 'fa-solid fa-arrow-right');
+    actionIcon.setAttribute('aria-hidden', 'true');
+    action.appendChild(actionIcon);
+
+    footer.append(details, action);
+    return footer;
 }
 
 function createLearningCard(course, progress, options = {}) {
     if (!course || typeof course !== 'object' || !course.title) return null;
 
-    const safeProgress = progress;
-    const lessonsCompleted = safeProgress.lessonsCompleted;
+    const safeProgress = progress || null;
+    const lessonsCompleted = safeProgress ? (safeProgress.lessonsCompleted || 0) : 0;
 
     const column = createElement('div', 'col-12 col-md-6 col-lg-4');
+    column.setAttribute('data-course-card', String(course.id));
+
     const card = createElement('article', 'ml-card h-100');
     const footer = createElement('div', 'ml-card-footer');
     const action = createElement(
