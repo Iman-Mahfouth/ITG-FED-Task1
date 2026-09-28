@@ -1,17 +1,5 @@
 
-async function loadCourses() {
-    try {
-        const response = await fetch('data/courses.json');  
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const courses = await response.json();
-        return courses;
-    } catch (error) {
-        console.error('Failed to load course data:', error);
-        throw error; 
-    }
-}
+
 
 const categoryStyles = {
     'Frontend': 'bg-primary-subtle text-primary',
@@ -368,7 +356,7 @@ function setupClearFilters(courses) {
 
 async function init() { 
     try {
-        const courses = await loadCourses();
+        const courses = await fetchCourses();
         setupSearch(courses); 
         setupCategoryFilter(courses);
         setupCourseActions(courses);

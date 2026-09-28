@@ -1,0 +1,143 @@
+/* My Learning Page Styles (FED-26) */
+
+.my-learning-page {
+    --ml-green: var(--app-green, #c4e538);
+    --ml-green-dark: var(--app-green-dark, #496714);
+    --ml-green-bg: var(--app-green-bg, #e8f3e0);
+}
+
+
+.my-learning-hero-title {
+    color: #212529;
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+}
+
+.my-learning-hero-subtitle {
+    color: #6c757d;
+    font-size: 0.9375rem;
+}
+
+@media (min-width: 768px) {
+    .my-learning-hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
+.my-learning-momentum-card {
+    background-color: var(--ml-green-bg);
+    border: 1px solid #d5e7c8;
+}
+
+.my-learning-momentum-badge {
+    color: var(--ml-green-dark);
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.my-learning-momentum-title {
+    color: #212529;
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.my-learning-momentum-subtitle {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.my-learning-stat-card {
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    display: flex;
+    gap: 0.875rem;
+    padding: 0.875rem 1rem;
+}
+
+@media (min-width: 768px) {
+    .my-learning-stat-card {
+        padding: 1rem 1.25rem;
+    }
+}
+
+.my-learning-stat-icon {
+    align-items: center;
+    border-radius: 0.75rem;
+    display: flex;
+    flex: 0 0 2.75rem;
+    font-size: 1rem;
+    height: 2.75rem;
+    justify-content: center;
+}
+
+.my-learning-stat-icon--green {
+    background-color: var(--ml-green-bg);
+    color: #496714;
+}
+
+.my-learning-stat-icon--purple {
+    background-color: #f0e8f7;
+    color: #76508b;
+}
+
+.my-learning-stat-icon--yellow {
+    background-color: #f8f0d9;
+    color: #80651f;
+}
+
+.my-learning-stat-icon--blue {
+    background-color: #e0f1f4;
+    color: #286775;
+}
+
+.my-learning-stat-number {
+    color: #212529;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.my-learning-stat-label {
+    color: #6c757d;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+
+.my-learning-tabs {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.my-learning-tabs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+.my-learning-tab {
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 0 0.75rem;
+}
+
+.my-learning-tab--active {
+    border-bottom: 2px solid var(--ml-green);
+    color: #212529;
+    font-weight: 700;
+    margin-bottom: -1px;
+}
+
