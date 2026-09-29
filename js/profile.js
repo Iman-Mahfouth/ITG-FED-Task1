@@ -10,7 +10,6 @@ const avatarEl = document.getElementById('profile-avatar');
 const summaryNameEl = document.getElementById('profile-summary-name');
 const summaryRoleEl = document.getElementById('profile-summary-role');
 
-const saveBtn = document.getElementById('profile-save');
 const cancelBtn = document.getElementById('profile-cancel');
 
 function updateSummaryCard(profile) {
@@ -37,18 +36,33 @@ function readFormValues() {
     };
 }
 
+function validateForm() {
+    if (profileForm.checkValidity()) {
+        profileForm.classList.remove('was-validated');
+        return true;
+    }
+
+    profileForm.classList.add('was-validated');
+    return false;
+}
 /* Event Handlers */
 
 function handleSave(event) {
     event.preventDefault();
 
+    if (!validateForm()) return;
+
     const formValues = readFormValues();
-    const savedProfile = saveProfile(formValues);
+    const result = saveProfile(formValues);
 
-    updateSummaryCard(savedProfile);
+    if (!result.success) {
+        showProfileFeedback('Could not save profile. Please try again.');
+        return;
+    }
+
+    updateSummaryCard(result.profile);
     updateHeaderGreeting();
-
-    fillFormWithProfile(savedProfile);
+    fillFormWithProfile(result.profile);
 
     showProfileFeedback('Profile saved successfully.');
 }
@@ -57,6 +71,10 @@ function handleCancel() {
     const savedProfile = getProfile();
     fillFormWithProfile(savedProfile);
     updateSummaryCard(savedProfile);
+
+    // Clear validation UI
+    profileForm.classList.remove('was-validated');
+
     showProfileFeedback('Changes discarded.');
 }
 
@@ -66,9 +84,13 @@ function handleNameInput() {
 }
 
 function showProfileFeedback(message) {
-    console.log('[Profile]', message);
-}
+    const toastElement = document.getElementById('profile-toast');
+    const messageElement = document.getElementById('profile-toast-message');
+    if (!toastElement || !messageElement) return;
 
+    messageElement.textContent = message;
+    bootstrap.Toast.getOrCreateInstance(toastElement, { delay: 3000 }).show();
+}
 function initProfile() {
     if (!profileForm) return;
 

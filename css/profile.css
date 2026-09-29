@@ -102,6 +102,72 @@
     margin: 0;
 }
 
+/* ----- Neutral State — Always Clean ----- */
+.profile-form-card .form-control,
+.profile-form-card .form-select {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+.profile-form-card .form-control:valid,
+.profile-form-card .form-select:valid {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+.profile-form-card .form-control:valid:focus,
+.profile-form-card .form-select:valid:focus {
+    background-image: none;
+    border-color: var(--app-ink, #212a30);
+    box-shadow: 0 0 0 0.15rem rgba(33, 42, 48, 0.1);
+}
+
+.profile-form-card .form-control:invalid,
+.profile-form-card .form-select:invalid {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+.profile-form-card .form-control:invalid:focus,
+.profile-form-card .form-select:invalid:focus {
+    background-image: none;
+    border-color: var(--app-ink, #212a30);
+    box-shadow: 0 0 0 0.15rem rgba(33, 42, 48, 0.1);
+}
+
+/* ----- After Save — Show Error Only on Invalid Fields ----- */
+.was-validated .profile-form-card .form-control:invalid,
+.was-validated .profile-form-card .form-select:invalid {
+    background-image: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.12);
+}
+
+.was-validated .profile-form-card .form-control:invalid:focus,
+.was-validated .profile-form-card .form-select:invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.2);
+}
+
+/* After Save — Valid fields stay clean (no green) */
+.was-validated .profile-form-card .form-control:valid,
+.was-validated .profile-form-card .form-select:valid {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+/* ----- Error Message ----- */
+.profile-form-card .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
+}
+
+
 .profile-form-card {
     background: #fff;
     border: 1px solid #dee2e6;
@@ -130,22 +196,12 @@
     margin-bottom: 0.4rem;
 }
 
-.profile-form-card .form-control,
-.profile-form-card .form-select {
-    border: 1px solid #dfe4df;
-    border-radius: 0.5rem;
-    color: var(--app-ink);
-    font-size: 0.875rem;
-    min-height: 2.5rem;
-    padding: 0.5rem 0.875rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
 
 .profile-form-card .form-control:focus,
 .profile-form-card .form-select:focus {
-    border-color: var(--app-ink);
+      background-image: none;
+    border-color: var(--app-ink, #212a30);
     box-shadow: 0 0 0 0.15rem rgba(33, 42, 48, 0.1);
-    outline: none;
 }
 
 .profile-form-card textarea.form-control {
@@ -279,4 +335,32 @@
         font-size: 1rem;
         height: 2.5rem;
     }
+}
+
+.ml-profile-toast {
+    --bs-toast-max-width: 280px;
+    background: var(--app-ink, #212a30);
+    border-radius: 0.7rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    color: #fff;
+    font-size: 0.8rem;
+    min-width: 0;
+    max-width: 250px;
+    width: auto;
+}
+
+.ml-profile-toast .toast-body {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding: 0.7rem 0.95rem;
+}
+
+.ml-profile-toast .btn-close {
+    font-size: 0.6rem;
+    opacity: 0.55;
+    padding: 0.85rem 0.85rem;
+}
+
+.ml-profile-toast .btn-close:hover {
+    opacity: 1;
 }
