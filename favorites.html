@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/favorites.css">
+    <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body class="bg-light">
     <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
         <div class="container">
             <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
-                <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainSidebar" aria-controls="mainSidebar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+<button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0" type="button" data-sidebar-toggle="mainSidebar" aria-controls="mainSidebar" aria-expanded="false" aria-label="Toggle navigation">                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0" href="index.html">
                     <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
@@ -37,26 +37,7 @@
     </header>
 
     <div class="app-layout">
-        <aside class="sidebar-nav collapse d-md-block" id="mainSidebar" aria-label="Main navigation">
-    <nav class="nav flex-column">
-        <a href="index.html" class="sidebar-nav-item ">
-            <i class="fa-solid fa-house"></i>
-            <span>Courses</span>
-        </a>
-        <a href="my-learning.html" class="sidebar-nav-item">
-            <i class="fa-solid fa-book-open"></i>
-            <span>My Learning</span>
-        </a>
-        <a href="favorites.html" class="sidebar-nav-item active">
-            <i class="fa-regular fa-heart"></i>
-            <span>Favorites</span>
-        </a>
-        <a href="profile.html" class="sidebar-nav-item ">
-            <i class="fa-regular fa-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
-        </aside> 
+        <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="favorites"></aside>
 
         <main class="app-main ml-favorites-page">
             <section class="container ml-favorites-hero my-3 my-lg-4" aria-labelledby="favorites-title">
@@ -113,6 +94,7 @@
     <script src="js/profile-storage.js"></script>
     <script src="js/favorites-storage.js"></script>
     <script src="js/course-card.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/favorites.js"></script>
 </body>
 </html>

@@ -11,18 +11,21 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/my-learning.css">
     </head>
     <body class="bg-light">
-    <!--header section (FED-02)-->   
-<header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
+    <div class="app-shell">
+        <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="overview"></aside>
+        
+        <div class="app-content">
+            <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
     <div class="container">
         <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
 
             <!-- Mobile: Hamburger -->
             <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
                     type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#mainSidebar"
+                    data-sidebar-toggle="mainSidebar"
                     aria-controls="mainSidebar"
                     aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -30,8 +33,7 @@
             </button>
 
             <!-- Logo -->
-            <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0 d-md-none" href="index.html">
-                <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
+            <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0" href="index.html">                <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
                 <span class="text-dark">My</span><span class="text-primary">Courses</span>
             </a>
 
@@ -60,19 +62,8 @@
         </div>
 
     </div>
-</header>
-
-
-<!--App Layout (FED-25): Sidebar + Main Content-->
-<div class="app-layout">
-    <!-- Side Navigation -->
-<aside class="sidebar-nav offcanvas-md offcanvas-start" tabindex="-1" id="mainSidebar" aria-label="Main navigation">
-    <div class="offcanvas-body sidebar-nav-body" id="mainSidebarBody"></div>
-</aside>
-
-
-    <!-- Main Content -->
-    <main class="app-main">
+            </header>
+            <main class="app-main">
     <!-- Welcome Section (FED-04) -->
         <section class="container my-3">
     <div class="welcome-card rounded-4    py-3 px-4 py-md-4 px-md-5">
@@ -144,11 +135,9 @@
         </button> 
         </div>
         </section>   
-    </main>
-    </div>
-
-    <!-- Course Details Modal (FED-22) -->
-    <div class="modal fade" id="course-details-modal" tabindex="-1"
+            </main>
+          <!-- Course Details Modal (FED-22) -->
+            <div class="modal fade" id="course-details-modal" tabindex="-1"
     aria-labelledby="modal-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content rounded-4 border-0 shadow">
@@ -209,14 +198,18 @@
 
         </div>
     </div>
-    </div>
+            </div>
+            </div>
+            
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/navigation.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/profile-storage.js"></script>
     <script src="js/course-card.js"></script>
     <script src="js/favorites-storage.js"></script>
+    <script src="js/my-learning.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

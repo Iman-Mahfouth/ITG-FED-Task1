@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/my-learning.css">
+    <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body class="bg-light">
     <!-- Header (same as index.html) -->
@@ -19,8 +20,7 @@
             <!-- Mobile: Hamburger -->
             <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainSidebar"
+                    data-sidebar-toggle="mainSidebar"
                     aria-controls="mainSidebar"
                     aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -61,26 +61,7 @@
     <!-- App Layout -->
     <div class="app-layout">
         <!-- Side Navigation -->
-        <aside class="sidebar-nav collapse d-md-block" id="mainSidebar" aria-label="Main navigation">
-            <nav class="nav flex-column">
-                <a href="index.html" class="sidebar-nav-item">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Courses</span>
-                </a>
-                <a href="my-learning.html" class="sidebar-nav-item active">
-                    <i class="fa-solid fa-book-open"></i>
-                    <span>My Learning</span>
-                </a>
-                    <a href="favorites.html" class="sidebar-nav-item">
-                    <i class="fa-regular fa-heart"></i>
-                    <span>Favorites</span>
-                </a>
-                <a href="profile.html" class="sidebar-nav-item">
-                    <i class="fa-regular fa-user"></i>
-                    <span>Profile</span>
-                </a>
-            </nav>
-        </aside>
+        <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="learning"></aside>
 
         <!-- Main Content -->
         <main class="app-main my-learning-page">
@@ -189,6 +170,7 @@
     <script src="js/profile-storage.js"></script>
     <script src="js/favorites-storage.js"></script>
     <script src="js/course-card.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/my-learning.js"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/sidebar.css">
     </head>
 <body>
         <!--header section (FED-02)-->   
@@ -21,8 +22,7 @@
             <!-- Mobile: Hamburger -->
             <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainSidebar"
+                    data-sidebar-toggle="mainSidebar"
                     aria-controls="mainSidebar"
                     aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -65,26 +65,7 @@
 
     <div class="app-layout">
     <!-- Side Navigation -->
-        <aside class="sidebar-nav collapse d-md-block" id="mainSidebar" aria-label="Main navigation">
-    <nav class="nav flex-column">
-        <a href="index.html" class="sidebar-nav-item ">
-            <i class="fa-solid fa-house"></i>
-            <span>Courses</span>
-        </a>
-        <a href="my-learning.html" class="sidebar-nav-item">
-            <i class="fa-solid fa-book-open"></i>
-            <span>My Learning</span>
-        </a>
-        <a href="favorites.html" class="sidebar-nav-item">
-            <i class="fa-regular fa-heart"></i>
-            <span>Favorites</span>
-        </a>
-        <a href="profile.html" class="sidebar-nav-item active">
-            <i class="fa-regular fa-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
-        </aside>       
+       <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="profile"></aside>
     <!-- Main Content --> 
         <main class="app-main profile-page">
             <!-- Hero Section -->
@@ -219,6 +200,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/profile-storage.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/profile.js"></script>
 </body>
 </html>

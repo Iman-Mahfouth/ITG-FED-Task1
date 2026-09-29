@@ -1,125 +1,150 @@
-/*  Sidebar Navigation (FED-29) */
-
-const NAV_STRUCTURE = [
+const navigationGroups = [
     {
-        label: 'The Learning Studio',
+        label: 'The learning studio',
         items: [
-            { id: 'overview',    label: 'Overview',        icon: 'fa-solid fa-table-cells-large', href: '#' },
-            { id: 'explore',     label: 'Explore courses', icon: 'fa-regular fa-circle-play',     href: 'index.html',      badge: '09' },
-            { id: 'paths',       label: 'Learning paths',  icon: 'fa-solid fa-diagram-project',   href: '#' },
-            { id: 'my-learning', label: 'My learning',     icon: 'fa-solid fa-book-open',         href: 'my-learning.html', badge: '3' },
-            { id: 'favorites',   label: 'Favorites',       icon: 'fa-regular fa-heart',           href: 'favorites.html',  badge: '1' }
+            { id: 'overview', label: 'Overview', icon: 'fa-solid fa-border-all', href: 'index.html' },
+            { id: 'explore', label: 'Explore courses', icon: 'fa-regular fa-compass', href: 'index.html', badge: '09' },
+            { id: 'paths', label: 'Learning paths', icon: 'fa-solid fa-diagram-project', href: '#' },
+            { id: 'learning', label: 'My learning', icon: 'fa-regular fa-book-open', href: 'my-learning.html', badge: '3' },
+            { id: 'favorites', label: 'Favorites', icon: 'fa-regular fa-heart', href: 'favorites.html', badge: '0' }
         ]
     },
     {
         label: 'Make it a habit',
         items: [
-            { id: 'planner',  label: 'Study planner',     icon: 'fa-regular fa-calendar',    href: '#' },
-            { id: 'notebook', label: 'My notebook',       icon: 'fa-regular fa-file-lines',  href: '#' },
-            { id: 'insights', label: 'Progress insights', icon: 'fa-solid fa-chart-simple',  href: '#' }
+            { id: 'planner', label: 'Study planner', icon: 'fa-regular fa-calendar', href: '#' },
+            { id: 'notebook', label: 'My notebook', icon: 'fa-regular fa-file-lines', href: '#' },
+            { id: 'progress', label: 'Progress insights', icon: 'fa-solid fa-chart-simple', href: '#' }
         ]
     },
     {
-        label: null,
-        className: 'sidebar-nav-group--profile',
         items: [
             { id: 'profile', label: 'My profile', icon: 'fa-regular fa-user', href: 'profile.html' }
         ]
     }
 ];
 
-/* ----- Active state detection ----- */
-function getActiveId() {
-    const path = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
-    if (path === 'index.html' || path === '') return 'explore';
-    if (path === 'my-learning.html') return 'my-learning';
-    if (path === 'favorites.html')   return 'favorites';
-    if (path === 'profile.html')     return 'profile';
-    return null;
-}
-
-/* ----- Helpers ----- */
-function createEl(tag, className, text) {
-    const el = document.createElement(tag);
-    if (className) el.className = className;
-    if (text !== undefined) el.textContent = text;
-    return el;
-}
-
-/* ----- Builders ----- */
-function buildLogo() {
-    const logo = createEl('a', 'sidebar-logo');
+function createLogo() {
+    const logo = document.createElement('a');
     logo.href = 'index.html';
+    logo.className = 'sidebar-logo';
     logo.setAttribute('aria-label', 'MyCourses home');
 
-    const iconWrap = createEl('span', 'sidebar-logo-icon');
-    const icon = createEl('i', 'fa-solid fa-book-open');
-    icon.setAttribute('aria-hidden', 'true');
-    iconWrap.appendChild(icon);
+    const img = document.createElement('img');
+    img.src = 'assets/images/brand.svg';
+    img.alt = '';
+    img.className = 'sidebar-logo-img';
+    img.width = 35;
+    img.height = 35;
 
-    const text = createEl('span', 'sidebar-logo-text');
-    text.innerHTML = 'My<strong>Courses.</strong>';
+    const text = document.createElement('span');
+    text.className = 'sidebar-logo-text';
+    text.innerHTML = 'My<span class="sidebar-logo-text-courses">Courses</span>';
 
-    logo.append(iconWrap, text);
+    logo.append(img, text);
     return logo;
 }
 
-function buildNavItem(item, activeId) {
-    const link = createEl('a', 'sidebar-nav-item');
+function createNavigationItem(item, currentPage) {
+    const link = document.createElement('a');
+    const isActive = item.id === currentPage;
+
+    link.className = `sidebar-nav-item${isActive ? ' active' : ''}`;
     link.href = item.href;
+    link.dataset.navigationId = item.id;
+    if (isActive) link.setAttribute('aria-current', 'page');
 
-    if (item.id === activeId) {
-        link.classList.add('active');
-        link.setAttribute('aria-current', 'page');
-    }
-
-    const icon = createEl('i', item.icon);
+    const icon = document.createElement('i');
+    icon.className = item.icon;
     icon.setAttribute('aria-hidden', 'true');
 
-    const label = createEl('span', '', item.label);
+    const label = document.createElement('span');
+    label.className = 'sidebar-nav-label';
+    label.textContent = item.label;
 
     link.append(icon, label);
 
     if (item.badge) {
-        link.appendChild(createEl('span', 'sidebar-nav-badge', item.badge));
+        const badge = document.createElement('span');
+        badge.className = 'sidebar-nav-badge';
+        badge.textContent = item.badge;
+        link.appendChild(badge);
     }
 
     return link;
 }
 
-function buildGroup(group, activeId) {
-    const fragment = document.createDocumentFragment();
+function renderSidebar(sidebar) {
+    const currentPage = sidebar.dataset.current || '';
+    const nav = document.createElement('nav');
+    nav.className = 'sidebar-nav-content';
+    nav.setAttribute('aria-label', 'Main navigation');
 
-    if (group.label) {
-        fragment.appendChild(createEl('div', 'sidebar-group-label', group.label));
-    }
+    navigationGroups.forEach((group) => {
+        const section = document.createElement('div');
+        section.className = 'sidebar-nav-group';
 
-    const navGroup = createEl('nav', 'sidebar-nav-group');
-    if (group.className) navGroup.classList.add(group.className);
+        if (group.label) {
+            const heading = document.createElement('p');
+            heading.className = 'sidebar-nav-group-label';
+            heading.textContent = group.label;
+            section.appendChild(heading);
+        }
 
-    group.items.forEach((item) => {
-        navGroup.appendChild(buildNavItem(item, activeId));
+        const list = document.createElement('div');
+        list.className = 'sidebar-nav-list';
+        group.items.forEach((item) => list.appendChild(createNavigationItem(item, currentPage)));
+        section.appendChild(list);
+        nav.appendChild(section);
     });
 
-    fragment.appendChild(navGroup);
-    return fragment;
+    const closeButton = document.createElement('button');
+    closeButton.className = 'sidebar-nav-close';
+    closeButton.type = 'button';
+    closeButton.setAttribute('aria-label', 'Close navigation');
+    closeButton.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
+    closeButton.addEventListener('click', () => sidebar.classList.remove('is-open'));
+
+    sidebar.replaceChildren(closeButton, nav);
 }
 
-/* ----- Render ----- */
-function renderNavigation() {
-    const container = document.getElementById('mainSidebarBody');
-    if (!container) return;
+function setupNavigation() {
+    document.querySelectorAll('[data-sidebar]').forEach((sidebar) => {
+        renderSidebar(sidebar);
+        const backdrop = document.createElement('div');
+        backdrop.className = 'sidebar-backdrop';
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(backdrop);
 
-    const activeId = getActiveId();
-    const fragment = document.createDocumentFragment();
+        const toggle = document.querySelector(`[data-sidebar-toggle="${sidebar.id}"]`);
+        const closeSidebar = () => {
+            sidebar.classList.remove('is-open');
+            backdrop.classList.remove('is-visible');
+            document.body.classList.remove('sidebar-is-open');
+            if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        };
+        sidebar.querySelector('.sidebar-nav-close').addEventListener('click', closeSidebar);
 
-    fragment.appendChild(buildLogo());
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const isOpen = sidebar.classList.toggle('is-open');
+                backdrop.classList.toggle('is-visible', isOpen);
+                document.body.classList.toggle('sidebar-is-open', isOpen);
+                toggle.setAttribute('aria-expanded', String(isOpen));
+            });
+        }
+        backdrop.addEventListener('click', closeSidebar);
 
-    NAV_STRUCTURE.forEach((group) => {
-        fragment.appendChild(buildGroup(group, activeId));
+        sidebar.addEventListener('click', (event) => {
+            if (event.target.closest('a') && window.innerWidth < 768) {
+                closeSidebar();
+            }
+        });
     });
-
-    container.replaceChildren(fragment);
 }
 
-document.addEventListener('DOMContentLoaded', renderNavigation);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNavigation);
+} else {
+    setupNavigation();
+}
