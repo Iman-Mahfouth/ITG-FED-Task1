@@ -1,0 +1,366 @@
+/*  Profile Page Styles (FED-28)*/
+
+.profile-hero {
+    padding-block: 1rem;
+}
+
+.profile-hero h1 {
+    color: var(--app-ink);
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+
+.profile-hero p {
+    color: var(--app-muted);
+    font-size: 0.9375rem;
+    margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .profile-hero p {
+        font-size: 1rem;
+    }
+}
+
+.profile-summary-card {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+}
+
+.profile-avatar {
+    align-items: center;
+    background-color: var(--app-green-bg);
+    border-radius: 50%;
+    color: var(--app-green-dark);
+    display: flex;
+    font-size: 1.5rem;
+    font-weight: 700;
+    height: 5rem;
+    justify-content: center;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+    width: 5rem;
+}
+
+.profile-summary-name {
+    color: var(--app-ink);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.profile-summary-role {
+    color: #6a686b;
+    font-size: 0.8rem;
+}
+
+.profile-summary-card hr {
+    border-top: 1px solid #ececec;
+    opacity: 1;
+    width: 100%;
+}
+
+.profile-stats {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+.profile-stats > div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.stat-number {
+    color: var(--app-ink);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-label {
+    color: var(--app-muted);
+    font-size: 0.7rem;
+}
+
+.profile-note {
+    color: var(--app-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ----- Neutral State — Always Clean ----- */
+.profile-form-card .form-control,
+.profile-form-card .form-select {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+.profile-form-card .form-control:valid,
+.profile-form-card .form-select:valid {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+.profile-form-card .form-control:valid:focus,
+.profile-form-card .form-select:valid:focus {
+    background-image: none;
+    border-color: var(--app-ink, #212a30);
+    box-shadow: 0 0 0 0.15rem rgba(33, 42, 48, 0.1);
+}
+
+.profile-form-card .form-control:invalid,
+.profile-form-card .form-select:invalid {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+.profile-form-card .form-control:invalid:focus,
+.profile-form-card .form-select:invalid:focus {
+    background-image: none;
+    border-color: var(--app-ink, #212a30);
+    box-shadow: 0 0 0 0.15rem rgba(33, 42, 48, 0.1);
+}
+
+/* ----- After Save — Show Error Only on Invalid Fields ----- */
+.was-validated .profile-form-card .form-control:invalid,
+.was-validated .profile-form-card .form-select:invalid {
+    background-image: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.12);
+}
+
+.was-validated .profile-form-card .form-control:invalid:focus,
+.was-validated .profile-form-card .form-select:invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.2);
+}
+
+/* After Save — Valid fields stay clean (no green) */
+.was-validated .profile-form-card .form-control:valid,
+.was-validated .profile-form-card .form-select:valid {
+    background-image: none;
+    border-color: #dfe4df;
+    box-shadow: none;
+}
+
+/* ----- Error Message ----- */
+.profile-form-card .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
+}
+
+
+.profile-form-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.profile-form-card h2 {
+    color: var(--app-ink);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.profile-form-card > p {
+    color: var(--app-muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ----- Form Fields ----- */
+.profile-form-card label {
+    color: var(--app-ink);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+
+.profile-form-card .form-control:focus,
+.profile-form-card .form-select:focus {
+      background-image: none;
+    border-color: var(--app-ink, #212a30);
+    box-shadow: 0 0 0 0.15rem rgba(33, 42, 48, 0.1);
+}
+
+.profile-form-card textarea.form-control {
+    min-height: 5rem;
+    resize: vertical;
+}
+
+/* ============================================
+   Actions
+   ============================================ */
+.profile-actions {
+    border-top: 1px solid #ececec;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+}
+
+.profile-actions button {
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-height: 2.5rem;
+    padding: 0.5rem 1.25rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+#profile-cancel {
+    background: #fff;
+    border: 1px solid #dfe4df;
+    color: var(--app-ink);
+}
+
+#profile-cancel:hover {
+    background: #f7f8f7;
+    border-color: #b8beb8;
+}
+
+#profile-save {
+    background: var(--app-ink);
+    border: 1px solid var(--app-ink);
+    color: #fff;
+}
+
+#profile-save:hover {
+    background: #000;
+    border-color: #000;
+}
+
+@media (max-width: 991.98px) {
+    .profile-form-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .profile-summary-card,
+    .profile-form-card {
+        padding: 1.25rem;
+    }
+
+    .profile-avatar {
+        font-size: 1.5rem;
+        height: 5rem;
+        width: 5rem;
+    }
+
+    .profile-actions {
+        flex-direction: column-reverse;
+    }
+
+    .profile-actions button {
+        width: 100%;
+    }
+}
+/*  Milestones Section */
+.profile-milestones-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.profile-milestones-title {
+    color: var(--app-ink);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.profile-milestone-item {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+}
+
+.profile-milestone-icon {
+    align-items: center;
+    background-color: #f8f0d9;
+    border-radius: 0.75rem;
+    color: #80651f;
+    display: flex;
+    flex: 0 0 3rem;
+    font-size: 1.1rem;
+    height: 3rem;
+    justify-content: center;
+}
+
+.profile-milestone-item-title {
+    color: var(--app-ink);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.profile-milestone-item-text {
+    color: var(--app-muted);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    .profile-milestones-card {
+        padding: 1.25rem;
+    }
+
+    .profile-milestone-item {
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .profile-milestone-icon {
+        flex: 0 0 2.5rem;
+        font-size: 1rem;
+        height: 2.5rem;
+    }
+}
+
+.ml-profile-toast {
+    --bs-toast-max-width: 280px;
+    background: var(--app-ink, #212a30);
+    border-radius: 0.7rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    color: #fff;
+    font-size: 0.8rem;
+    min-width: 0;
+    max-width: 250px;
+    width: auto;
+}
+
+.ml-profile-toast .toast-body {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding: 0.7rem 0.95rem;
+}
+
+.ml-profile-toast .btn-close {
+    font-size: 0.6rem;
+    opacity: 0.55;
+    padding: 0.85rem 0.85rem;
+}
+
+.ml-profile-toast .btn-close:hover {
+    opacity: 1;
+}

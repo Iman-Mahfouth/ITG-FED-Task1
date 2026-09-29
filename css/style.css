@@ -1,8 +1,5 @@
 
-.avatar-icon {
-  width: 36px;
-  height: 36px;
-}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -410,7 +407,28 @@ header.navbar {
         max-width: 1320px;
     }
 }
+/*eader Avatar — Learning Studio style */
+.avatar-icon {
+    align-items: center;
+    background-color: #e8dcf6;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: none;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 39px;
+    justify-content: center;
+    width: 39px;
+}
 
+.avatar-initials {
+    color: #645078;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+}
 
 
 

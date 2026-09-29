@@ -161,12 +161,32 @@
 }
 
 .ml-favorites-toast {
+    --bs-toast-max-width: 280px;
     background: var(--app-ink);
-    border-radius: 0.9rem;
+    border-radius: 0.7rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     color: #fff;
-    min-width: 16rem;
+    font-size: 0.85rem;
+    min-width: 0;
+    max-width: 280px;
+    width: auto;
 }
 
+.ml-favorites-toast .toast-body {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding: 0.7rem 0.95rem;
+}
+
+.ml-favorites-toast .btn-close {
+    font-size: 0.6rem;
+    opacity: 0.55;
+    padding: 0.85rem 0.85rem;
+}
+
+.ml-favorites-toast .btn-close:hover {
+    opacity: 1;
+}
 @media (min-width: 768px) {
     .ml-favorites-filter-bar {
         align-items: center;
