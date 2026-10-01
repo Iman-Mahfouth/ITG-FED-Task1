@@ -9,108 +9,124 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/favorites.css">
+    <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body class="bg-light">
-    <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
-        <div class="container">
-            <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
-                <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainSidebar" aria-controls="mainSidebar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0" href="index.html">
-                    <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
-                    <span class="text-dark">My</span><span class="text-primary">Courses</span>
-                </a>
-                <div class="header-search" dir="ltr">
-                    <div class="input-group rounded-3 overflow-hidden border bg-light">
-                        <span class="input-group-text bg-transparent border-0 ps-3 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
-                        <input type="search" class="form-control border-0 shadow-none bg-transparent" placeholder="Search courses, instructors, levels..." aria-label="Global search">
+    <div class="app-shell">
+        <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="favorites"></aside>
+
+        <div class="app-content">
+            <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
+                <div class="container">
+                    <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
+
+                        <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
+                                type="button"
+                                data-sidebar-toggle="mainSidebar"
+                                aria-controls="mainSidebar"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <nav class="app-breadcrumb" data-breadcrumb aria-label="Breadcrumb"></nav>
+
+                        <div class="header-search" dir="ltr">
+                            <div class="input-group rounded-3 overflow-hidden border bg-light">
+                                <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </span>
+                                <input type="search"
+                                       class="form-control border-0 shadow-none bg-transparent"
+                                       placeholder="Search courses, instructors, levels..."
+                                       aria-label="Global search">
+                            </div>
+                        </div>
+
+                        <div class="header-actions">
+                            <button class="app-theme-toggle" type="button" aria-label="Toggle theme">
+                                <i class="fa-regular fa-moon" aria-hidden="true"></i>
+                            </button>
+
+                            <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
+                                <div class="avatar-icon">
+                                    <span class="avatar-initials" id="header-avatar">L</span>
+                                </div>
+                                <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
+                                <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
-                <div class="avatar-icon">
-                <span class="avatar-initials" id="header-avatar">L</span>
+            </header>
+
+            <main class="app-main ml-favorites-page">
+                <section class="container ml-favorites-hero my-3 my-lg-4" aria-labelledby="favorites-title">
+                    <h1 id="favorites-title" class="ml-favorites-hero-title mb-2">Saved for a curious day.</h1>
+                    <p class="ml-favorites-hero-subtitle mb-0">A collection of possibilities, picked by you.</p>
+                </section>
+
+                <section class="container ml-favorites-filter-bar mb-3" aria-label="Favorite course filters">
+                    <div class="ml-favorites-filter-left" role="tablist" aria-label="Course categories">
+                        <button type="button" class="ml-favorites-filter-pill ml-favorites-filter-pill--active" role="tab" aria-selected="true" data-filter="all" id="filter-all">All courses <span id="favorites-all-count" data-filter-count>0</span></button>
+                        <button type="button" class="ml-favorites-filter-pill" role="tab" aria-selected="false" data-filter="Frontend" id="filter-frontend">Frontend <span id="favorites-frontend-count" data-filter-count>0</span></button>
+                        <a class="ml-favorites-browse-link" href="index.html"><i class="fa-solid fa-table-cells" aria-hidden="true"></i>Browse categories <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="ml-favorites-filter-right">
+                        <div class="dropdown">
+                            <button class="btn btn-white border dropdown-toggle ml-favorites-dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">All levels</button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" type="button">All levels</button></li>
+                                <li><button class="dropdown-item" type="button">Beginner</button></li>
+                                <li><button class="dropdown-item" type="button">Intermediate</button></li>
+                                <li><button class="dropdown-item" type="button">Advanced</button></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-white border dropdown-toggle ml-favorites-dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">Recommended</button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" type="button">Recommended</button></li>
+                                <li><button class="dropdown-item" type="button">Highest rated</button></li>
+                                <li><button class="dropdown-item" type="button">Shortest first</button></li>
+                                <li><button class="dropdown-item" type="button">Title: A to Z</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="container" aria-live="polite">
+                    <p id="favorites-count-line" class="ml-favorites-count-line">0 courses in your collection</p>
+                    <div class="row g-4" id="favorites-container"></div>
+                    <div id="favorites-empty-state" class="ml-empty-state d-none" role="status">
+                        <i class="fa-regular fa-heart ml-empty-state-icon" aria-hidden="true"></i>
+                        <h2 class="ml-empty-state-title">Keep a little inspiration here</h2>
+                        <p class="ml-empty-state-subtitle">Tap the heart on any course to add it to your personal collection.</p>
+                        <a href="index.html" class="ml-empty-state-action">Explore courses <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="bg-white border-top py-3 mt-auto">
+                <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                    <span class="text-muted small">&copy; 2024 MyCourses. All rights reserved.</span>
+                    <span class="text-muted small">Learn. Build. Grow.</span>
                 </div>
-                    <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
-                    <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
-                </div>
-            </div>
+            </footer>
         </div>
-    </header>
-
-    <div class="app-layout">
-        <aside class="sidebar-nav collapse d-md-block" id="mainSidebar" aria-label="Main navigation">
-    <nav class="nav flex-column">
-        <a href="index.html" class="sidebar-nav-item ">
-            <i class="fa-solid fa-house"></i>
-            <span>Courses</span>
-        </a>
-        <a href="my-learning.html" class="sidebar-nav-item">
-            <i class="fa-solid fa-book-open"></i>
-            <span>My Learning</span>
-        </a>
-        <a href="favorites.html" class="sidebar-nav-item active">
-            <i class="fa-regular fa-heart"></i>
-            <span>Favorites</span>
-        </a>
-        <a href="profile.html" class="sidebar-nav-item ">
-            <i class="fa-regular fa-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
-        </aside> 
-
-        <main class="app-main ml-favorites-page">
-            <section class="container ml-favorites-hero my-3 my-lg-4" aria-labelledby="favorites-title">
-                <h1 id="favorites-title" class="ml-favorites-hero-title mb-2">Saved for a curious day.</h1>
-                <p class="ml-favorites-hero-subtitle mb-0">A collection of possibilities, picked by you.</p>
-            </section>
-
-            <section class="container ml-favorites-filter-bar mb-3" aria-label="Favorite course filters">
-                <div class="ml-favorites-filter-left" role="tablist" aria-label="Course categories">
-                    <button type="button" class="ml-favorites-filter-pill ml-favorites-filter-pill--active" role="tab" aria-selected="true" data-filter="all" id="filter-all">All courses <span id="favorites-all-count" data-filter-count>0</span></button>
-                    <button type="button" class="ml-favorites-filter-pill" role="tab" aria-selected="false" data-filter="Frontend" id="filter-frontend">Frontend <span id="favorites-frontend-count" data-filter-count>0</span></button>
-                    <a class="ml-favorites-browse-link" href="index.html"><i class="fa-solid fa-table-cells" aria-hidden="true"></i>Browse categories <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
-                </div>
-                <div class="ml-favorites-filter-right">
-                    <div class="dropdown">
-                        <button class="btn btn-white border dropdown-toggle ml-favorites-dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">All levels</button>
-                        <ul class="dropdown-menu"><li><button class="dropdown-item" type="button">All levels</button></li><li><button class="dropdown-item" type="button">Beginner</button></li><li><button class="dropdown-item" type="button">Intermediate</button></li><li><button class="dropdown-item" type="button">Advanced</button></li></ul>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-white border dropdown-toggle ml-favorites-dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">Recommended</button>
-                        <ul class="dropdown-menu"><li><button class="dropdown-item" type="button">Recommended</button></li><li><button class="dropdown-item" type="button">Highest rated</button></li><li><button class="dropdown-item" type="button">Shortest first</button></li><li><button class="dropdown-item" type="button">Title: A to Z</button></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section class="container" aria-live="polite">
-                <p id="favorites-count-line" class="ml-favorites-count-line">0 courses in your collection</p>
-                <div class="row g-4" id="favorites-container"></div>
-                <div id="favorites-empty-state" class="ml-empty-state d-none" role="status">
-                    <i class="fa-regular fa-heart ml-empty-state-icon" aria-hidden="true"></i>
-                    <h2 class="ml-empty-state-title">Keep a little inspiration here</h2>
-                    <p class="ml-empty-state-subtitle">Tap the heart on any course to add it to your personal collection.</p>
-                    <a href="index.html" class="ml-empty-state-action">Explore courses <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-                </div>
-            </section>
-        </main>
     </div>
-
-    <footer class="bg-white border-top py-3 mt-auto">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <span class="text-muted small">&copy; 2024 MyCourses. All rights reserved.</span>
-            <span class="text-muted small">Learn. Build. Grow.</span>
-        </div>
-    </footer>
 
     <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
         <div id="favorites-toast" class="toast ml-favorites-toast border-0" role="status" aria-live="polite" aria-atomic="true">
-            <div class="d-flex"><div id="favorites-toast-message" class="toast-body">Removed from your favorites.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>
+            <div class="d-flex">
+                <div id="favorites-toast-message" class="toast-body">Removed from your favorites.</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/api.js"></script>
     <script src="js/profile-storage.js"></script>
     <script src="js/favorites-storage.js"></script>

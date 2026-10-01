@@ -79,6 +79,9 @@ function updateFavoritesCollection(courses = allFavoriteCourses) {
             }
         }
     }
+    document.dispatchEvent(new CustomEvent('nav:badge', {
+    detail: { id: 'favorites', value: totalCount }
+}));
 }
 
 function showFavoritesToast(message) {
@@ -136,6 +139,9 @@ async function initFavorites() {
         setupFavoriteActions({ containerId: 'favorites-container', removeCardOnUnfavorite: true });
         setupFavoritesFilters();
         setupFavoritesListener();
+        document.dispatchEvent(new CustomEvent('nav:badge', {
+    detail: { id: 'favorites', value: allFavoriteCourses.length }
+}));
     } catch (error) {
         console.error('Failed to initialize Favorites:', error);
     }

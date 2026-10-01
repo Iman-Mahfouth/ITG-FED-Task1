@@ -1,3 +1,4 @@
+/* Profile Page Logic (FED-28) */
 
 const profileForm = document.getElementById('profile-form');
 const fullNameInput = document.getElementById('profile-full-name');
@@ -11,6 +12,8 @@ const summaryNameEl = document.getElementById('profile-summary-name');
 const summaryRoleEl = document.getElementById('profile-summary-role');
 
 const cancelBtn = document.getElementById('profile-cancel');
+
+/* UI Updates */
 
 function updateSummaryCard(profile) {
     if (avatarEl) avatarEl.textContent = getInitials(profile.fullName);
@@ -36,6 +39,8 @@ function readFormValues() {
     };
 }
 
+/* Validation */
+
 function validateForm() {
     if (profileForm.checkValidity()) {
         profileForm.classList.remove('was-validated');
@@ -45,7 +50,8 @@ function validateForm() {
     profileForm.classList.add('was-validated');
     return false;
 }
-/* Event Handlers */
+
+/*   Event Handlers */
 
 function handleSave(event) {
     event.preventDefault();
@@ -64,6 +70,9 @@ function handleSave(event) {
     updateHeaderGreeting();
     fillFormWithProfile(result.profile);
 
+    // Sync sidebar user card (FED-29)
+    document.dispatchEvent(new CustomEvent('profile:updated', { detail: result.profile }));
+
     showProfileFeedback('Profile saved successfully.');
 }
 
@@ -72,7 +81,6 @@ function handleCancel() {
     fillFormWithProfile(savedProfile);
     updateSummaryCard(savedProfile);
 
-    // Clear validation UI
     profileForm.classList.remove('was-validated');
 
     showProfileFeedback('Changes discarded.');
@@ -83,6 +91,7 @@ function handleNameInput() {
     if (avatarEl) avatarEl.textContent = getInitials(name);
 }
 
+/*  Feedback (Toast) */
 function showProfileFeedback(message) {
     const toastElement = document.getElementById('profile-toast');
     const messageElement = document.getElementById('profile-toast-message');
@@ -91,6 +100,9 @@ function showProfileFeedback(message) {
     messageElement.textContent = message;
     bootstrap.Toast.getOrCreateInstance(toastElement, { delay: 3000 }).show();
 }
+
+
+
 function initProfile() {
     if (!profileForm) return;
 

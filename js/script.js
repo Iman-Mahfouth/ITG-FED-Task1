@@ -363,6 +363,10 @@ async function init() {
         setupClearFilters(courses);
         applyFilters(courses);
 
+        document.dispatchEvent(new CustomEvent('nav:badge', {
+    detail: { id: 'explore', value: courses.length }
+}));
+
         return courses;
     } catch (error) {
         console.error('Failed to initialize app:', error);
