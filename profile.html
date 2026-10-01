@@ -50,8 +50,8 @@
 
             <!-- Profile (hidden on mobile) -->
                 <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center avatar-icon">
-                    <i class="fa-solid fa-user text-secondary"></i>
+                <div class="avatar-icon">
+                <span class="avatar-initials" id="header-avatar">L</span>
                 </div>
                 <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
                 <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
@@ -102,28 +102,30 @@
                             <h2>Personal information</h2>
                             <p>A little introduction to the person behind the progress.</p>
                             
-                    <form id="profile-form" novalidate>
-        <!-- Row: Full Name + Email -->
-        <div class="row g-3 mb-3">
-                <div class="col-12 col-md-6">
-                <label for="profile-full-name" class="form-label">Full name</label>
-                <input type="text"
-                class="form-control"
-                id="profile-full-name"
-                name="fullName"
-                autocomplete="name"
-                required>
-                </div>
-            <div class="col-12 col-md-6">
+     <form id="profile-form" class="needs-validation" novalidate>
+    <!-- Row: Full Name + Email -->
+    <div class="row g-3 mb-3">
+        <div class="col-12 col-md-6">
+            <label for="profile-full-name" class="form-label">Full name</label>
+            <input type="text"
+                   class="form-control"
+                   id="profile-full-name"
+                   name="fullName"
+                   autocomplete="name"
+                   required>
+            <div class="invalid-feedback">Please enter your full name.</div>
+        </div>
+        <div class="col-12 col-md-6">
             <label for="profile-email" class="form-label">Email address</label>
             <input type="email"
-                class="form-control"
-                id="profile-email"
-                name="email"
-                autocomplete="email"
-                required>
-            </div>
+                   class="form-control"
+                   id="profile-email"
+                   name="email"
+                   autocomplete="email"
+                   required>
+            <div class="invalid-feedback">Please enter a valid email address.</div>
         </div>
+    </div>
 
     <!-- Role -->
     <div class="mb-3">
@@ -134,9 +136,10 @@
                name="role"
                placeholder="e.g. Aspiring frontend developer"
                required>
+        <div class="invalid-feedback">Please add a headline.</div>
     </div>
 
-    <!-- About -->
+    <!-- About (optional) -->
     <div class="mb-3">
         <label for="profile-about" class="form-label">A little about you</label>
         <textarea class="form-control"
@@ -197,6 +200,15 @@
             <span class="text-muted small">Learn. Build. Grow.</span>
         </div>
     </footer>    
+    <!-- Profile Toast -->
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div id="profile-toast" class="toast ml-profile-toast border-0" role="status" aria-live="polite" aria-atomic="true">
+        <div class="d-flex">
+            <div id="profile-toast-message" class="toast-body">Profile updated.</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/profile-storage.js"></script>

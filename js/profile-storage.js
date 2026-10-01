@@ -36,10 +36,10 @@ function saveProfile(profile) {
         };
 
         localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(safeProfile));
-        return safeProfile;
+        return { success: true, profile: safeProfile };
     } catch (error) {
         console.error('Failed to save profile to localStorage:', error);
-        return { ...DEFAULT_PROFILE };
+        return { success: false, profile: null };
     }
 }
 
@@ -58,11 +58,12 @@ function getInitials(name) {
 
 
 function updateHeaderGreeting() {
-    const headerEl = document.getElementById('header-greeting-name');
-    if (!headerEl) return;
+    const nameEl = document.getElementById('header-greeting-name');
+    const avatarEl = document.getElementById('header-avatar');
 
     const profile = getProfile();
-    headerEl.textContent = `Hi, ${profile.fullName}!`;
-}
 
+    if (nameEl) nameEl.textContent = `Hi, ${profile.fullName}!`;
+    if (avatarEl) avatarEl.textContent = getInitials(profile.fullName);
+}
 updateHeaderGreeting();
