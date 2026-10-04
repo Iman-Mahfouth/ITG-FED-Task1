@@ -7,19 +7,19 @@ const navigationGroups = [
     {
         label: 'The learning studio',
         items: [
-            { id: 'overview',  label: 'Overview',        icon: 'fa-solid fa-border-all',      href: '#' },
-            { id: 'explore',   label: 'Explore courses', icon: 'fa-regular fa-compass',       href: 'index.html',      badge: '09' },
-            { id: 'paths',     label: 'Learning paths',  icon: 'fa-solid fa-diagram-project', href: '#' },
-            { id: 'learning',  label: 'My learning',     icon: 'fa-regular fa-book-open',     href: 'my-learning.html', badge: '3' },
-            { id: 'favorites', label: 'Favorites',       icon: 'fa-regular fa-heart',         href: 'favorites.html',   badge: '0' }
+            { id: 'overview',  label: 'Overview',        icon: 'fa-solid fa-border-all' },
+            { id: 'explore',   label: 'Explore courses', icon: 'fa-regular fa-compass',      href: 'index.html' },
+            { id: 'paths',     label: 'Learning paths',  icon: 'fa-solid fa-diagram-project' },
+            { id: 'learning',  label: 'My learning',     icon: 'fa-regular fa-book-open',    href: 'my-learning.html' },
+            { id: 'favorites', label: 'Favorites',       icon: 'fa-regular fa-heart',        href: 'favorites.html' }
         ]
     },
     {
         label: 'Make it a habit',
         items: [
-            { id: 'planner',  label: 'Study planner',     icon: 'fa-regular fa-calendar',    href: '#' },
-            { id: 'notebook', label: 'My notebook',       icon: 'fa-regular fa-file-lines',  href: '#' },
-            { id: 'progress', label: 'Progress insights', icon: 'fa-solid fa-chart-simple',  href: '#' }
+            { id: 'planner',  label: 'Study planner',     icon: 'fa-regular fa-calendar' },
+            { id: 'notebook', label: 'My notebook',       icon: 'fa-regular fa-file-lines' },
+            { id: 'progress', label: 'Progress insights', icon: 'fa-solid fa-chart-simple' }
         ]
     },
     {
@@ -74,14 +74,24 @@ function createLogo() {
    ============================================ */
 
 function createNavigationItem(item, currentPage) {
-    const link = el('a', 'sidebar-nav-item');
     const isActive = item.id === currentPage;
+    const isDisabled = !item.href;
 
-    link.href = item.href;
-    link.dataset.navigationId = item.id;
+    const node = isDisabled
+        ? el('span', 'sidebar-nav-item sidebar-nav-item--disabled')
+        : el('a', 'sidebar-nav-item');
+
+    if (isDisabled) {
+        node.setAttribute('aria-disabled', 'true');
+    } else {
+        node.href = item.href;
+    }
+
+    node.dataset.navigationId = item.id;
+
     if (isActive) {
-        link.classList.add('active');
-        link.setAttribute('aria-current', 'page');
+        node.classList.add('active');
+        node.setAttribute('aria-current', 'page');
     }
 
     const icon = el('i', item.icon);
@@ -89,13 +99,8 @@ function createNavigationItem(item, currentPage) {
 
     const label = el('span', 'sidebar-nav-label', item.label);
 
-    link.append(icon, label);
-
-    if (item.badge) {
-        link.appendChild(el('span', 'sidebar-nav-badge', item.badge));
-    }
-
-    return link;
+    node.append(icon, label);
+    return node;
 }
 
 function createGroup(group, currentPage) {
@@ -205,8 +210,7 @@ function renderSidebar(sidebar) {
     closeButton.type = 'button';
     closeButton.setAttribute('aria-label', 'Close navigation');
     closeButton.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
-    closeButton.addEventListener('click', () => sidebar.classList.remove('is-open'));
-
+    
     sidebar.replaceChildren(closeButton, nav);
 }
 
@@ -256,16 +260,34 @@ function updateSidebarUser(profile) {
    Navigation Badges (Dynamic)
    ============================================ */
 
+const NAV_BADGE_STORAGE = {
+    explore:  'ml_badge_explore',
+    learning: 'ml_badge_learning'
+};
+
 function setNavBadge(id, value) {
-    const badge = document.querySelector(`[data-navigation-id="${id}"] .sidebar-nav-badge`);
-    if (!badge) return;
+    const item = document.querySelector(`[data-navigation-id="${id}"]`);
+    if (!item) return;
+
+    let badge = item.querySelector('.sidebar-nav-badge');
+    if (!badge) {
+        badge = el('span', 'sidebar-nav-badge');
+        item.appendChild(badge);
+    }
     badge.textContent = String(value).padStart(2, '0');
 }
 
 function updateNavigationBadges() {
+    // Favorites — live from localStorage
     if (typeof getFavoriteIds === 'function') {
         setNavBadge('favorites', getFavoriteIds().length);
     }
+
+    // Explore & Learning — restore from cache
+    Object.entries(NAV_BADGE_STORAGE).forEach(([id, key]) => {
+        const cached = localStorage.getItem(key);
+        if (cached !== null) setNavBadge(id, Number(cached));
+    });
 }
 
 /* ============================================
@@ -316,11 +338,16 @@ function setupNavigation() {
      document.addEventListener('profile:updated', (e) => updateSidebarUser(e.detail));
 
     document.addEventListener('nav:badge', (e) => {
-        const { id, value } = e.detail || {};
-        if (id !== undefined && value !== undefined) {
-            setNavBadge(id, value);
-        }
-    });
+    const { id, value } = e.detail || {};
+    if (id === undefined || value === undefined) return;
+
+    setNavBadge(id, value);
+
+    // Persist for cross-page consistency
+    if (NAV_BADGE_STORAGE[id]) {
+        localStorage.setItem(NAV_BADGE_STORAGE[id], String(value));
+    }
+});
 
     document.addEventListener('favorite:changed', () => {
         updateNavigationBadges();

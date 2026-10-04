@@ -2,10 +2,25 @@
    Sidebar Navigation (FED-29)
    ========================================================================== */
 
+/* ==========================================================================
+   1. App Shell — Layout
+   ========================================================================== */
 .app-shell {
     display: grid;
     grid-template-columns: 1fr;
     min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+    .app-shell {
+        grid-template-columns: 250px 1fr;
+    }
+}
+
+@media (min-width: 1200px) {
+    .app-shell {
+        grid-template-columns: var(--app-sidebar-width-lg) 1fr;
+    }
 }
 
 .app-content {
@@ -15,12 +30,33 @@
     min-height: 100vh;
 }
 
-/* ----- Sidebar base ----- */
+/* ==========================================================================
+   2. Sidebar Base
+   ========================================================================== */
 .sidebar-nav {
     background: #171e27;
     color: #aeb9cb;
     padding: 1.75rem 1.25rem;
     z-index: 1040;
+    scrollbar-color: #3a4454 transparent;
+    scrollbar-width: thin;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: #3a4454;
+    border-radius: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #4a5464;
 }
 
 @media (min-width: 768px) {
@@ -32,7 +68,9 @@
     }
 }
 
-/* ----- Logo (image + word) ----- */
+/* ==========================================================================
+   3. Logo
+   ========================================================================== */
 .sidebar-logo {
     align-items: center;
     display: flex;
@@ -61,7 +99,9 @@
     color: #d2fa62;
 }
 
-/* ----- Groups ----- */
+/* ==========================================================================
+   4. Groups
+   ========================================================================== */
 .sidebar-nav-content {
     display: flex;
     flex-direction: column;
@@ -75,7 +115,7 @@
 
 .sidebar-nav-group-label {
     color: #8090a8;
-    font-size: 0.6rem;   
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     margin: 0 0 0.8rem 0.9rem;
@@ -88,13 +128,15 @@
     gap: 0.35rem;
 }
 
-/* ----- Items ----- */
+/* ==========================================================================
+   5. Items
+   ========================================================================== */
 .sidebar-nav-item {
     align-items: center;
     border-radius: 0.6rem;
     color: #b4bfd0;
     display: flex;
-    font-size: 0.82rem;    
+    font-size: 0.82rem;
     gap: 0.8rem;
     min-height: 2.35rem;
     padding: 0.5rem 0.85rem;
@@ -104,7 +146,7 @@
 
 .sidebar-nav-item i {
     flex: 0 0 1.15rem;
-    font-size: 0.9rem;     
+    font-size: 0.9rem;
     text-align: center;
 }
 
@@ -120,15 +162,29 @@
     font-weight: 700;
 }
 
+.sidebar-nav-item--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.sidebar-nav-item--disabled:hover {
+    background: transparent;
+    color: #b4bfd0;
+}
+
 .sidebar-nav-label {
     flex: 1;
     white-space: nowrap;
 }
 
+/* ==========================================================================
+   6. Badge
+   ========================================================================== */
 .sidebar-nav-badge {
     background: rgba(210, 250, 98, 0.16);
     border-radius: 0.3rem;
     color: #d2fa62;
+    flex-shrink: 0;
     font-size: 0.6rem;
     font-weight: 700;
     line-height: 1;
@@ -140,88 +196,9 @@
     color: #1d2b25;
 }
 
-.sidebar-nav-close,
-.sidebar-backdrop {
-    display: none;
-}
-
-.sidebar-nav::-webkit-scrollbar {
-    width: 6px;
-}
-
-.sidebar-nav::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.sidebar-nav::-webkit-scrollbar-thumb {
-    background: #3a4454;
-    border-radius: 3px;
-}
-
-.sidebar-nav::-webkit-scrollbar-thumb:hover {
-    background: #4a5464;
-}
-
-/* ----- Mobile: overlay ----- */
-@media (max-width: 767.98px) {
-    .sidebar-nav {
-        bottom: 0;
-        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.25);
-        left: 0;
-        overflow-y: auto;
-        padding: 1.5rem 1.25rem;
-        position: fixed;
-        top: 0;
-        transform: translateX(-105%);
-        transition: transform 0.25s ease;
-        width: min(18rem, 86vw);
-    }
-
-    .sidebar-nav {
-    scrollbar-width: thin;
-    scrollbar-color: #3a4454 transparent;
-}
-
-    .sidebar-nav.is-open {
-        transform: translateX(0);
-    }
-
-    body.sidebar-is-open {
-        overflow: hidden;
-    }
-
-    .sidebar-backdrop {
-        background: rgba(10, 14, 20, 0.5);
-        display: block;
-        inset: 0;
-        opacity: 0;
-        pointer-events: none;
-        position: fixed;
-        transition: opacity 0.25s ease;
-        z-index: 1030;
-    }
-
-    .sidebar-backdrop.is-visible {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .sidebar-nav-close {
-        align-items: center;
-        background: transparent;
-        border: 0;
-        color: #fff;
-        display: flex;
-        font-size: 1.15rem;
-        justify-content: center;
-        margin: 0 0 1.25rem auto;
-        min-height: 2.25rem;
-        width: 2.25rem;
-    }
-}
-
-/*  Sidebar Footer */
-
+/* ==========================================================================
+   7. Footer (Links + User)
+   ========================================================================== */
 .sidebar-footer {
     border-top: 1px solid rgba(174, 185, 203, 0.18);
     display: flex;
@@ -323,39 +300,77 @@
 }
 
 /* ==========================================================================
-   App Shell — Responsive Grid
+   8. Close Button & Backdrop (hidden by default)
    ========================================================================== */
-.app-shell {
-    display: grid;
-    grid-template-columns: 1fr;
-    min-height: 100vh;
+.sidebar-nav-close,
+.sidebar-backdrop {
+    display: none;
 }
 
-/* Tablet & up: sidebar appears with full content */
-@media (min-width: 768px) {
-    .app-shell {
-        grid-template-columns: 250px 1fr;
-    }
-    .sidebar-nav {
-        width: 250px; 
-        flex-shrink: 0; 
-    }}
-
-/* Desktop: slightly wider sidebar */
-@media (min-width: 1200px) {
-    .app-shell {
-        grid-template-columns: var(--app-sidebar-width-lg) 1fr;
-    }
-}
 /* ==========================================================================
-   Sidebar — Compact fonts on tablet & mobile
+   9. Mobile: Overlay
+   ========================================================================== */
+@media (max-width: 767.98px) {
+    .sidebar-nav {
+        bottom: 0;
+        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.25);
+        left: 0;
+        overflow-y: auto;
+        padding: 1.5rem 1.25rem;
+        position: fixed;
+        top: 0;
+        transform: translateX(-105%);
+        transition: transform 0.25s ease;
+        width: min(18rem, 86vw);
+    }
+
+    .sidebar-nav.is-open {
+        transform: translateX(0);
+    }
+
+    body.sidebar-is-open {
+        overflow: hidden;
+    }
+
+    .sidebar-backdrop {
+        background: rgba(10, 14, 20, 0.5);
+        display: block;
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        position: fixed;
+        transition: opacity 0.25s ease;
+        z-index: 1030;
+    }
+
+    .sidebar-backdrop.is-visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .sidebar-nav-close {
+        align-items: center;
+        background: transparent;
+        border: 0;
+        color: #fff;
+        display: flex;
+        font-size: 1.15rem;
+        justify-content: center;
+        margin: 0 0 1.25rem auto;
+        min-height: 2.25rem;
+        width: 2.25rem;
+    }
+}
+
+/* ==========================================================================
+   10. Responsive Adjustments — Tablet & Mobile (compact)
    ========================================================================== */
 @media (max-width: 1199.98px) {
     .sidebar-nav-item {
         font-size: 0.78rem;
+        gap: 0.75rem;
         min-height: 2.25rem;
         padding: 0.45rem 0.8rem;
-        gap: 0.75rem;
     }
 
     .sidebar-nav-item i {
@@ -385,7 +400,7 @@
 }
 
 /* ==========================================================================
-   Sidebar — Prevent text wrapping (Tablet & Desktop)
+   11. Responsive Adjustments — Tablet & Desktop (prevent text wrapping)
    ========================================================================== */
 @media (min-width: 768px) {
     .sidebar-footer-link span,
@@ -405,9 +420,4 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-
-    .sidebar-nav-badge {
-        flex-shrink: 0;
-    }
 }
-
