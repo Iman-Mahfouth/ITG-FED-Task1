@@ -151,6 +151,9 @@ async function initMyLearning() {
         const filteredItems = filterItemsByTab(allLearningItems, activeTab);
         renderLearningCards(filteredItems);
         updateLearningStats(allLearningItems);
+        document.dispatchEvent(new CustomEvent('nav:badge', {
+    detail: { id: 'learning', value: allLearningItems.length }
+}));
         setupFavoriteActions({ containerId: 'learning-container' });
         setupTabs();
     } catch (error) {

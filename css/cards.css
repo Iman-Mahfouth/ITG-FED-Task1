@@ -12,6 +12,8 @@
     flex-direction: column;
     overflow: hidden;
     padding: 0.625rem;
+    min-width: 0;
+    width: 100%;
 }
 
 /* ----- Banner ----- */
@@ -115,6 +117,7 @@
     flex-direction: column;
     gap: 1.3rem;
     min-height: 8.75rem;
+    min-width: 0;
     padding: 1rem;
     transform: rotate(-9deg);
 }

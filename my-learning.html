@@ -9,182 +9,154 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/my-learning.css">
+    <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body class="bg-light">
-    <!-- Header (same as index.html) -->
-<header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
-    <div class="container">
-        <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
+    <div class="app-shell">
+        <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="learning"></aside>
 
-            <!-- Mobile: Hamburger -->
-            <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainSidebar"
-                    aria-controls="mainSidebar"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <div class="app-content">
+            <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
+                <div class="container">
+                    <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
 
-            <!-- Logo -->
-            <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0" href="index.html">
-                <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
-                <span class="text-dark">My</span><span class="text-primary">Courses</span>
-            </a>
+                        <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
+                                type="button"
+                                data-sidebar-toggle="mainSidebar"
+                                aria-controls="mainSidebar"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-            <!-- Global Search (ONE component only) -->
-            <div class="header-search" dir="ltr">
-                <div class="input-group rounded-3 overflow-hidden border bg-light">
-                    <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input type="search"
-                           class="form-control border-0 shadow-none bg-transparent"
-                           placeholder="Search courses, instructors, levels..."
-                           aria-label="Global search">
+                        <nav class="app-breadcrumb" data-breadcrumb aria-label="Breadcrumb"></nav>
+
+                        <div class="header-search" dir="ltr">
+                            <div class="input-group rounded-3 overflow-hidden border bg-light">
+                                <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </span>
+                                <input type="search"
+                                       class="form-control border-0 shadow-none bg-transparent"
+                                       placeholder="Search courses, instructors, levels..."
+                                       aria-label="Global search">
+                            </div>
+                        </div>
+
+                        <div class="header-actions">
+                            <button class="app-theme-toggle" type="button" aria-label="Toggle theme">
+                                <i class="fa-regular fa-moon" aria-hidden="true"></i>
+                            </button>
+
+                            <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
+                                <div class="avatar-icon">
+                                    <span class="avatar-initials" id="header-avatar">L</span>
+                                </div>
+                                <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
+                                <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+            </header>
 
-            <!-- Profile (hidden on mobile) -->
-                <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
-                <div class="avatar-icon">
-                <span class="avatar-initials" id="header-avatar">L</span>
+            <main class="app-main my-learning-page">
+                <section class="container my-learning-hero my-3 my-lg-4" aria-labelledby="my-learning-title">
+                    <h1 id="my-learning-title" class="my-learning-hero-title">Your learning, your pace.</h1>
+                    <p class="my-learning-hero-subtitle mb-0">Every lesson is a little investment in the person you want to become.</p>
+                </section>
+
+                <section class="container my-learning-momentum-section mb-4" aria-labelledby="momentum-title">
+                    <div class="my-learning-momentum-card rounded-4 py-4 px-4">
+                        <p class="my-learning-momentum-badge mb-3">Keep your momentum</p>
+                        <h2 id="momentum-title" class="my-learning-momentum-title mb-2">Consistency looks good on you.</h2>
+                        <p class="my-learning-momentum-subtitle mb-0">0 of 5 lessons completed toward your weekly goal.</p>
+                    </div>
+                </section>
+
+                <section class="container my-learning-stats-section mb-4" aria-label="Learning statistics">
+                    <div class="row g-3 g-lg-4">
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="my-learning-stat-card rounded-3 h-100">
+                                <div class="my-learning-stat-icon my-learning-stat-icon--green" aria-hidden="true">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </div>
+                                <div>
+                                    <p class="my-learning-stat-number mb-0" id="stat-enrolled">03</p>
+                                    <p class="my-learning-stat-label mb-0">Enrolled courses</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="my-learning-stat-card rounded-3 h-100">
+                                <div class="my-learning-stat-icon my-learning-stat-icon--purple" aria-hidden="true">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                                <div>
+                                    <p class="my-learning-stat-number mb-0" id="stat-in-progress">03</p>
+                                    <p class="my-learning-stat-label mb-0">In progress</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="my-learning-stat-card rounded-3 h-100">
+                                <div class="my-learning-stat-icon my-learning-stat-icon--yellow" aria-hidden="true">
+                                    <i class="fa-regular fa-bookmark"></i>
+                                </div>
+                                <div>
+                                    <p class="my-learning-stat-number mb-0" id="stat-completed">00</p>
+                                    <p class="my-learning-stat-label mb-0">Completed courses</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="my-learning-stat-card rounded-3 h-100">
+                                <div class="my-learning-stat-icon my-learning-stat-icon--blue" aria-hidden="true">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div>
+                                    <p class="my-learning-stat-number mb-0" id="stat-lessons-completed">04</p>
+                                    <p class="my-learning-stat-label mb-0">Lessons completed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <nav class="container my-learning-tabs" aria-label="Course status">
+                    <div class="my-learning-tabs-list mb-4" role="tablist">
+                        <button class="my-learning-tab my-learning-tab--active" role="tab" aria-selected="true" data-tab="in-progress" id="tab-in-progress">
+                            In progress (<span id="tab-count-in-progress">0</span>)
+                        </button>
+                        <button class="my-learning-tab" role="tab" aria-selected="false" data-tab="completed" id="tab-completed">
+                            Completed (<span id="tab-count-completed">0</span>)
+                        </button>
+                        <button class="my-learning-tab" role="tab" aria-selected="false" data-tab="all" id="tab-all">
+                            All courses (<span id="tab-count-all">0</span>)
+                        </button>
+                    </div>
+                </nav>
+
+                <section class="container my-4">
+                    <div class="row g-4" id="learning-container"></div>
+                </section>
+            </main>
+
+            <footer class="bg-white border-top py-3 mt-auto">
+                <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                    <span class="text-muted small">&copy; 2024 MyCourses. All rights reserved.</span>
+                    <span class="text-muted small">Learn. Build. Grow.</span>
                 </div>
-                <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
-                <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
-            </div>
-
+            </footer>
         </div>
     </div>
-</header>
-    <!-- App Layout -->
-    <div class="app-layout">
-        <!-- Side Navigation -->
-        <aside class="sidebar-nav collapse d-md-block" id="mainSidebar" aria-label="Main navigation">
-            <nav class="nav flex-column">
-                <a href="index.html" class="sidebar-nav-item">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Courses</span>
-                </a>
-                <a href="my-learning.html" class="sidebar-nav-item active">
-                    <i class="fa-solid fa-book-open"></i>
-                    <span>My Learning</span>
-                </a>
-                    <a href="favorites.html" class="sidebar-nav-item">
-                    <i class="fa-regular fa-heart"></i>
-                    <span>Favorites</span>
-                </a>
-                <a href="profile.html" class="sidebar-nav-item">
-                    <i class="fa-regular fa-user"></i>
-                    <span>Profile</span>
-                </a>
-            </nav>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="app-main my-learning-page">
-            <!-- My Learning Top Sections (FED-26) -->
-            <section class="container my-learning-hero my-3 my-lg-4" aria-labelledby="my-learning-title">
-                <h1 id="my-learning-title" class="my-learning-hero-title">Your learning, your pace.</h1>
-                <p class="my-learning-hero-subtitle mb-0">Every lesson is a little investment in the person you want to become.</p>
-            </section>
-
-            <section class="container my-learning-momentum-section mb-4" aria-labelledby="momentum-title">
-                <div class="my-learning-momentum-card rounded-4 py-4 px-4">
-                    <p class="my-learning-momentum-badge mb-3">Keep your momentum</p>
-                    <h2 id="momentum-title" class="my-learning-momentum-title mb-2">Consistency looks good on you.</h2>
-                    <p class="my-learning-momentum-subtitle mb-0">0 of 5 lessons completed toward your weekly goal.</p>
-                </div>
-            </section>
-
-        <section class="container my-learning-stats-section mb-4" aria-label="Learning statistics">
-            <div class="row g-3 g-lg-4">
-
-        <!-- Card 1: Enrolled -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="my-learning-stat-card rounded-3 h-100">
-                <div class="my-learning-stat-icon my-learning-stat-icon--green" aria-hidden="true">
-                    <i class="fa-solid fa-book-open"></i>
-                </div>
-                <div>
-                    <p class="my-learning-stat-number mb-0" id="stat-enrolled">03</p>
-                    <p class="my-learning-stat-label mb-0">Enrolled courses</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 2: In progress -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="my-learning-stat-card rounded-3 h-100">
-                <div class="my-learning-stat-icon my-learning-stat-icon--purple" aria-hidden="true">
-                    <i class="fa-solid fa-play"></i>
-                </div>
-                <div>
-                    <p class="my-learning-stat-number mb-0" id="stat-in-progress">03</p>
-                    <p class="my-learning-stat-label mb-0">In progress</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 3: Completed -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="my-learning-stat-card rounded-3 h-100">
-                <div class="my-learning-stat-icon my-learning-stat-icon--yellow" aria-hidden="true">
-                    <i class="fa-regular fa-bookmark"></i>
-                </div>
-                <div>
-                    <p class="my-learning-stat-number mb-0" id="stat-completed">00</p>
-                    <p class="my-learning-stat-label mb-0">Completed courses</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 4: Lessons completed -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="my-learning-stat-card rounded-3 h-100">
-                <div class="my-learning-stat-icon my-learning-stat-icon--blue" aria-hidden="true">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <div>
-                    <p class="my-learning-stat-number mb-0" id="stat-lessons-completed">04</p>
-                    <p class="my-learning-stat-label mb-0">Lessons completed</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-        </section>
-
-            <nav class="container my-learning-tabs" aria-label="Course status">
-            <div class="my-learning-tabs-list mb-4" role="tablist">
-            <button class="my-learning-tab my-learning-tab--active" role="tab" aria-selected="true" data-tab="in-progress" id="tab-in-progress">
-            In progress (<span id="tab-count-in-progress">0</span>)
-            </button>
-            <button class="my-learning-tab" role="tab" aria-selected="false" data-tab="completed" id="tab-completed">
-            Completed (<span id="tab-count-completed">0</span>)
-            </button>
-            <button class="my-learning-tab" role="tab" aria-selected="false" data-tab="all" id="tab-all">
-            All courses (<span id="tab-count-all">0</span>)
-            </button>
-            </div>
-            </nav>
-
-            <section class="container my-4">
-                <div class="row g-4" id="learning-container"></div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-white border-top py-3 mt-auto">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <span class="text-muted small">&copy; 2024 MyCourses. All rights reserved.</span>
-            <span class="text-muted small">Learn. Build. Grow.</span>
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/api.js"></script>
     <script src="js/profile-storage.js"></script>
     <script src="js/favorites-storage.js"></script>

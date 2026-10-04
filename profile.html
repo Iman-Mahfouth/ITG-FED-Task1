@@ -5,232 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Courses Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/profile.css">
-    </head>
-<body>
-        <!--header section (FED-02)-->   
-<header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
-    <div class="container">
-        <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
+    <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body class="bg-light">
+    <div class="app-shell">
+        <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="profile"></aside>
 
-            <!-- Mobile: Hamburger -->
-            <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainSidebar"
-                    aria-controls="mainSidebar"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <div class="app-content">
+            <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
+                <div class="container">
+                    <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
 
-            <!-- Logo -->
-            <a class="navbar-brand fw-bold fs-4 d-flex align-items-center flex-shrink-0 me-0" href="index.html">
-                <i class="fa-solid fa-graduation-cap text-primary me-2"></i>
-                <span class="text-dark">My</span><span class="text-primary">Courses</span>
-            </a>
+                        <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
+                                type="button"
+                                data-sidebar-toggle="mainSidebar"
+                                aria-controls="mainSidebar"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-            <!-- Global Search (ONE component only) -->
-            <div class="header-search" dir="ltr">
-                <div class="input-group rounded-3 overflow-hidden border bg-light">
-                    <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input type="search"
-                           class="form-control border-0 shadow-none bg-transparent"
-                           placeholder="Search courses, instructors, levels..."
-                           aria-label="Global search">
-                       </div>
-            </div>
+                        <nav class="app-breadcrumb" data-breadcrumb aria-label="Breadcrumb"></nav>
 
-            <!-- Profile (hidden on mobile) -->
-                <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
-                <div class="avatar-icon">
-                <span class="avatar-initials" id="header-avatar">L</span>
-                </div>
-                <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
-                <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
-            </div>
-
-        </div>
-
-    </div>
-</header>    
-<!--App Layout (FED-25): Sidebar + Main Content-->
-
-    <div class="app-layout">
-    <!-- Side Navigation -->
-        <aside class="sidebar-nav collapse d-md-block" id="mainSidebar" aria-label="Main navigation">
-    <nav class="nav flex-column">
-        <a href="index.html" class="sidebar-nav-item ">
-            <i class="fa-solid fa-house"></i>
-            <span>Courses</span>
-        </a>
-        <a href="my-learning.html" class="sidebar-nav-item">
-            <i class="fa-solid fa-book-open"></i>
-            <span>My Learning</span>
-        </a>
-        <a href="favorites.html" class="sidebar-nav-item">
-            <i class="fa-regular fa-heart"></i>
-            <span>Favorites</span>
-        </a>
-        <a href="profile.html" class="sidebar-nav-item active">
-            <i class="fa-regular fa-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
-        </aside>       
-    <!-- Main Content --> 
-        <main class="app-main profile-page">
-            <!-- Hero Section -->
-            <section class="container profile-hero">
-                <h1>A space that's yours.</h1>
-                <p>Your details, your goals, your story in the making.</p>
-            </section>
-            
-            <!-- Main Grid -->
-            <section class="container">
-                <div class="row g-4">
-                    <!-- Left Card: Avatar + Summary -->
-                    <div class="col-12 col-lg-3">
-                        <div class="profile-summary-card">
-                            <div class="profile-avatar" id="profile-avatar">AM</div>
-                            <h2 class="profile-summary-name" id="profile-summary-name">Learner</h2>
-                            <p class="profile-summary-role" id="profile-summary-role">Aspiring frontend developer</p>
-                            <div class="profile-stats">
-                                <div>
-                                    <span class="stat-number">3</span>
-                                    <span class="stat-label">Courses</span>
-                                </div>
-                                <div>
-                                    <span class="stat-number">0</span>
-                                    <span class="stat-label">Completed</span>
-                                </div>
+                        <div class="header-search" dir="ltr">
+                            <div class="input-group rounded-3 overflow-hidden border bg-light">
+                                <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </span>
+                                <input type="search"
+                                       class="form-control border-0 shadow-none bg-transparent"
+                                       placeholder="Search courses, instructors, levels..."
+                                       aria-label="Global search">
                             </div>
-                            <p class="profile-note">This is your demo learning space...</p>
                         </div>
-                    </div> 
-                    <!-- Right Card: Form -->
-                    <div class="col-12 col-lg-9">
-                        <div class="profile-form-card">
-                            <h2>Personal information</h2>
-                            <p>A little introduction to the person behind the progress.</p>
-                            
-     <form id="profile-form" class="needs-validation" novalidate>
-    <!-- Row: Full Name + Email -->
-    <div class="row g-3 mb-3">
-        <div class="col-12 col-md-6">
-            <label for="profile-full-name" class="form-label">Full name</label>
-            <input type="text"
-                   class="form-control"
-                   id="profile-full-name"
-                   name="fullName"
-                   autocomplete="name"
-                   required>
-            <div class="invalid-feedback">Please enter your full name.</div>
-        </div>
-        <div class="col-12 col-md-6">
-            <label for="profile-email" class="form-label">Email address</label>
-            <input type="email"
-                   class="form-control"
-                   id="profile-email"
-                   name="email"
-                   autocomplete="email"
-                   required>
-            <div class="invalid-feedback">Please enter a valid email address.</div>
-        </div>
-    </div>
 
-    <!-- Role -->
-    <div class="mb-3">
-        <label for="profile-role" class="form-label">Your headline</label>
-        <input type="text"
-               class="form-control"
-               id="profile-role"
-               name="role"
-               placeholder="e.g. Aspiring frontend developer"
-               required>
-        <div class="invalid-feedback">Please add a headline.</div>
-    </div>
+                        <div class="header-actions">
+                            <button class="app-theme-toggle" type="button" aria-label="Toggle theme">
+                                <i class="fa-regular fa-moon" aria-hidden="true"></i>
+                            </button>
 
-    <!-- About (optional) -->
-    <div class="mb-3">
-        <label for="profile-about" class="form-label">A little about you</label>
-        <textarea class="form-control"
-                  id="profile-about"
-                  name="about"
-                  rows="3"
-                  placeholder="What are you curious about? What would you love to build?"></textarea>
-    </div>
-
-    <!-- Weekly goal -->
-    <div class="mb-4">
-        <label for="profile-goal" class="form-label">Weekly learning goal</label>
-        <select class="form-select" id="profile-goal" name="weeklyGoal">
-            <option value="3">3 lessons per week · A gentle start</option>
-            <option value="5" selected>5 lessons per week · A steady pace</option>
-            <option value="7">7 lessons per week · Building momentum</option>
-            <option value="10">10 lessons per week · Power learner</option>
-        </select>
-    </div>
-
-    <!-- Actions -->
-    <div class="profile-actions d-flex flex-column flex-sm-row justify-content-end gap-2">
-        <button type="button" class="btn" id="profile-cancel">Cancel</button>
-        <button type="submit" class="btn" id="profile-save">
-            Save changes <i class="fa-solid fa-check ms-1" aria-hidden="true"></i>
-        </button>
-    </div>
-</form>
+                            <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
+                                <div class="avatar-icon">
+                                    <span class="avatar-initials" id="header-avatar">L</span>
+                                </div>
+                                <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
+                                <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
+                            </div>
                         </div>
+
                     </div>
-                <!-- Milestones Card (aligned with Form) -->
-                <div class="col-12 col-lg-9 offset-lg-3">
-                    <div class="profile-milestones-card mb-4">
-                        <h2 class="profile-milestones-title mb-3">Your milestones</h2>
+                </div>
+            </header>
 
-                        <div class="profile-milestone-item">
-                            <div class="profile-milestone-icon" aria-hidden="true">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <main class="app-main profile-page">
+                <section class="container profile-hero">
+                    <h1>A space that's yours.</h1>
+                    <p>Your details, your goals, your story in the making.</p>
+                </section>
+
+                <section class="container">
+                    <div class="row g-4">
+                        <div class="col-12 col-lg-3">
+                            <div class="profile-summary-card">
+                                <div class="profile-avatar" id="profile-avatar">AM</div>
+                                <h2 class="profile-summary-name" id="profile-summary-name">Learner</h2>
+                                <p class="profile-summary-role" id="profile-summary-role">Aspiring frontend developer</p>
+                                <div class="profile-stats">
+                                    <div>
+                                        <span class="stat-number">3</span>
+                                        <span class="stat-label">Courses</span>
+                                    </div>
+                                    <div>
+                                        <span class="stat-number">0</span>
+                                        <span class="stat-label">Completed</span>
+                                    </div>
+                                </div>
+                                <p class="profile-note">This is your demo learning space...</p>
                             </div>
-                            <div>
-                                <h3 class="profile-milestone-item-title mb-1">The first step is already yours.</h3>
-                                <p class="profile-milestone-item-text mb-0">Finish your first course to earn a completion record.</p>
+                        </div>
+
+                        <div class="col-12 col-lg-9">
+                            <div class="profile-form-card">
+                                <h2>Personal information</h2>
+                                <p>A little introduction to the person behind the progress.</p>
+
+                                <form id="profile-form" class="needs-validation" novalidate>
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-12 col-md-6">
+                                            <label for="profile-full-name" class="form-label">Full name</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="profile-full-name"
+                                                   name="fullName"
+                                                   autocomplete="name"
+                                                   required>
+                                            <div class="invalid-feedback">Please enter your full name.</div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="profile-email" class="form-label">Email address</label>
+                                            <input type="email"
+                                                   class="form-control"
+                                                   id="profile-email"
+                                                   name="email"
+                                                   autocomplete="email"
+                                                   required>
+                                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="profile-role" class="form-label">Your headline</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="profile-role"
+                                               name="role"
+                                               placeholder="e.g. Aspiring frontend developer"
+                                               required>
+                                        <div class="invalid-feedback">Please add a headline.</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="profile-about" class="form-label">A little about you</label>
+                                        <textarea class="form-control"
+                                                  id="profile-about"
+                                                  name="about"
+                                                  rows="3"
+                                                  placeholder="What are you curious about? What would you love to build?"></textarea>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="profile-goal" class="form-label">Weekly learning goal</label>
+                                        <select class="form-select" id="profile-goal" name="weeklyGoal">
+                                            <option value="3">3 lessons per week · A gentle start</option>
+                                            <option value="5" selected>5 lessons per week · A steady pace</option>
+                                            <option value="7">7 lessons per week · Building momentum</option>
+                                            <option value="10">10 lessons per week · Power learner</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="profile-actions d-flex flex-column flex-sm-row justify-content-end gap-2">
+                                        <button type="button" class="btn" id="profile-cancel">Cancel</button>
+                                        <button type="submit" class="btn" id="profile-save">
+                                            Save changes <i class="fa-solid fa-check ms-1" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-9 offset-lg-3">
+                            <div class="profile-milestones-card mb-4">
+                                <h2 class="profile-milestones-title mb-3">Your milestones</h2>
+                                <div class="profile-milestone-item">
+                                    <div class="profile-milestone-icon" aria-hidden="true">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="profile-milestone-item-title mb-1">The first step is already yours.</h3>
+                                        <p class="profile-milestone-item-text mb-0">Finish your first course to earn a completion record.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
+            </main>
 
+            <footer class="bg-white border-top py-3 mt-auto">
+                <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                    <span class="text-muted small">&copy; 2024 MyCourses. All rights reserved.</span>
+                    <span class="text-muted small">Learn. Build. Grow.</span>
                 </div>
-            </section>  
-
-        </main>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="bg-white border-top py-3 mt-auto">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <span class="text-muted small">&copy; 2024 MyCourses. All rights reserved.</span>
-            <span class="text-muted small">Learn. Build. Grow.</span>
+            </footer>
         </div>
-    </footer>    
-    <!-- Profile Toast -->
+    </div>
+
     <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
-    <div id="profile-toast" class="toast ml-profile-toast border-0" role="status" aria-live="polite" aria-atomic="true">
-        <div class="d-flex">
-            <div id="profile-toast-message" class="toast-body">Profile updated.</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        <div id="profile-toast" class="toast ml-profile-toast border-0" role="status" aria-live="polite" aria-atomic="true">
+            <div class="d-flex">
+                <div id="profile-toast-message" class="toast-body">Profile updated.</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
     </div>
-</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/profile-storage.js"></script>
+    <script src="js/favorites-storage.js"></script>
+        <script src="js/navigation.js"></script>
     <script src="js/profile.js"></script>
 </body>
 </html>
