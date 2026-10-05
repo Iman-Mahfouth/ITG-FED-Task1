@@ -120,7 +120,8 @@ function normalizeCourse(apiCourse) {
     };
 }
 
-/*  Fetch Laye */
+/* 
+   Fetch Laye */
 async function loadCoursesFromApi() {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), COURSES_API_TIMEOUT_MS);
