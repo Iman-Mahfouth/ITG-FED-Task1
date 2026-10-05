@@ -3,18 +3,25 @@
    Renders courses loaded from the Education API.
    ========================================================================== */
 
-/* ==========================================================================
-   State
-   ========================================================================== */
+const state = {
+    courses: [],
+    eventsBound: false
+};
+
 let searchDebounceTimer;
+
+/* ==========================================================================
+   Helpers
+   ========================================================================== */
 function joinMeta(parts, sep = ' • ') {
     return parts
         .map(p => (p == null ? '' : String(p).trim()))
         .filter(Boolean)
         .join(sep);
 }
+
 /* ==========================================================================
-   Card Builders (Unchanged API — consume normalized model)
+   Card Builders (consume normalized model — no API knowledge)
    ========================================================================== */
 function createIconElement(visual) {
     if (!visual) return document.createTextNode('');
@@ -91,7 +98,6 @@ function createCourseCard(course) {
     infoDiv.append(desktopTitle, badgeContainer);
     headerDiv.append(desktopIconDiv, infoDiv);
 
-    /* --- Details: only render rows that actually have values --- */
     const detailsDiv = document.createElement('div');
     detailsDiv.className = 'course-details';
 
@@ -240,6 +246,16 @@ function setModalField(valueElId, value) {
     valueEl.textContent = hasValue ? value : '';
 }
 
+function setDescriptionBlock(text) {
+    const block = document.getElementById('modal-description-block');
+    const descEl = document.getElementById('modal-description');
+    if (!block || !descEl) return;
+
+    const hasValue = typeof text === 'string' && text.trim() !== '';
+    block.classList.toggle('d-none', !hasValue);
+    descEl.textContent = hasValue ? text : '';
+}
+
 function populateModal(course) {
     const iconContainer = document.getElementById('modal-icon');
     if (iconContainer) {
@@ -260,17 +276,7 @@ function populateModal(course) {
     setModalField('modal-duration',   course.duration);
     setModalField('modal-level',      course.level);
 
-    const descEl = document.getElementById('modal-description');
-    if (descEl) {
-        const descriptionBlock = descEl.closest('div');
-        if (course.description) {
-            descEl.textContent = course.description;
-            if (descriptionBlock) descriptionBlock.classList.remove('d-none');
-        } else {
-            descEl.textContent = '';
-            if (descriptionBlock) descriptionBlock.classList.add('d-none');
-        }
-    }
+    setDescriptionBlock(course.description);
 }
 
 function openCourseDetails(course) {
@@ -322,7 +328,6 @@ function populateCategoryFilter(courses) {
 
     const previousValue = select.value || 'All';
 
-    // Unique, sorted categories — derived from the normalized model
     const categories = Array.from(
         new Set(courses.map(c => c.category).filter(Boolean))
     ).sort((a, b) => a.localeCompare(b));
@@ -343,12 +348,11 @@ function populateCategoryFilter(courses) {
 
     select.replaceChildren(fragment);
 
-    // Preserve previous selection when it still exists
     const stillValid = previousValue === 'All' || categories.includes(previousValue);
     select.value = stillValid ? previousValue : 'All';
 }
 
-function resetFilters(courses, { resetCategory = false } = {}) {
+function resetFilters(getCourses, { resetCategory = false } = {}) {
     const searchInput = document.getElementById('search-input');
     const categoryFilter = document.getElementById('category-filter');
     if (!searchInput || !categoryFilter) return;
@@ -358,35 +362,35 @@ function resetFilters(courses, { resetCategory = false } = {}) {
 
     if (resetCategory) categoryFilter.value = 'All';
 
-    applyFilters(courses);
+    applyFilters(getCourses());
     searchInput.focus();
 }
 
 /* ==========================================================================
    Event Setup
    ========================================================================== */
-function setupSearch(courses) {
+function setupSearch(getCourses) {
     const searchInput = document.getElementById('search-input');
     const clearButton = document.getElementById('clear-search');
     if (!searchInput) return;
 
     searchInput.addEventListener('input', () => {
         clearTimeout(searchDebounceTimer);
-        searchDebounceTimer = setTimeout(() => applyFilters(courses), 300);
+        searchDebounceTimer = setTimeout(() => applyFilters(getCourses()), 300);
     });
 
     if (clearButton) {
-        clearButton.addEventListener('click', () => resetFilters(courses));
+        clearButton.addEventListener('click', () => resetFilters(getCourses));
     }
 }
 
-function setupCategoryFilter(courses) {
+function setupCategoryFilter(getCourses) {
     const categoryFilter = document.getElementById('category-filter');
     if (!categoryFilter) return;
-    categoryFilter.addEventListener('change', () => applyFilters(courses));
+    categoryFilter.addEventListener('change', () => applyFilters(getCourses()));
 }
 
-function setupCourseActions(courses) {
+function setupCourseActions(getCourses) {
     const container = document.getElementById('courses-container');
     if (!container) return;
 
@@ -395,47 +399,56 @@ function setupCourseActions(courses) {
         if (!button) return;
 
         const courseId = button.dataset.courseId;
-        const course = courses.find(c => c.id === courseId);
+        const course = getCourses().find(c => c.id === courseId);
         if (course) openCourseDetails(course);
     });
 }
 
-function setupClearFilters(courses) {
+function setupClearFilters(getCourses) {
     const clearBtn = document.getElementById('clear-filters');
     if (!clearBtn) return;
-    clearBtn.addEventListener('click', () => resetFilters(courses, { resetCategory: true }));
+    clearBtn.addEventListener('click', () => resetFilters(getCourses, { resetCategory: true }));
+}
+
+function bindEvents() {
+    const getCourses = () => state.courses;
+    setupSearch(getCourses);
+    setupCategoryFilter(getCourses);
+    setupCourseActions(getCourses);
+    setupClearFilters(getCourses);
 }
 
 /* ==========================================================================
-   Init
+   Data Loading
    ========================================================================== */
-async function init() {
+async function loadCourses() {
     renderLoadingSkeleton();
 
     try {
-        const courses = await loadCoursesFromApi();
+        state.courses = await loadCoursesFromApi();
 
-        populateCategoryFilter(courses);
-        setupSearch(courses);
-        setupCategoryFilter(courses);
-        setupCourseActions(courses);
-        setupClearFilters(courses);
-        applyFilters(courses);
+        populateCategoryFilter(state.courses);
+        applyFilters(state.courses);
 
         // Sync sidebar badge
         document.dispatchEvent(new CustomEvent('nav:badge', {
-            detail: { id: 'explore', value: courses.length }
+            detail: { id: 'explore', value: state.courses.length }
         }));
-
-        return courses;
     } catch (error) {
-        console.error('Failed to initialize courses:', error);
+        console.error('Failed to load courses:', error);
         renderError(
             'We couldn\'t load the courses. Please check your connection and try again.',
-            () => init()
+            loadCourses // retry re-runs ONLY the data layer, not the event bindings
         );
-        return [];
     }
+}
+
+function init() {
+    if (!state.eventsBound) {
+        bindEvents();
+        state.eventsBound = true;
+    }
+    loadCourses();
 }
 
 init();
