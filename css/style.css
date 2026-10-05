@@ -482,3 +482,32 @@ header.navbar {
         display: none;
     }
 }
+/* ==========================================================================
+   Skeleton Loading
+   ========================================================================== */
+.skeleton-box {
+    background: linear-gradient(90deg, #eef1f4 0%, #f7f9fb 50%, #eef1f4 100%);
+    background-size: 200% 100%;
+    border-radius: 0.35rem;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-square {
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 0.75rem;
+}
+
+.skeleton-line {
+    height: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-line--short {
+    width: 40%;
+}
+
+@keyframes skeleton-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
