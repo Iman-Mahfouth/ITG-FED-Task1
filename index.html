@@ -107,12 +107,9 @@
                         </div>
 
                         <div class="col-12 col-md-4 col-lg-3">
-                            <select id="category-filter" class="form-select rounded-3 py-2 border shadow-sm text-secondary bg-white" aria-label="Category filter">
-                                <option value="All" selected>All Categories</option>
-                                <option value="Frontend">Frontend</option>
-                                <option value="Backend">Backend</option>
-                                <option value="Database">Database</option>
-                            </select>
+                            <select id="category-filter" class="form-select rounded-3 border shadow-sm" aria-label="Filter by category">
+    <option value="All" selected>All Categories</option>
+</select>
                         </div>
                     </div>
                 </section>
@@ -175,10 +172,10 @@
                         </div>
                     </div>
                     <hr class="my-3">
-                    <div>
-                        <h6 class="fw-bold text-dark mb-2">Description</h6>
-                        <p id="modal-description" class="text-muted mb-0"></p>
-                    </div>
+<div id="modal-description-block">
+    <h6 class="fw-bold text-dark mb-2">Description</h6>
+    <p id="modal-description" class="text-muted mb-0"></p>
+</div>
                 </div>
                 <div class="modal-footer border-0 pt-0 px-4 pb-4 justify-content-center justify-content-md-end">
                     <button type="button" class="btn btn-primary rounded-3 fw-medium modal-close-btn" data-bs-dismiss="modal">Close</button>
@@ -193,6 +190,7 @@
     <script src="js/navigation.js"></script>
     <script src="js/course-card.js"></script>
     <script src="js/favorites-storage.js"></script>
+    <script src="js/courses-api.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
