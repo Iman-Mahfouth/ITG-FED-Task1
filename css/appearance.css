@@ -1,0 +1,704 @@
+/* ==========================================================================
+   Appearance Preferences (FED-40)
+   ========================================================================== */
+
+.app-theme-toggle .theme-toggle-sun  { display: none; }
+.app-theme-toggle .theme-toggle-moon { display: none; }
+
+[data-bs-theme="light"] .app-theme-toggle .theme-toggle-moon { display: inline-block; }
+[data-bs-theme="dark"]  .app-theme-toggle .theme-toggle-sun  { display: inline-block; }
+
+/* --------------------------------------------------------------------------
+   2. Profile — Appearance summary card
+   -------------------------------------------------------------------------- */
+.profile-appearance-card {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-appearance-icon {
+    align-items: center;
+    background: var(--app-green-bg, #e8f3e0);
+    border-radius: 0.75rem;
+    color: var(--app-green-dark, #496714);
+    display: flex;
+    flex: 0 0 3rem;
+    font-size: 1.15rem;
+    height: 3rem;
+    justify-content: center;
+}
+
+.profile-appearance-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-appearance-title {
+    color: var(--app-ink, #212a30);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.15rem;
+}
+
+.profile-appearance-subtitle {
+    color: var(--app-muted, #66707a);
+    font-size: 0.8rem;
+    margin: 0 0 0.35rem;
+}
+
+.profile-appearance-current {
+    color: var(--app-ink, #212a30);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.profile-appearance-button {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #dfe4df;
+    border-radius: 0.6rem;
+    color: var(--app-ink, #212a30);
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-appearance-button:hover {
+    background: #f7f8f7;
+    border-color: #b8beb8;
+}
+
+@media (max-width: 575.98px) {
+    .profile-appearance-card {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        padding: 1.25rem;
+    }
+
+    .profile-appearance-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   3. Appearance Modal 
+   -------------------------------------------------------------------------- */
+.appearance-modal {
+    border: 1px solid #e6e8e6;
+    border-radius: 1.25rem;
+    padding: 1.25rem 1.5rem;
+}
+
+.appearance-modal .modal-header {
+    align-items: flex-start;
+    padding: 0.5rem 0 1rem;
+}
+
+.appearance-modal-eyebrow {
+    color: var(--app-muted, #66707a);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+}
+
+.appearance-modal-title {
+    color: var(--app-ink, #212a30);
+    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+}
+
+.appearance-modal-subtitle {
+    color: var(--app-muted, #66707a);
+    font-size: 0.85rem;
+    margin: 0;
+    max-width: 46rem;
+}
+
+.appearance-modal .modal-body {
+    padding: 0.5rem 0 1rem;
+}
+
+.appearance-modal-section-label {
+    color: var(--app-ink, #212a30);
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 0.85rem;
+}
+
+.appearance-options {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 576px) {
+    .appearance-options {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.appearance-option {
+    cursor: pointer;
+    display: block;
+    margin: 0;
+}
+
+.appearance-option-card {
+    background: #fff;
+    border: 1.5px solid #e6e8e6;
+    border-radius: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 0.9rem;
+    position: relative;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.appearance-option input:checked + .appearance-option-card {
+    border-color: var(--app-green, #c4e538);
+    box-shadow: 0 0 0 3px rgba(196, 229, 56, 0.2);
+}
+
+.appearance-option-card:hover {
+    border-color: #c6cdc6;
+}
+
+/* ----- Preview mockups ----- */
+.appearance-option-preview {
+    border-radius: 0.6rem;
+    display: flex;
+    gap: 0.35rem;
+    height: 5.5rem;
+    overflow: hidden;
+    padding: 0.5rem;
+}
+
+.appearance-option-preview-sidebar {
+    border-radius: 0.35rem;
+    flex: 0 0 22%;
+}
+
+.appearance-option-preview-content {
+    border-radius: 0.35rem;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.4rem;
+}
+
+.appearance-option-preview-toolbar {
+    border-radius: 0.2rem;
+    flex: 0 0 20%;
+}
+
+.appearance-option-preview-cards {
+    display: flex;
+    flex: 1;
+    gap: 0.25rem;
+}
+
+.appearance-option-preview-cards > div {
+    border-radius: 0.2rem;
+    flex: 1;
+}
+
+/* Light preview */
+.appearance-option-preview--light { background: #f2f3f5; }
+.appearance-option-preview--light .appearance-option-preview-sidebar { background: #1a1d21; }
+.appearance-option-preview--light .appearance-option-preview-content { background: #ffffff; }
+.appearance-option-preview--light .appearance-option-preview-toolbar { background: #e8ebee; }
+.appearance-option-preview--light .appearance-option-preview-cards > div { background: #eef1f4; }
+
+/* Dark preview */
+.appearance-option-preview--dark { background: #0e1114; }
+.appearance-option-preview--dark .appearance-option-preview-sidebar { background: #05080a; }
+.appearance-option-preview--dark .appearance-option-preview-content { background: #1a1e22; }
+.appearance-option-preview--dark .appearance-option-preview-toolbar { background: #2a3036; }
+.appearance-option-preview--dark .appearance-option-preview-cards > div { background: #262c32; }
+
+.appearance-option-preview--system {
+    background: linear-gradient(90deg, #f2f3f5 0 50%, #0e1114 50% 100%);
+}
+.appearance-option-preview--system .appearance-option-preview-sidebar {
+    background: linear-gradient(90deg, #1a1d21 0 50%, #05080a 50% 100%);
+}
+.appearance-option-preview--system .appearance-option-preview-content {
+    background: linear-gradient(90deg, #ffffff 0 50%, #1a1e22 50% 100%);
+}
+.appearance-option-preview--system .appearance-option-preview-toolbar {
+    background: linear-gradient(90deg, #e8ebee 0 50%, #2a3036 50% 100%);
+}
+.appearance-option-preview--system .appearance-option-preview-cards > div {
+    background: linear-gradient(90deg, #eef1f4 0 50%, #262c32 50% 100%);
+}
+
+/* ----- Option body ----- */
+.appearance-option-body {
+    align-items: center;
+    display: grid;
+    gap: 0.15rem 0.5rem;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    padding: 0 0.15rem;
+}
+
+.appearance-option-icon {
+    align-items: center;
+    color: var(--app-ink, #212a30);
+    display: flex;
+    font-size: 0.95rem;
+    grid-row: 1 / span 2;
+    height: 1.4rem;
+    justify-content: center;
+    width: 1.4rem;
+}
+
+.appearance-option-title {
+    color: var(--app-ink, #212a30);
+    font-size: 0.88rem;
+    font-weight: 700;
+    grid-column: 2;
+    line-height: 1.15;
+}
+
+.appearance-option-desc {
+    color: var(--app-muted, #66707a);
+    font-size: 0.72rem;
+    grid-column: 2;
+    line-height: 1.3;
+}
+
+.appearance-option-radio {
+    background: #fff;
+    border: 1.5px solid #c6cdc6;
+    border-radius: 50%;
+    height: 1.1rem;
+    position: absolute;
+    right: 0.9rem;
+    top: 0.9rem;
+    width: 1.1rem;
+}
+
+.appearance-option input:checked + .appearance-option-card .appearance-option-radio {
+    background: var(--app-green, #c4e538);
+    border-color: var(--app-green, #c4e538);
+}
+
+.appearance-option input:checked + .appearance-option-card .appearance-option-radio::after {
+    background: #1d2b25;
+    border-radius: 50%;
+    content: '';
+    height: 0.4rem;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.4rem;
+}
+
+/* ----- Modal footer ----- */
+.appearance-modal .modal-footer {
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0 0.25rem;
+}
+
+.appearance-modal-footer-info p {
+    color: var(--app-muted, #66707a);
+    font-size: 0.78rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.appearance-modal-footer-info strong {
+    color: var(--app-ink, #212a30);
+}
+
+.appearance-modal-done {
+    background: var(--app-green, #c4e538);
+    border: 0;
+    border-radius: 0.6rem;
+    color: #1d2b25;
+    font-weight: 700;
+    padding: 0.6rem 1.1rem;
+}
+
+.appearance-modal-done:hover {
+    background: #b6d633;
+    color: #1d2b25;
+}
+
+@media (max-width: 575.98px) {
+    .appearance-modal .modal-footer {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .appearance-modal-done {
+        width: 100%;
+    }
+
+    .appearance-modal-footer-info {
+        text-align: center;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   4. Toast 
+   -------------------------------------------------------------------------- */
+.appearance-toast {
+    background: #1a1e22;
+    border: 1px solid #2f353d;
+    border-radius: 0.7rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    color: #f1f3f5;
+    font-size: 0.85rem;
+    max-width: 320px;
+    overflow: hidden;
+}
+
+.appearance-toast .toast-body {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding: 0.7rem 0.95rem;
+}
+
+.appearance-toast .btn-close {
+    filter: invert(1) brightness(1.5);
+    font-size: 0.6rem;
+    opacity: 0.55;
+    padding: 0.85rem;
+}
+
+.appearance-toast .btn-close:hover {
+    opacity: 1;
+}
+
+[data-bs-theme="dark"] .appearance-toast {
+    background: #0f1114;
+    border-color: #2a3036;
+}
+
+/* --------------------------------------------------------------------------
+   5. Dark-mode overrides
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   5.1 Semantic token remap 
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] {
+    --app-ink:        #e6e8e6;   /* was #212a30 — flip to readable light */
+    --app-muted:      #9aa3ad;   /* was #66707a — brighten for dark bg    */
+    --app-green:      #c4e538;   /* brand green unchanged                  */
+    --app-green-dark: #c4e538;   /* brighter variant for text on dark bg   */
+    --app-green-bg:   #2a3520;   /* subtle green surface for dark theme    */
+}
+
+/* --------------------------------------------------------------------------
+   5.2 Bootstrap utility overrides — keep existing HTML untouched
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .bg-white { background-color: var(--bs-body-bg)      !important; }
+[data-bs-theme="dark"] .bg-light { background-color: var(--bs-tertiary-bg)  !important; }
+[data-bs-theme="dark"] .text-dark { color: var(--bs-body-color)             !important; }
+
+/* --------------------------------------------------------------------------
+   5.3 Welcome card (index.html)
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .welcome-card {
+    background-color: #1c2024;
+    border-color: #2a3036;
+}
+[data-bs-theme="dark"] .welcome-badge { color: var(--app-green); }
+
+/* --------------------------------------------------------------------------
+   5.4 Shared learning/favorites cards (cards.css)
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .ml-card {
+    background: #1a1e22;
+    border-color: #2a3036;
+}
+
+[data-bs-theme="dark"] .ml-card-title,
+[data-bs-theme="dark"] .ml-card-instructor,
+[data-bs-theme="dark"] .ml-card-instructor-name {
+    color: #e6e8e6;
+}
+
+[data-bs-theme="dark"] .ml-card-category {
+    color: var(--app-green);
+}
+
+[data-bs-theme="dark"] .ml-card-rating {
+    color: #9aa3ad;
+}
+[data-bs-theme="dark"] .ml-card-rating i { color: #d2a33d; }
+
+[data-bs-theme="dark"] .ml-card-avatar {
+    background: #2a3036;
+    color: var(--app-green);
+}
+
+[data-bs-theme="dark"] .ml-card-progress-track { background: #2a3036; }
+[data-bs-theme="dark"] .ml-card-progress-fill  { background: var(--app-green); }
+[data-bs-theme="dark"] .ml-card-progress-label { color: #9aa3ad; }
+
+[data-bs-theme="dark"] .ml-card-action {
+    background: var(--app-green);
+    color: #1d2b25;
+}
+
+/* --------------------------------------------------------------------------
+   5.5 Favorites page (favorites.css)
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .ml-favorites-filter-pill,
+[data-bs-theme="dark"] .ml-favorites-dropdown {
+    background: #232830;
+    border-color: #2f353d;
+    color: #e6e8e6;
+}
+
+[data-bs-theme="dark"] .ml-favorites-filter-pill--active {
+    background: var(--app-green);
+    border-color: var(--app-green);
+    color: #1d2b25;
+}
+
+[data-bs-theme="dark"] .ml-favorites-browse-link { color: #e6e8e6; }
+
+[data-bs-theme="dark"] .ml-favorites-card-footer {
+    border-top-color: #2a3036;
+}
+[data-bs-theme="dark"] .ml-favorites-card-action { color: var(--app-green); }
+
+[data-bs-theme="dark"] .ml-empty-state {
+    background: #1a1e22;
+    border-color: #2f353d;
+}
+[data-bs-theme="dark"] .ml-empty-state-icon     { color: var(--app-green); }
+[data-bs-theme="dark"] .ml-empty-state-title    { color: #e6e8e6; }
+[data-bs-theme="dark"] .ml-empty-state-subtitle { color: #9aa3ad; }
+[data-bs-theme="dark"] .ml-empty-state-action {
+    background: var(--app-green);
+    color: #1d2b25;
+}
+
+/* --------------------------------------------------------------------------
+   5.6 My Learning page 
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .my-learning-hero-title    { color: #e6e8e6; }
+[data-bs-theme="dark"] .my-learning-hero-subtitle { color: #9aa3ad; }
+
+[data-bs-theme="dark"] .my-learning-momentum-card {
+    background-color: #1e2416;
+    border-color: #33402a;
+}
+[data-bs-theme="dark"] .my-learning-momentum-badge     { color: var(--app-green); }
+[data-bs-theme="dark"] .my-learning-momentum-title     { color: #e6e8e6; }
+[data-bs-theme="dark"] .my-learning-momentum-subtitle  { color: #9aa3ad; }
+
+[data-bs-theme="dark"] .my-learning-stat-card {
+    background-color: #1a1e22;
+    border-color: #2a3036;
+}
+[data-bs-theme="dark"] .my-learning-stat-number { color: #e6e8e6; }
+[data-bs-theme="dark"] .my-learning-stat-label  { color: #9aa3ad; }
+
+[data-bs-theme="dark"] .my-learning-tabs      { border-bottom-color: #2a3036; }
+[data-bs-theme="dark"] .my-learning-tab       { color: #9aa3ad; }
+[data-bs-theme="dark"] .my-learning-tab--active {
+    color: #e6e8e6;
+    border-bottom-color: var(--app-green);
+}
+
+[data-bs-theme="dark"] .my-learning-stat-icon--green  { background-color: #2a3520; color: #c4e538; }
+[data-bs-theme="dark"] .my-learning-stat-icon--purple { background-color: #2a2035; color: #c4b5fd; }
+[data-bs-theme="dark"] .my-learning-stat-icon--yellow { background-color: #3a2e15; color: #d2a33d; }
+[data-bs-theme="dark"] .my-learning-stat-icon--blue   { background-color: #1a3035; color: #7dd3fc; }
+
+/* --------------------------------------------------------------------------
+   5.7 Profile page 
+   -------------------------------------------------------------------------- */
+
+[data-bs-theme="dark"] .profile-summary-card,
+[data-bs-theme="dark"] .profile-form-card,
+[data-bs-theme="dark"] .profile-milestones-card {
+    background: #1a1e22;
+    border-color: #2a3036;
+}
+
+[data-bs-theme="dark"] .profile-summary-card hr { border-top-color: #2a3036; }
+[data-bs-theme="dark"] .profile-summary-name,
+[data-bs-theme="dark"] .stat-number             { color: #e6e8e6; }
+[data-bs-theme="dark"] .profile-summary-role,
+[data-bs-theme="dark"] .stat-label,
+[data-bs-theme="dark"] .profile-note            { color: #9aa3ad; }
+
+[data-bs-theme="dark"] .profile-form-card h2,
+[data-bs-theme="dark"] .profile-form-card label,
+[data-bs-theme="dark"] .profile-milestones-title,
+[data-bs-theme="dark"] .profile-milestone-item-title {
+    color: #e6e8e6;
+}
+[data-bs-theme="dark"] .profile-form-card > p,
+[data-bs-theme="dark"] .profile-milestone-item-text {
+    color: #9aa3ad;
+}
+
+[data-bs-theme="dark"] .profile-form-card .form-control,
+[data-bs-theme="dark"] .profile-form-card .form-select {
+    background-color: #14181c;
+    border-color: #2f353d;
+    color: #e6e8e6;
+}
+[data-bs-theme="dark"] .profile-form-card .form-control::placeholder {
+    color: #6b7280;
+}
+[data-bs-theme="dark"] .profile-form-card .form-control:focus,
+[data-bs-theme="dark"] .profile-form-card .form-select:focus {
+    background-color: #1a1e22;
+    border-color: var(--app-green);
+    box-shadow: 0 0 0 0.15rem rgba(196, 229, 56, 0.15);
+}
+
+[data-bs-theme="dark"] .profile-form-card .form-control:valid,
+[data-bs-theme="dark"] .profile-form-card .form-select:valid,
+[data-bs-theme="dark"] .profile-form-card .form-control:invalid,
+[data-bs-theme="dark"] .profile-form-card .form-select:invalid,
+[data-bs-theme="dark"] .was-validated .profile-form-card .form-control:valid,
+[data-bs-theme="dark"] .was-validated .profile-form-card .form-select:valid {
+    border-color: #2f353d;
+    background-image: none;
+}
+
+[data-bs-theme="dark"] .profile-form-card .form-control:-webkit-autofill,
+[data-bs-theme="dark"] .profile-form-card .form-control:-webkit-autofill:hover,
+[data-bs-theme="dark"] .profile-form-card .form-control:-webkit-autofill:focus,
+[data-bs-theme="dark"] .profile-form-card .form-select:-webkit-autofill,
+[data-bs-theme="dark"] .profile-form-card .form-select:-webkit-autofill:hover,
+[data-bs-theme="dark"] .profile-form-card .form-select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #e6e8e6;
+    -webkit-box-shadow: 0 0 0 1000px #14181c inset;
+    box-shadow: 0 0 0 1000px #14181c inset;
+    caret-color: #e6e8e6;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ---- Action buttons ---- */
+[data-bs-theme="dark"] #profile-save {
+    background: var(--app-green);
+    border-color: var(--app-green);
+    color: #1d2b25;
+}
+[data-bs-theme="dark"] #profile-save:hover {
+    background: #b6d633;
+    border-color: #b6d633;
+}
+
+[data-bs-theme="dark"] #profile-cancel {
+    background: #232830;
+    border-color: #2f353d;
+    color: #e6e8e6;
+}
+[data-bs-theme="dark"] #profile-cancel:hover {
+    background: #2a3036;
+    border-color: #3a4149;
+}
+
+[data-bs-theme="dark"] .profile-actions { border-top-color: #2a3036; }
+
+[data-bs-theme="dark"] .profile-milestone-icon {
+    background-color: #3a2e15;
+    color: #d2a33d;
+}
+
+/* ---- Appearance summary card ---- */
+[data-bs-theme="dark"] .profile-appearance-card {
+    background: #1a1e22;
+    border-color: #2a3036;
+}
+[data-bs-theme="dark"] .profile-appearance-icon {
+    background: #2a3520;
+    color: var(--app-green);
+}
+[data-bs-theme="dark"] .profile-appearance-button {
+    background: #232830;
+    border-color: #2f353d;
+    color: #e6e8e6;
+}
+[data-bs-theme="dark"] .profile-appearance-button:hover {
+    background: #2a3036;
+}
+
+/* --------------------------------------------------------------------------
+   5.8 Appearance modal (dark)
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .appearance-modal {
+    background: #14181c;
+    border-color: #2a3036;
+}
+[data-bs-theme="dark"] .appearance-option-card {
+    background: #1c2126;
+    border-color: #2a3036;
+}
+[data-bs-theme="dark"] .appearance-option-card:hover {
+    border-color: #3a4149;
+}
+[data-bs-theme="dark"] .appearance-option-icon,
+[data-bs-theme="dark"] .appearance-option-title {
+    color: #e6e8e6;
+}
+[data-bs-theme="dark"] .appearance-option-radio {
+    background: #0f1114;
+    border-color: #3a4149;
+}
+[data-bs-theme="dark"] .appearance-option input:checked + .appearance-option-card .appearance-option-radio {
+    background: var(--app-green);
+    border-color: var(--app-green);
+}
+[data-bs-theme="dark"] .appearance-option input:checked + .appearance-option-card .appearance-option-radio::after {
+    background: #0f1114;
+}
+
+/* --------------------------------------------------------------------------
+   5.9 Header search + inputs
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .header-search .input-group {
+    background-color: #1c2024 !important;
+    border-color: #2a3036 !important;
+}
+[data-bs-theme="dark"] .header-search .input-group:focus-within {
+    background-color: #232830 !important;
+    border-color: var(--app-green) !important;
+    box-shadow: 0 0 0 0.15rem rgba(196, 229, 56, 0.15);
+}
+[data-bs-theme="dark"] .header-search .form-control::placeholder {
+    color: #6b7280;
+}
+
+/* --------------------------------------------------------------------------
+   5.10 Skeleton 
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] .skeleton-box {
+    background: linear-gradient(90deg, #1a1e22 0%, #232830 50%, #1a1e22 100%);
+    background-size: 200% 100%;
+}
