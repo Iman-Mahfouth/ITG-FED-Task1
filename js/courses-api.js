@@ -45,6 +45,60 @@ const CATEGORY_STYLES = Object.freeze({
     'Programs':                     STYLE_PRESETS.programs
 });
 
+
+const CARD_PRESENTATION = Object.freeze({
+    'Data & Technology':            { bannerTheme: 'blue',   techTheme: 'success'   },
+    'Policy & Economics':           { bannerTheme: 'yellow', techTheme: 'warning'   },
+    'Philosophy, Law & Governance': { bannerTheme: 'orange', techTheme: 'info'      },
+    'Gender & Equity':              { bannerTheme: 'purple', techTheme: 'danger'    },
+    'Gender & Social':              { bannerTheme: 'purple', techTheme: 'danger'    },
+    'MEL & Research':               { bannerTheme: 'purple', techTheme: 'info'      },
+    'Health & Communication':       { bannerTheme: 'blue',   techTheme: 'danger'    },
+    'Flagship Courses':             { bannerTheme: 'orange', techTheme: 'warning'   },
+    'Flagship':                     { bannerTheme: 'orange', techTheme: 'warning'   },
+    '101 Foundational Courses':     { bannerTheme: 'blue',   techTheme: 'info'      },
+    '101 Foundational Course':      { bannerTheme: 'blue',   techTheme: 'info'      },
+    'Foundational (101)':           { bannerTheme: 'blue',   techTheme: 'info'      },
+    'Practice Workbook':            { bannerTheme: 'purple', techTheme: 'secondary' },
+    'Interactive Labs':             { bannerTheme: 'orange', techTheme: 'warning'   },
+    'Programs':                     { bannerTheme: 'purple', techTheme: 'info'      }
+});
+
+const DEFAULT_CARD_PRESENTATION = Object.freeze({
+    bannerTheme: 'orange',
+    techTheme:   'secondary'
+});
+
+function getCardPresentation(category) {
+    return CARD_PRESENTATION[category] || DEFAULT_CARD_PRESENTATION;
+}
+
+function deriveCardTag(apiCourse) {
+    const tier   = asTrimmedString(apiCourse.tier).toLowerCase();
+    const format = asTrimmedString(apiCourse.format);
+
+    if (tier === 'flagship' || /flagship/i.test(format)) return 'Flagship';
+    if (tier === '101' || /101/i.test(format))           return '101';
+    return 'New';
+}
+function deriveDuration(apiCourse) {
+    const slides = Number(apiCourse.slides);
+    if (!Number.isFinite(slides) || slides <= 0) return '';
+
+    const minutes = slides * 2;
+    if (minutes < 60) return `~${minutes} min`;
+
+    const hours = Math.round((minutes / 60) * 10) / 10;
+    return `~${hours} hours`;
+}
+
+function deriveCodeSnippet(apiCourse) {
+    const title = asTrimmedString(apiCourse.title);
+    if (!title) return '';
+    const short = title.length > 42 ? `${title.slice(0, 39)}…` : title;
+    return `// ${short}`;
+}
+
 const DEFAULT_STYLE = Object.freeze({
     icon:      'fa-solid fa-book',
     iconColor: 'bg-secondary-subtle text-dark',
@@ -75,11 +129,6 @@ function normalizeLevel(rawLevel) {
     return level || DEFAULT_LEVEL;
 }
 
-
-function normalizeDuration() {
-    return '';
-}
-
 /* --------------------------------------------------------------------------
    Main Normalization Function
    -------------------------------------------------------------------------- */
@@ -91,23 +140,22 @@ function normalizeCourse(apiCourse) {
 
     if (!id || !title) return null;
 
-    const category = normalizeCategory(apiCourse.track);
-    const level    = normalizeLevel(apiCourse.level);
-    const duration = normalizeDuration();
-    const style    = getCategoryStyle(category);
+    const category     = normalizeCategory(apiCourse.track);
+    const level        = normalizeLevel(apiCourse.level);
+    const duration     = deriveDuration(apiCourse);  
+    const style        = getCategoryStyle(category);
+    const presentation = getCardPresentation(category);
 
     return {
-        // --- Identity ---
         id,
         title,
         description: asTrimmedString(apiCourse.description),
 
-        // --- Classification ---
         category,
         level,
-        duration,           
-        instructor: '',      
-        rating:     null,   
+        duration,
+        instructor: '',
+        rating:     null,
         tags: Array.isArray(apiCourse.tags) ? apiCourse.tags.slice() : [],
         url:  asTrimmedString(apiCourse.url),
 
@@ -116,7 +164,13 @@ function normalizeCourse(apiCourse) {
             value: style.icon,
             color: style.iconColor
         },
-        badgeColor: style.badge
+        badgeColor: style.badge,
+
+        bannerTheme: presentation.bannerTheme,
+        techIcon:    style.icon,
+        techTheme:   presentation.techTheme,
+        tag:         deriveCardTag(apiCourse),
+        codeSnippet: deriveCodeSnippet(apiCourse)
     };
 }
 
