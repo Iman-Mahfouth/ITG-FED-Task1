@@ -1,9 +1,21 @@
+/* ==========================================================================
+   Favorites Page Logic (FED-27 / API-02)
+   - Catalog source: ImpactMojo API (via API-01 layer, courses-api.js).
+   - Favorite IDs: string-normalized in favorites-storage.js.
+   ========================================================================== */
+
 let allFavoriteCourses = [];
 let activeFilter = 'all';
 
+/**
+ * Filters the normalized catalog down to only favorited courses.
+ * Comparison is string-normalized on both sides so numeric legacy IDs
+ * and string API IDs both resolve correctly.
+ */
 function getFavoriteCourses(catalog) {
     const favoriteIds = new Set(getFavoriteIds());
-    return (Array.isArray(catalog) ? catalog : []).filter((course) => favoriteIds.has(course.id));
+    return (Array.isArray(catalog) ? catalog : [])
+        .filter((course) => favoriteIds.has(String(course.id)));
 }
 
 function filterCoursesByCategory(courses, category) {
@@ -33,11 +45,13 @@ function updateFavoritesCollection(courses = allFavoriteCourses) {
 
     document.querySelectorAll('.ml-favorites-filter-pill[data-filter]').forEach((pill) => {
         const filterValue = pill.dataset.filter;
-        const countSpan = pill.querySelector('[data-filter-count]') 
-            || (filterValue === 'all' ? document.getElementById('favorites-all-count') : document.getElementById('favorites-frontend-count'));
+        const countSpan = pill.querySelector('[data-filter-count]')
+            || (filterValue === 'all'
+                ? document.getElementById('favorites-all-count')
+                : document.getElementById('favorites-frontend-count'));
         if (countSpan) {
-            const count = filterValue === 'all' 
-                ? totalCount 
+            const count = filterValue === 'all'
+                ? totalCount
                 : allFavoriteCourses.filter((course) => course.category === filterValue).length;
             countSpan.textContent = String(count);
         }
@@ -79,9 +93,10 @@ function updateFavoritesCollection(courses = allFavoriteCourses) {
             }
         }
     }
+
     document.dispatchEvent(new CustomEvent('nav:badge', {
-    detail: { id: 'favorites', value: totalCount }
-}));
+        detail: { id: 'favorites', value: totalCount }
+    }));
 }
 
 function showFavoritesToast(message) {
@@ -124,7 +139,8 @@ function setupFavoritesListener() {
     container.addEventListener('favorite:changed', (event) => {
         const { courseId, removed } = event.detail || {};
         if (removed) {
-            allFavoriteCourses = allFavoriteCourses.filter((course) => course.id !== courseId);
+            allFavoriteCourses = allFavoriteCourses
+                .filter((course) => String(course.id) !== String(courseId));
             updateFavoritesCollection(allFavoriteCourses);
             showFavoritesToast('Removed from your favorites.');
         }
@@ -133,15 +149,13 @@ function setupFavoritesListener() {
 
 async function initFavorites() {
     try {
-        const catalog = await fetchCourses();
+        // API-01 layer — same normalization used by Courses and My Learning.
+        const catalog = await loadCoursesFromApi();
         allFavoriteCourses = getFavoriteCourses(catalog);
         updateFavoritesCollection(allFavoriteCourses);
         setupFavoriteActions({ containerId: 'favorites-container', removeCardOnUnfavorite: true });
         setupFavoritesFilters();
         setupFavoritesListener();
-        document.dispatchEvent(new CustomEvent('nav:badge', {
-    detail: { id: 'favorites', value: allFavoriteCourses.length }
-}));
     } catch (error) {
         console.error('Failed to initialize Favorites:', error);
     }

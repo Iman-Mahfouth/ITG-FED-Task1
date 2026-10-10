@@ -142,8 +142,28 @@
                 </nav>
 
                 <section class="container my-4">
-                    <div class="row g-4" id="learning-container"></div>
-                </section>
+    <div class="row g-4" id="learning-container"></div>
+
+    <div id="learning-empty" class="d-none text-center py-5 my-5">
+        <i class="fa-regular fa-bookmark fs-1 text-primary-subtle mb-4" aria-hidden="true"></i>
+        <h4 class="fw-bold text-dark mb-3">Nothing here yet</h4>
+        <p class="text-muted mb-3">Enroll in a course to start tracking your progress here.</p>
+        <a href="index.html" class="btn btn-primary rounded-3 px-4 py-2 fw-medium">
+            Explore courses
+        </a>
+    </div>
+
+    <div id="learning-no-results" class="d-none text-center py-5 my-5">
+        <i class="fa-solid fa-filter-circle-xmark fs-1 text-primary-subtle mb-4" aria-hidden="true"></i>
+        <h4 class="fw-bold text-dark mb-3">No courses in this view</h4>
+        <p class="text-muted mb-3">Try switching tabs to see your other courses.</p>
+        <button id="learning-reset-tab"
+                type="button"
+                class="btn btn-outline-primary rounded-3 px-4 py-2 fw-medium">
+            View all courses
+        </button>
+    </div>
+</section>
             </main>
 
             <footer class="bg-white border-top py-3 mt-auto">
@@ -161,6 +181,7 @@
     <script src="js/profile-storage.js"></script>
     <script src="js/favorites-storage.js"></script>
     <script src="js/course-card.js"></script>
+    <script src="js/courses-api.js"></script>
     <script src="js/my-learning.js"></script>
 </body>
 </html>
