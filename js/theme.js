@@ -182,6 +182,24 @@
                 mediaQuery.addListener(handler); // Legacy Safari
             }
         }
+
+        window.addEventListener('storage', (event) => {
+    if (event.key !== STORAGE_KEY) return;
+    if (event.newValue === event.oldValue) return;
+
+    const nextValue = VALID_VALUES.includes(event.newValue)
+        ? event.newValue
+        : DEFAULT_VALUE;
+
+    if (nextValue === currentValue) return;
+
+    currentValue = nextValue;
+
+    const resolved = resolveValue(nextValue);
+    applyToDocument(resolved);
+    syncControls(nextValue);
+    broadcast(nextValue, resolved);
+});
     }
 
     /* ---------------------------------------------------------------------
