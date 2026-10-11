@@ -1,7 +1,5 @@
 /* ==========================================================================
    Courses API Integration (API-01)
-   Fetch + Normalize the ImpactMojo Education API into our internal
-   course model. The rendering layer must NEVER know about the API shape.
    ========================================================================== */
 
 const COURSES_API_URL = 'https://www.impactmojo.in/api/v1/courses';
@@ -25,7 +23,7 @@ const STYLE_PRESETS = Object.freeze({
 });
 
 /* --------------------------------------------------------------------------
-    Category Normalization
+   Category Normalization
    -------------------------------------------------------------------------- */
 const CATEGORY_STYLES = Object.freeze({
     'Data & Technology':            STYLE_PRESETS.data,
@@ -44,7 +42,6 @@ const CATEGORY_STYLES = Object.freeze({
     'Interactive Labs':             STYLE_PRESETS.labs,
     'Programs':                     STYLE_PRESETS.programs
 });
-
 
 const CARD_PRESENTATION = Object.freeze({
     'Data & Technology':            { bannerTheme: 'blue',   techTheme: 'success'   },
@@ -79,17 +76,7 @@ function deriveCardTag(apiCourse) {
 
     if (tier === 'flagship' || /flagship/i.test(format)) return 'Flagship';
     if (tier === '101' || /101/i.test(format))           return '101';
-    return 'New';
-}
-function deriveDuration(apiCourse) {
-    const slides = Number(apiCourse.slides);
-    if (!Number.isFinite(slides) || slides <= 0) return '';
-
-    const minutes = slides * 2;
-    if (minutes < 60) return `~${minutes} min`;
-
-    const hours = Math.round((minutes / 60) * 10) / 10;
-    return `~${hours} hours`;
+    return '';
 }
 
 function deriveCodeSnippet(apiCourse) {
@@ -142,7 +129,6 @@ function normalizeCourse(apiCourse) {
 
     const category     = normalizeCategory(apiCourse.track);
     const level        = normalizeLevel(apiCourse.level);
-    const duration     = deriveDuration(apiCourse);  
     const style        = getCategoryStyle(category);
     const presentation = getCardPresentation(category);
 
@@ -153,7 +139,7 @@ function normalizeCourse(apiCourse) {
 
         category,
         level,
-        duration,
+        duration: '',       
         instructor: '',
         rating:     null,
         tags: Array.isArray(apiCourse.tags) ? apiCourse.tags.slice() : [],
@@ -175,7 +161,7 @@ function normalizeCourse(apiCourse) {
 }
 
 /* 
-   Fetch Laye */
+   Fetch Layer */
 async function loadCoursesFromApi() {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), COURSES_API_TIMEOUT_MS);
@@ -196,7 +182,7 @@ async function loadCoursesFromApi() {
 
         return list
             .map(normalizeCourse)
-            .filter(Boolean); // drop invalid records
+            .filter(Boolean); 
     } finally {
         clearTimeout(timer);
     }

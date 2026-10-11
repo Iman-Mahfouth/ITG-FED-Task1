@@ -10,7 +10,8 @@
    Module state
    -------------------------------------------------------------------------- */
 let activeTab           = 'in-progress';
-let allLearningItems    = [];
+let allLearningItems    = [];   // matched records (rendered as cards)
+let orphanedEnrollments = [];   // unmatched enrollment records
 let learningEventsBound = false;
 
 /* ==========================================================================
@@ -55,8 +56,9 @@ function normalizeProgress(progress) {
 /* ==========================================================================
    Data Layer — Merge (pure)
    Joins API-normalized courses with local progress by string-normalized
-   course ID. Records whose course no longer exists on the API are dropped
-   silently — the API is the single source of truth for course metadata.
+   course ID. Returns a richer object so the presentation layer can
+   distinguish between "no enrollments at all" and "enrollments exist but
+   none could be matched to the API".
    ========================================================================== */
 function mergeLearningData(catalog, progressList) {
     const catalogById = new Map(
@@ -64,19 +66,31 @@ function mergeLearningData(catalog, progressList) {
             .map((course) => [String(course.id), course])
     );
 
-    return (Array.isArray(progressList) ? progressList : [])
-        .map((progress) => {
-            if (!progress || typeof progress !== 'object') return null;
+    const safeProgress = Array.isArray(progressList) ? progressList : [];
 
-            const courseId = String(progress.courseId ?? '').trim();
-            if (!courseId) return null;
+    const matched  = [];
+    const orphaned = [];
 
-            const course = catalogById.get(courseId);
-            if (!course) return null; // course no longer available from API
+    safeProgress.forEach((progress) => {
+        if (!progress || typeof progress !== 'object') return;
 
-            return { course, progress: normalizeProgress(progress) };
-        })
-        .filter(Boolean);
+        const courseId = String(progress.courseId ?? '').trim();
+        if (!courseId) return;
+
+        const course = catalogById.get(courseId);
+        if (course) {
+            matched.push({ course, progress: normalizeProgress(progress) });
+        } else {
+            // Preserve the full enrollment record (not just the ID) so any
+            // future UI can explain the gap accurately.
+            orphaned.push({
+                courseId,
+                progress: normalizeProgress(progress)
+            });
+        }
+    });
+
+    return { matched, orphaned };
 }
 
 /* ==========================================================================
@@ -90,6 +104,7 @@ function setStateVisible(id, visible) {
 
 function hideOverlayStates() {
     setStateVisible('learning-empty',      false);
+    setStateVisible('learning-orphaned',   false);
     setStateVisible('learning-no-results', false);
 }
 
@@ -112,11 +127,24 @@ function createLearningSkeletonCard() {
     return col;
 }
 
+function resetLearningStats() {
+    setTextContentById('stat-enrolled',          '--');
+    setTextContentById('stat-in-progress',       '--');
+    setTextContentById('stat-completed',         '--');
+    setTextContentById('stat-lessons-completed', '--');
+
+    setTextContentById('tab-count-in-progress', '0');
+    setTextContentById('tab-count-completed',   '0');
+    setTextContentById('tab-count-all',         '0');
+}
+
 function renderLearningLoading() {
     const container = document.getElementById('learning-container');
     if (!container) return;
 
     hideOverlayStates();
+    resetLearningStats();
+
 
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < 3; i++) {
@@ -130,6 +158,7 @@ function renderLearningError(message, onRetry) {
     if (!container) return;
 
     hideOverlayStates();
+    resetLearningStats();
 
     const wrapper = document.createElement('div');
     wrapper.className = 'col-12 text-center py-5';
@@ -168,19 +197,36 @@ function renderLearningCards(items) {
     container.replaceChildren(fragment);
 }
 
-/**
- * Empty state: no enrollment records at all, OR every record referenced
- * a course that no longer exists on the API.
- */
-function updateLearningEmptyState(hasAnyItems) {
-    setStateVisible('learning-empty', !hasAnyItems);
+function updateLearningEmptyState(matched, orphaned) {
+    const isTrulyEmpty = matched.length === 0 && orphaned.length === 0;
+    setStateVisible('learning-empty', isTrulyEmpty);
 }
 
 /**
- * No-results state: user has records, but current tab filter yields none.
+ * Orphaned state: the learner has enrollment records, but none of them
+ * could be matched to a course in the API. This must not be conflated
+ * with the "never enrolled" state.
  */
-function updateLearningNoResultsState(hasAnyItems, hasVisibleResults) {
-    setStateVisible('learning-no-results', hasAnyItems && !hasVisibleResults);
+function updateLearningOrphanedState(matched, orphaned) {
+    const allOrphaned = matched.length === 0 && orphaned.length > 0;
+    setStateVisible('learning-orphaned', allOrphaned);
+
+    if (!allOrphaned) return;
+
+    const countEl = document.getElementById('learning-orphaned-count');
+    if (countEl) {
+        const noun = orphaned.length === 1 ? 'course' : 'courses';
+        countEl.textContent = `${orphaned.length} ${noun}`;
+    }
+}
+
+/**
+ * No-results state: user has matched items, but current tab filter yields none.
+ */
+function updateLearningNoResultsState(matched, filtered) {
+    const hasAny     = matched.length > 0;
+    const hasVisible = filtered.length > 0;
+    setStateVisible('learning-no-results', hasAny && !hasVisible);
 }
 
 /* ==========================================================================
@@ -259,8 +305,9 @@ function renderActiveTab() {
     const filtered = filterItemsByTab(allLearningItems, activeTab);
 
     renderLearningCards(filtered);
-    updateLearningEmptyState(allLearningItems.length > 0);
-    updateLearningNoResultsState(allLearningItems.length > 0, filtered.length > 0);
+    updateLearningEmptyState(allLearningItems, orphanedEnrollments);
+    updateLearningOrphanedState(allLearningItems, orphanedEnrollments);
+    updateLearningNoResultsState(allLearningItems, filtered);
 }
 
 /* ==========================================================================
@@ -316,7 +363,10 @@ async function loadLearningPage() {
             loadMyLearningProgress()
         ]);
 
-        allLearningItems = mergeLearningData(catalog, progressList);
+        const { matched, orphaned } = mergeLearningData(catalog, progressList);
+
+        allLearningItems    = matched;
+        orphanedEnrollments = orphaned;
 
         updateLearningStats(allLearningItems);
         renderActiveTab();
@@ -325,13 +375,20 @@ async function loadLearningPage() {
             detail: { id: 'learning', value: allLearningItems.length }
         }));
     } catch (error) {
-        console.error('Failed to load My Learning:', error);
-        renderLearningError(
-            "We couldn't load your learning. Please check your connection and try again.",
-            loadLearningPage   // retry re-runs only the data layer
-        );
+    console.error('Failed to load My Learning:', error);
+
+    if (typeof clearNavBadge === 'function') {
+        clearNavBadge('learning');
+    } else {
+        try { localStorage.removeItem('ml_badge_learning'); } catch (_) {}
     }
-}
+
+    renderLearningError(
+        "We couldn't load your learning. Please check your connection and try again.",
+        loadLearningPage
+    );
+}}
+
 
 async function initMyLearning() {
     bindLearningEvents();

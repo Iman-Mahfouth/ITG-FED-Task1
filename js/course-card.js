@@ -37,7 +37,7 @@ function createTechContent(techIcon) {
 
 function createCardBanner(course) {
     const banner = createElement('div', `ml-card-banner ml-card-banner--${course.bannerTheme || 'orange'}`);
-    const tag = createElement('span', 'ml-card-tag', course.tag || 'New');
+    const tag = course.tag ? createElement('span', 'ml-card-tag', course.tag) : null;
     const favoriteButton = document.createElement('button');
     const heart = createElement('i', 'fa-regular fa-heart');
     const art = createElement('div', 'ml-card-editor-art');
@@ -76,7 +76,8 @@ function createCardBanner(course) {
         art.appendChild(editor);
     }
 
-    banner.append(tag, favoriteButton, art);
+    if (tag) banner.appendChild(tag);
+    banner.append(favoriteButton, art);
     return banner;
 }
 
@@ -86,7 +87,7 @@ function createProgressBar(course, progress) {
     const progressWrapper = createElement('div', 'ml-card-progress');
     const progressTrack = createElement('div', 'ml-card-progress-track');
     const progressFill = createElement('div', 'ml-card-progress-fill');
-    const progressLabel = createElement('span', 'ml-card-progress-label', 
+    const progressLabel = createElement('span', 'ml-card-progress-label',
         `${safeProgress.lessonsCompleted || 0} / ${safeProgress.totalLessons || 0} lessons`);
 
     progressFill.style.setProperty('--progress', `${percentage}%`);
