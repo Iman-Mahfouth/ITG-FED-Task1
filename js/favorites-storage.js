@@ -1,11 +1,22 @@
 const FAVORITES_STORAGE_KEY = 'ml_favorite_ids';
 
+/**
+ * Normalizes any ID
+ */
+function toFavoriteId(value) {
+    if (value === null || value === undefined) return '';
+    return String(value).trim();
+}
+
 function getFavoriteIds() {
     try {
         const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
         if (!raw) return [];
         const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed.filter(Number.isInteger) : [];
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+            .map(toFavoriteId)
+            .filter((id) => id.length > 0);
     } catch (error) {
         console.error('Failed to parse favorites from localStorage:', error);
         return [];
@@ -14,7 +25,7 @@ function getFavoriteIds() {
 
 function setFavoriteIds(ids) {
     try {
-        const unique = [...new Set(ids)].filter(Number.isInteger);
+        const unique = [...new Set((Array.isArray(ids) ? ids : []).map(toFavoriteId).filter(Boolean))];
         localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(unique));
         return unique;
     } catch (error) {
@@ -24,13 +35,18 @@ function setFavoriteIds(ids) {
 }
 
 function isFavorite(courseId) {
-    return getFavoriteIds().includes(courseId);
+    const id = toFavoriteId(courseId);
+    if (!id) return false;
+    return getFavoriteIds().includes(id);
 }
 
 function toggleFavorite(courseId) {
+    const id = toFavoriteId(courseId);
+    if (!id) return { removed: false, ids: getFavoriteIds() };
+
     const ids = getFavoriteIds();
-    const exists = ids.includes(courseId);
-    const next = exists ? ids.filter((id) => id !== courseId) : [...ids, courseId];
+    const exists = ids.includes(id);
+    const next = exists ? ids.filter((v) => v !== id) : [...ids, id];
     return { removed: exists, ids: setFavoriteIds(next) };
 }
 
@@ -42,8 +58,11 @@ function setupFavoriteActions({ containerId, removeCardOnUnfavorite = false } = 
         const button = event.target.closest('[data-action="favorite"]');
         if (!button || !container.contains(button)) return;
 
-        const courseId = Number(button.dataset.courseId);
-        if (!Number.isInteger(courseId)) return;
+        event.preventDefault();
+        event.stopPropagation();
+
+        const courseId = toFavoriteId(button.dataset.courseId);
+        if (!courseId) return;
 
         const { removed } = toggleFavorite(courseId);
         const icon = button.querySelector('i');

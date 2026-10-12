@@ -83,7 +83,7 @@
                                     <i class="fa-solid fa-book-open"></i>
                                 </div>
                                 <div>
-                                    <p class="my-learning-stat-number mb-0" id="stat-enrolled">03</p>
+                                    <p class="my-learning-stat-number mb-0" id="stat-enrolled">--</p>
                                     <p class="my-learning-stat-label mb-0">Enrolled courses</p>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                     <i class="fa-solid fa-play"></i>
                                 </div>
                                 <div>
-                                    <p class="my-learning-stat-number mb-0" id="stat-in-progress">03</p>
+                                    <p class="my-learning-stat-number mb-0" id="stat-in-progress">--</p>
                                     <p class="my-learning-stat-label mb-0">In progress</p>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                                     <i class="fa-regular fa-bookmark"></i>
                                 </div>
                                 <div>
-                                    <p class="my-learning-stat-number mb-0" id="stat-completed">00</p>
+                                    <p class="my-learning-stat-number mb-0" id="stat-completed">--</p>
                                     <p class="my-learning-stat-label mb-0">Completed courses</p>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                     <i class="fa-solid fa-check"></i>
                                 </div>
                                 <div>
-                                    <p class="my-learning-stat-number mb-0" id="stat-lessons-completed">04</p>
+                                    <p class="my-learning-stat-number mb-0" id="stat-lessons-completed">--</p>
                                     <p class="my-learning-stat-label mb-0">Lessons completed</p>
                                 </div>
                             </div>
@@ -141,9 +141,42 @@
                     </div>
                 </nav>
 
-                <section class="container my-4">
-                    <div class="row g-4" id="learning-container"></div>
-                </section>
+    <section class="container my-4">
+    <div class="row g-4" id="learning-container"></div>
+
+    <div id="learning-empty" class="d-none text-center py-5 my-5">
+        <i class="fa-regular fa-bookmark fs-1 text-primary-subtle mb-4" aria-hidden="true"></i>
+        <h4 class="fw-bold text-dark mb-3">Nothing here yet</h4>
+        <p class="text-muted mb-3">Enroll in a course to start tracking your progress here.</p>
+        <a href="index.html" class="btn btn-primary rounded-3 px-4 py-2 fw-medium">
+            Explore courses
+        </a>
+    </div>
+
+    <div id="learning-orphaned" class="d-none text-center py-5 my-5">
+        <i class="fa-solid fa-link-slash fs-1 text-warning mb-4" aria-hidden="true"></i>
+        <h4 class="fw-bold text-dark mb-3">Your courses aren't listed right now</h4>
+        <p class="text-muted mb-3">
+            <strong><span id="learning-orphaned-count">0 courses</span></strong>
+            you enrolled in are not currently available. Your enrollment and
+            progress are preserved — the courses may return later.
+        </p>
+        <a href="index.html" class="btn btn-outline-primary rounded-3 px-4 py-2 fw-medium">
+            Browse available courses
+        </a>
+    </div>
+
+    <div id="learning-no-results" class="d-none text-center py-5 my-5">
+        <i class="fa-solid fa-filter-circle-xmark fs-1 text-primary-subtle mb-4" aria-hidden="true"></i>
+        <h4 class="fw-bold text-dark mb-3">No courses in this view</h4>
+        <p class="text-muted mb-3">Try switching tabs to see your other courses.</p>
+        <button id="learning-reset-tab"
+                type="button"
+                class="btn btn-outline-primary rounded-3 px-4 py-2 fw-medium">
+            View all courses
+        </button>
+    </div>
+</section>
             </main>
 
             <footer class="bg-white border-top py-3 mt-auto">
@@ -161,6 +194,7 @@
     <script src="js/profile-storage.js"></script>
     <script src="js/favorites-storage.js"></script>
     <script src="js/course-card.js"></script>
+    <script src="js/courses-api.js"></script>
     <script src="js/my-learning.js"></script>
 </body>
 </html>

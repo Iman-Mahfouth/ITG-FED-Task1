@@ -276,6 +276,17 @@ function setNavBadge(id, value) {
     }
     badge.textContent = String(value).padStart(2, '0');
 }
+function clearNavBadge(id) {
+    const item = document.querySelector(`[data-navigation-id="${id}"]`);
+    if (!item) return;
+
+    const badge = item.querySelector('.sidebar-nav-badge');
+    if (badge) badge.remove();
+
+    if (NAV_BADGE_STORAGE[id]) {
+        try { localStorage.removeItem(NAV_BADGE_STORAGE[id]); } catch (_) {}
+    }
+}
 
 function updateNavigationBadges() {
     // Favorites — live from localStorage
@@ -349,9 +360,11 @@ function setupNavigation() {
     }
 });
 
-    document.addEventListener('favorite:changed', () => {
-        updateNavigationBadges();
-    });
+  document.addEventListener('favorite:changed', () => {
+    if (document.getElementById('favorites-container')) return;
+    const count = typeof getFavoriteIds === 'function' ? getFavoriteIds().length : 0;
+    setNavBadge('favorites', count);
+});
 }
 
 if (document.readyState === 'loading') {
