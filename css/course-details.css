@@ -1,0 +1,276 @@
+/* ==========================================================================
+   Course Details Page Styles (API-03)
+   Responsive layout, custom cards, skeleton sizing, and theme adaptation.
+   ========================================================================== */
+
+/* Layout & Back Link */
+.cd-back-link {
+    color: var(--app-muted, #66707a);
+    font-size: 0.9rem;
+    transition: color 0.15s ease;
+}
+
+.cd-back-link:hover {
+    color: var(--app-ink, #212a30);
+}
+
+/* Hero banner card */
+.cd-hero-card {
+    background-color: #edf5eb;
+    border: 1px solid #dcebd8;
+    border-radius: 1.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.cd-hero-title {
+    color: #172116;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+.cd-hero-desc {
+    color: #435441;
+    line-height: 1.55;
+}
+
+/* Tag Chips */
+.cd-tag-chip {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #2b3a2a;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+}
+
+/* "What you'll build" block */
+.cd-build-card {
+    background-color: #f3f8f1;
+    border: 1px solid #e1eee0;
+    border-radius: 1rem;
+}
+
+.cd-build-icon {
+    align-items: center;
+    background-color: #d7edd4;
+    border-radius: 0.65rem;
+    color: #2e6c27;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    height: 2.5rem;
+    justify-content: center;
+    width: 2.5rem;
+}
+
+/* Roadmap Card */
+.cd-roadmap-card {
+    border-radius: 1.25rem;
+}
+
+.cd-section-row {
+    background-color: #fff;
+    border: 1px solid #e8ecf1;
+    border-radius: 0.75rem;
+    cursor: default;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cd-section-row:hover {
+    background-color: #f7f9fb;
+    border-color: #d9e0e8;
+}
+
+.cd-section-num {
+    align-items: center;
+    background-color: #eaf5e8;
+    border-radius: 0.5rem;
+    color: #2e7d32;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    height: 2.25rem;
+    justify-content: center;
+    width: 2.25rem;
+}
+
+.cd-section-title {
+    color: #1a2228;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+/* Curiosity Aside Panel */
+.cd-curiosity-card {
+    border-radius: 1.25rem;
+}
+
+.cd-btn-lime {
+    background-color: #d2fa62;
+    border: 1px solid #c2ea52;
+    color: #171e27;
+    font-weight: 600;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.cd-btn-lime:hover,
+.cd-btn-lime:focus {
+    background-color: #c4ec54;
+    color: #171e27;
+}
+
+.cd-btn-fav {
+    border-color: #d0d7de;
+    color: #24292f;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.cd-btn-fav:hover {
+    background-color: #f6f8fa;
+    color: #24292f;
+}
+
+.cd-btn-fav.is-favorited {
+    background-color: #fff1f2;
+    border-color: #fda4af;
+    color: #e11d48;
+}
+
+.cd-features-item {
+    font-size: 0.86rem;
+    color: #4a5568;
+}
+
+.cd-quote {
+    color: #718096;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+/* Skeleton Loaders (Fixed dimensions to ensure zero CLS) */
+.cd-skeleton-hero {
+    min-height: 13rem;
+}
+
+.cd-skeleton-build {
+    min-height: 5.5rem;
+}
+
+.cd-skeleton-content {
+    min-height: 17rem;
+}
+
+.cd-skeleton-aside {
+    min-height: 21rem;
+}
+
+.cd-skeleton-title {
+    height: 2.5rem;
+    max-width: 28rem;
+    width: 75%;
+}
+
+.cd-skeleton-badge {
+    border-radius: 999px;
+    height: 1.5rem;
+    width: 6.5rem;
+}
+
+/* Dark mode overrides (via data-bs-theme="dark" on <html>/<body> or body.dark-theme) */
+[data-bs-theme="dark"] .cd-hero-card,
+body.dark-theme .cd-hero-card {
+    background-color: #162218;
+    border-color: #253929;
+}
+
+[data-bs-theme="dark"] .cd-hero-title,
+body.dark-theme .cd-hero-title {
+    color: #ecfdf3;
+}
+
+[data-bs-theme="dark"] .cd-hero-desc,
+body.dark-theme .cd-hero-desc {
+    color: #a7bfa7;
+}
+
+[data-bs-theme="dark"] .cd-tag-chip,
+body.dark-theme .cd-tag-chip {
+    background-color: #1e2e21;
+    border-color: #2c4230;
+    color: #d1fae5;
+}
+
+[data-bs-theme="dark"] .cd-build-card,
+body.dark-theme .cd-build-card {
+    background-color: #1a271c;
+    border-color: #273b2a;
+}
+
+[data-bs-theme="dark"] .cd-build-icon,
+body.dark-theme .cd-build-icon {
+    background-color: #253927;
+    color: #a3e635;
+}
+
+[data-bs-theme="dark"] .cd-roadmap-card,
+body.dark-theme .cd-roadmap-card,
+[data-bs-theme="dark"] .cd-curiosity-card,
+body.dark-theme .cd-curiosity-card {
+    background-color: #151c24;
+    border: 1px solid #242d38 !important;
+}
+
+[data-bs-theme="dark"] .cd-section-row,
+body.dark-theme .cd-section-row {
+    background-color: #1b232d;
+    border-color: #283340;
+}
+
+[data-bs-theme="dark"] .cd-section-row:hover,
+body.dark-theme .cd-section-row:hover {
+    background-color: #202b37;
+    border-color: #354252;
+}
+
+[data-bs-theme="dark"] .cd-section-num,
+body.dark-theme .cd-section-num {
+    background-color: #213322;
+    color: #a3e635;
+}
+
+[data-bs-theme="dark"] .cd-section-title,
+body.dark-theme .cd-section-title {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .cd-btn-fav,
+body.dark-theme .cd-btn-fav {
+    border-color: #3b4554;
+    color: #e2e8f0;
+    background-color: #1b232d;
+}
+
+[data-bs-theme="dark"] .cd-btn-fav:hover,
+body.dark-theme .cd-btn-fav:hover {
+    background-color: #242e3b;
+}
+
+[data-bs-theme="dark"] .cd-btn-fav.is-favorited,
+body.dark-theme .cd-btn-fav.is-favorited {
+    background-color: #3b1922;
+    border-color: #7f1d39;
+    color: #f43f5e;
+}
+
+[data-bs-theme="dark"] .cd-features-item,
+body.dark-theme .cd-features-item {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .cd-quote,
+body.dark-theme .cd-quote {
+    color: #94a3b8;
+}
