@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Courses API Integration (API-01 / API-03)
+   Courses API Integration (API-01)
    Fetch + Normalize the ImpactMojo Education API into our internal
    course model. The rendering layer must NEVER know about the API shape.
    ========================================================================== */
@@ -45,6 +45,49 @@ const CATEGORY_STYLES = Object.freeze({
     'Programs':                     STYLE_PRESETS.programs
 });
 
+const CARD_PRESENTATION = Object.freeze({
+    'Data & Technology':            { bannerTheme: 'blue',   techTheme: 'success'   },
+    'Policy & Economics':           { bannerTheme: 'yellow', techTheme: 'warning'   },
+    'Philosophy, Law & Governance': { bannerTheme: 'orange', techTheme: 'info'      },
+    'Gender & Equity':              { bannerTheme: 'purple', techTheme: 'danger'    },
+    'Gender & Social':              { bannerTheme: 'purple', techTheme: 'danger'    },
+    'MEL & Research':               { bannerTheme: 'purple', techTheme: 'info'      },
+    'Health & Communication':       { bannerTheme: 'blue',   techTheme: 'danger'    },
+    'Flagship Courses':             { bannerTheme: 'orange', techTheme: 'warning'   },
+    'Flagship':                     { bannerTheme: 'orange', techTheme: 'warning'   },
+    '101 Foundational Courses':     { bannerTheme: 'blue',   techTheme: 'info'      },
+    '101 Foundational Course':      { bannerTheme: 'blue',   techTheme: 'info'      },
+    'Foundational (101)':           { bannerTheme: 'blue',   techTheme: 'info'      },
+    'Practice Workbook':            { bannerTheme: 'purple', techTheme: 'secondary' },
+    'Interactive Labs':             { bannerTheme: 'orange', techTheme: 'warning'   },
+    'Programs':                     { bannerTheme: 'purple', techTheme: 'info'      }
+});
+
+const DEFAULT_CARD_PRESENTATION = Object.freeze({
+    bannerTheme: 'orange',
+    techTheme:   'secondary'
+});
+
+function getCardPresentation(category) {
+    return CARD_PRESENTATION[category] || DEFAULT_CARD_PRESENTATION;
+}
+
+function deriveCardTag(apiCourse) {
+    const tier   = asTrimmedString(apiCourse.tier).toLowerCase();
+    const format = asTrimmedString(apiCourse.format);
+
+    if (tier === 'flagship' || /flagship/i.test(format)) return 'Flagship';
+    if (tier === '101' || /101/i.test(format))           return '101';
+    return '';
+}
+
+function deriveCodeSnippet(apiCourse) {
+    const title = asTrimmedString(apiCourse.title);
+    if (!title) return '';
+    const short = title.length > 42 ? `${title.slice(0, 39)}…` : title;
+    return `// ${short}`;
+}
+
 const DEFAULT_STYLE = Object.freeze({
     icon:      'fa-solid fa-book',
     iconColor: 'bg-secondary-subtle text-dark',
@@ -75,6 +118,7 @@ function normalizeLevel(rawLevel) {
     return level || DEFAULT_LEVEL;
 }
 
+
 function normalizeDuration() {
     return '';
 }
@@ -91,24 +135,22 @@ function normalizeCourse(apiCourse) {
 
     if (!id || !title) return null;
 
-    const category = normalizeCategory(apiCourse.track);
-    const level    = normalizeLevel(apiCourse.level);
-    const duration = normalizeDuration();
-    const style    = getCategoryStyle(category);
+    const category     = normalizeCategory(apiCourse.track);
+    const level        = normalizeLevel(apiCourse.level);
+    const style        = getCategoryStyle(category);
+    const presentation = getCardPresentation(category);
 
     return {
-        // --- Identity ---
         id,
         slug,
         title,
         description: asTrimmedString(apiCourse.description),
 
-        // --- Classification ---
         category,
         level,
-        duration,           
-        instructor: '',      
-        rating:     null,   
+        duration: '',       
+        instructor: '',
+        rating:     null,
         tags: Array.isArray(apiCourse.tags) ? apiCourse.tags.slice() : [],
         url:  asTrimmedString(apiCourse.url),
 
@@ -117,13 +159,18 @@ function normalizeCourse(apiCourse) {
             value: style.icon,
             color: style.iconColor
         },
-        badgeColor: style.badge
+        badgeColor: style.badge,
+
+        bannerTheme: presentation.bannerTheme,
+        techIcon:    style.icon,
+        techTheme:   presentation.techTheme,
+        tag:         deriveCardTag(apiCourse),
+        codeSnippet: deriveCodeSnippet(apiCourse)
     };
 }
 
-/* --------------------------------------------------------------------------
-   Catalog Fetch
-   -------------------------------------------------------------------------- */
+/* 
+   Fetch Laye */
 async function loadCoursesFromApi() {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), COURSES_API_TIMEOUT_MS);
@@ -144,7 +191,7 @@ async function loadCoursesFromApi() {
 
         return list
             .map(normalizeCourse)
-            .filter(Boolean); // drop invalid records
+            .filter(Boolean); 
     } finally {
         clearTimeout(timer);
     }
