@@ -1,6 +1,6 @@
 /* ==========================================================================
    Course Details Page Controller (API-03)
-   Fetch happens in init(). Render functions are pure DOM builders.
+   Fetch happens in loadCourse(). Render functions are pure DOM builders.
    All API strings are rendered strictly via textContent (no innerHTML).
    ========================================================================== */
 
@@ -472,33 +472,26 @@ function setState(name, payload = {}) {
     if (node) {
         target.replaceChildren(node);
     }
+}
 
-    // Focus h1 for accessibility
-    if (name === 'success' || name === 'no-sections') {
-        const heading = target.querySelector('h1');
-        if (heading) heading.focus();
-    }
+function focusPageHeading(container) {
+    if (!container) return;
+    const heading = container.querySelector('h1');
+    if (heading) heading.focus();
 }
 
 /* --------------------------------------------------------------------------
-   Page Initialization
+   Data Loading & Page Initialization
    -------------------------------------------------------------------------- */
-async function init() {
-    const params = new URLSearchParams(window.location.search);
-    const slug = (params.get('course') || '').trim();
-
-    // Missing or invalid slug regex fails -> immediately not-found (no fetch)
-    if (!slug || !SLUG_RE.test(slug)) {
-        setState('not-found');
-        return;
-    }
-
+async function loadCourse(slug) {
     setState('loading');
 
     try {
         const course = await fetchCourseBySlug(slug);
         const hasSections = Array.isArray(course.sections) && course.sections.length > 0;
-        setState(hasSections ? 'success' : 'no-sections', { course });
+        const stateName = hasSections ? 'success' : 'no-sections';
+        setState(stateName, { course });
+        focusPageHeading(getStateContainers()[stateName]);
     } catch (err) {
         if (err && (err.status === 404 || err.status === 400)) {
             setState('not-found');
@@ -506,6 +499,20 @@ async function init() {
             setState('error');
         }
     }
+}
+
+function init() {
+    const params = new URLSearchParams(window.location.search);
+    const slug = (params.get('course') || '').trim();
+
+    // Missing or invalid slug -> immediately not-found (no fetch)
+    if (!slug || !SLUG_RE.test(slug)) {
+        setState('not-found');
+        return;
+    }
+
+    currentSlug = slug;
+    loadCourse(currentSlug);
 }
 
 init();

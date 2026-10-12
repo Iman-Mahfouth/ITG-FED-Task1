@@ -4,11 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course details · MyCourses</title>
+    <!-- FED-40 — apply appearance before first paint to prevent FOUC -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('mycourses:appearance');
+                var resolved = stored;
+                if (stored !== 'light' && stored !== 'dark') {
+                    resolved = window.matchMedia('(prefers-color-scheme: dark)').matches
+                        ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-bs-theme', resolved);
+            } catch (e) {
+                document.documentElement.setAttribute('data-bs-theme', 'light');
+            }
+        })();
+    </script>
     <link rel="preconnect" href="https://www.impactmojo.in">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/appearance.css">
     <link rel="stylesheet" href="css/course-details.css">
 </head>
 <body class="bg-light">
@@ -48,8 +65,9 @@
                                 <i class="fa-regular fa-bell" aria-hidden="true"></i>
                             </button>
 
-                            <button class="app-theme-toggle" type="button" aria-label="Toggle theme">
-                                <i class="fa-regular fa-moon" aria-hidden="true"></i>
+                            <button class="app-theme-toggle" type="button" aria-label="Toggle appearance" data-theme-toggle>
+                                <i class="fa-regular fa-moon theme-toggle-moon" aria-hidden="true"></i>
+                                <i class="fa-solid fa-sun theme-toggle-sun" aria-hidden="true"></i>
                             </button>
 
                             <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
@@ -125,9 +143,10 @@
     </div>
 
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script defer src="js/navigation.js"></script>
+    <script defer src="js/theme.js"></script>
     <script defer src="js/profile-storage.js"></script>
     <script defer src="js/favorites-storage.js"></script>
+    <script defer src="js/navigation.js"></script>
     <script defer src="js/courses-api.js"></script>
     <script defer src="js/course-details.js"></script>
 </body>
