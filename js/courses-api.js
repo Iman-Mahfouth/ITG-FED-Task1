@@ -82,7 +82,7 @@ function deriveCardTag(apiCourse) {
 }
 
 function deriveCodeSnippet(apiCourse) {
-    const title = asTrimmedString(apiCourse.title);
+    const title = asDecodedString(apiCourse.title);
     if (!title) return '';
     const short = title.length > 42 ? `${title.slice(0, 39)}…` : title;
     return `// ${short}`;
@@ -108,6 +108,31 @@ function asTrimmedString(value) {
     return typeof value === 'string' ? value.trim() : '';
 }
 
+const HTML_ENTITIES = Object.freeze({
+    amp: '&', lt: '<', gt: '>', quot: '"', apos: "'",
+    ndash: '–', mdash: '—', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”'
+});
+
+// The API returns HTML-encoded strings; the UI renders via textContent, so decode here.
+function decodeEntities(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (match, entity) => {
+        if (entity[0] === '#') {
+            const code = entity[1].toLowerCase() === 'x'
+                ? parseInt(entity.slice(2), 16)
+                : parseInt(entity.slice(1), 10);
+            return Number.isInteger(code) && code > 0 && code <= 0x10FFFF
+                ? String.fromCodePoint(code)
+                : match;
+        }
+        return HTML_ENTITIES[entity.toLowerCase()] ?? match;
+    });
+}
+
+function asDecodedString(value) {
+    return decodeEntities(asTrimmedString(value)).trim();
+}
+
 function normalizeCategory(rawTrack) {
     const track = asTrimmedString(rawTrack);
     return track || DEFAULT_CATEGORY;
@@ -118,25 +143,20 @@ function normalizeLevel(rawLevel) {
     return level || DEFAULT_LEVEL;
 }
 
-
-function normalizeDuration() {
-    return '';
-}
-
 /* --------------------------------------------------------------------------
    Main Normalization Function (Catalog)
    -------------------------------------------------------------------------- */
 function normalizeCourse(apiCourse) {
     if (!apiCourse || typeof apiCourse !== 'object') return null;
 
-    const id    = asTrimmedString(apiCourse.id ?? apiCourse.slug);
-    const slug  = asTrimmedString(apiCourse.slug ?? apiCourse.id);
-    const title = asTrimmedString(apiCourse.title);
+    const id    = String(apiCourse.id ?? apiCourse.slug ?? '').trim();
+    const slug  = String(apiCourse.slug ?? apiCourse.id ?? '').trim();
+    const title = asDecodedString(apiCourse.title);
 
     if (!id || !title) return null;
 
-    const category     = normalizeCategory(apiCourse.track);
-    const level        = normalizeLevel(apiCourse.level);
+    const category     = decodeEntities(normalizeCategory(apiCourse.track));
+    const level        = decodeEntities(normalizeLevel(apiCourse.level));
     const style        = getCategoryStyle(category);
     const presentation = getCardPresentation(category);
 
@@ -144,14 +164,16 @@ function normalizeCourse(apiCourse) {
         id,
         slug,
         title,
-        description: asTrimmedString(apiCourse.description),
+        description: asDecodedString(apiCourse.description),
 
         category,
         level,
         duration: '',       
         instructor: '',
         rating:     null,
-        tags: Array.isArray(apiCourse.tags) ? apiCourse.tags.slice() : [],
+        tags: Array.isArray(apiCourse.tags)
+            ? apiCourse.tags.map(asDecodedString).filter(Boolean)
+            : [],
         url:  asTrimmedString(apiCourse.url),
 
         visual: {
@@ -203,7 +225,7 @@ async function loadCoursesFromApi() {
 function normalizeSections(raw) {
     if (!Array.isArray(raw)) return [];
     return raw
-        .map(s => (typeof s === 'string' ? s.trim() : ''))
+        .map(asDecodedString)
         .filter(Boolean);
 }
 
@@ -229,8 +251,8 @@ function normalizeCourseDetail(apiCourse) {
         sections:    sections.length > 0 ? sections : null,
         externalUrl: typeof apiCourse.url === 'string' && /^https:\/\//i.test(apiCourse.url.trim()) ? apiCourse.url.trim() : null,
         license:     license || null,
-        rawTrack:    apiCourse.track,
-        rawLevel:    apiCourse.level
+        rawTrack:    asDecodedString(apiCourse.track),
+        rawLevel:    asDecodedString(apiCourse.level)
     };
 }
 

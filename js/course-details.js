@@ -4,515 +4,677 @@
    All API strings are rendered strictly via textContent (no innerHTML).
    ========================================================================== */
 
-const SLUG_RE = /^[a-z0-9-]+$/i;
-const STATE_NAMES = ['loading', 'error', 'not-found', 'success', 'no-sections'];
+(function () {
+    'use strict';
 
-let currentSlug = '';
+    const SLUG_RE = /^[a-z0-9-]+$/i;
+    const STATE_NAMES = ['loading', 'error', 'not-found', 'success', 'no-sections'];
+    const DEFAULT_TITLE = 'Course details · MyCourses';
+    const MAX_TAGS = 6;
 
-/* --------------------------------------------------------------------------
-   DOM Helpers (Pure builders)
-   -------------------------------------------------------------------------- */
-function el(tag, className, text) {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text !== undefined && text !== null) node.textContent = String(text);
-    return node;
-}
+    // Mockup slots the API has no data for (duration, instructor, rating,
+    // progress, project) are rendered with this value — never invented.
+    const EMPTY_VALUE = '';
 
-function hasText(value) {
-    return typeof value === 'string' && value.trim() !== '';
-}
-
-function getStateContainers() {
-    const map = {};
-    document.querySelectorAll('[data-state]').forEach((node) => {
-        const name = node.getAttribute('data-state');
-        if (STATE_NAMES.includes(name)) map[name] = node;
+    const TECH_THEME_CLASSES = Object.freeze({
+        warning:   'bg-warning-subtle text-warning',
+        info:      'bg-info-subtle text-info',
+        danger:    'bg-danger-subtle text-danger',
+        secondary: 'bg-secondary-subtle text-dark',
+        success:   'bg-success-subtle text-success',
+        default:   'bg-light text-dark'
     });
-    return map;
-}
 
-/* --------------------------------------------------------------------------
-   Favorites Integration (uses course.id, wired to favorites-storage)
-   -------------------------------------------------------------------------- */
-function isCourseFavorited(courseId) {
-    return typeof isFavorite === 'function' ? isFavorite(courseId) : false;
-}
+    let currentSlug = '';
 
-function toggleCourseFavorited(courseId) {
-    if (typeof toggleFavorite !== 'function') return false;
-    const result = toggleFavorite(courseId);
-    if (!result || typeof result.removed !== 'boolean') return false;
+    /* --------------------------------------------------------------------------
+       DOM Helpers (Pure builders)
+       -------------------------------------------------------------------------- */
+    function el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined && text !== null) node.textContent = String(text);
+        return node;
+    }
 
-    document.dispatchEvent(new CustomEvent('favorite:changed', {
-        bubbles: true,
-        detail: { courseId, removed: result.removed }
-    }));
+    function icon(className) {
+        const node = el('i', className);
+        node.setAttribute('aria-hidden', 'true');
+        return node;
+    }
 
-    return result.removed;
-}
+    function hasText(value) {
+        return typeof value === 'string' && value.trim() !== '';
+    }
 
-/* --------------------------------------------------------------------------
-   Tags & Badges
-   -------------------------------------------------------------------------- */
-function createTagsFragment(tags) {
-    if (!Array.isArray(tags) || tags.length === 0) return null;
+    function emptyValue(className) {
+        const node = el('span', `cd-empty-value ${className || ''}`.trim(), EMPTY_VALUE);
+        node.dataset.empty = 'true';
+        return node;
+    }
 
-    const frag = document.createDocumentFragment();
-    tags.slice(0, 12).forEach((tag) => {
-        if (!hasText(tag)) return;
-        frag.appendChild(
-            el('span', 'badge rounded-pill cd-tag-chip', tag.trim())
+    function getStateContainers() {
+        const map = {};
+        document.querySelectorAll('[data-state]').forEach((node) => {
+            const name = node.getAttribute('data-state');
+            if (STATE_NAMES.includes(name)) map[name] = node;
+        });
+        return map;
+    }
+
+    /* --------------------------------------------------------------------------
+       Favorites Integration (uses course.id, wired to favorites-storage)
+       -------------------------------------------------------------------------- */
+    function isCourseFavorited(courseId) {
+        return typeof isFavorite === 'function' ? isFavorite(courseId) : false;
+    }
+
+    function toggleCourseFavorited(courseId) {
+        if (typeof toggleFavorite !== 'function') return false;
+        const result = toggleFavorite(courseId);
+        if (!result || typeof result.removed !== 'boolean') return false;
+
+        document.dispatchEvent(new CustomEvent('favorite:changed', {
+            bubbles: true,
+            detail: { courseId, removed: result.removed }
+        }));
+
+        return result.removed;
+    }
+
+    /* --------------------------------------------------------------------------
+       Tags & Badges
+       -------------------------------------------------------------------------- */
+    function createTagsFragment(tags, excluded = []) {
+        if (!Array.isArray(tags) || tags.length === 0) return null;
+
+        const skip = new Set(excluded.filter(hasText).map((v) => v.trim().toLowerCase()));
+        const frag = document.createDocumentFragment();
+        let count = 0;
+
+        tags.forEach((tag) => {
+            if (count >= MAX_TAGS || !hasText(tag)) return;
+            const label = tag.trim();
+            if (skip.has(label.toLowerCase())) return;
+            skip.add(label.toLowerCase());
+            frag.appendChild(el('span', 'badge cd-tag-chip', label));
+            count += 1;
+        });
+
+        return frag.childNodes.length > 0 ? frag : null;
+    }
+
+    /* --------------------------------------------------------------------------
+       Features Checklist (Object iteration only, no Array checks)
+       -------------------------------------------------------------------------- */
+    const FEATURE_LABELS = Object.freeze({
+        quiz:           'Quiz included',
+        glossary:       'Glossary',
+        furtherReading: 'Further reading',
+        selfPaced:      'Self-paced',
+        free:           'Free access'
+    });
+
+    function getFeatureLabel(key, value) {
+        if (key === 'interactiveCharts' && typeof value === 'number' && value > 0) {
+            return `${value} interactive charts`;
+        }
+        if (value === true && FEATURE_LABELS[key]) {
+            return FEATURE_LABELS[key];
+        }
+        return '';
+    }
+
+    function createFeatures(features) {
+        if (!features || typeof features !== 'object' || Array.isArray(features)) return null;
+
+        const list = el('ul', 'list-unstyled mb-4 d-flex flex-column gap-2');
+        const knownKeys = ['quiz', 'glossary', 'furtherReading', 'interactiveCharts', 'selfPaced', 'free'];
+
+        knownKeys.forEach((key) => {
+            const label = getFeatureLabel(key, features[key]);
+            if (!label) return;
+
+            const item = el('li', 'd-flex align-items-center gap-2 cd-features-item');
+            item.append(icon('fa-solid fa-check fa-fw cd-features-icon flex-shrink-0'), el('span', '', label));
+            list.appendChild(item);
+        });
+
+        return list.childElementCount > 0 ? list : null;
+    }
+
+    /* --------------------------------------------------------------------------
+       Hero Block (full-width green card + decorative art)
+       -------------------------------------------------------------------------- */
+    function createHeroBadges(course) {
+        const badgeRow = el('div', 'd-flex flex-wrap align-items-center gap-2 mb-3');
+
+        const rawTrack = hasText(course.rawTrack) ? course.rawTrack.trim() : '';
+        const rawLevel = hasText(course.rawLevel) ? course.rawLevel.trim() : '';
+        const highlight = hasText(course.tag) ? course.tag.trim() : '';
+
+        if (rawTrack) badgeRow.appendChild(el('span', 'badge cd-tag-chip', rawTrack));
+        if (rawLevel) {
+            const levelChip = el('span', 'badge cd-tag-chip');
+            levelChip.append(icon('fa-solid fa-signal me-1'), document.createTextNode(rawLevel));
+            badgeRow.appendChild(levelChip);
+        }
+        if (highlight) {
+            badgeRow.appendChild(el('span', 'badge cd-tag-chip cd-tag-chip--highlight', highlight));
+        }
+
+        const tagsFrag = createTagsFragment(course.tags, [rawTrack, rawLevel, highlight]);
+        if (tagsFrag) badgeRow.appendChild(tagsFrag);
+
+        return badgeRow.childElementCount > 0 ? badgeRow : null;
+    }
+
+    function createMetaItem(iconClass, text) {
+        const item = el('span', 'd-inline-flex align-items-center gap-1');
+        item.append(icon(iconClass), el('span', '', text));
+        return item;
+    }
+
+    function createHeroMeta(course) {
+        const meta = el('div', 'cd-hero-meta d-flex flex-wrap align-items-center column-gap-3 row-gap-2 small');
+
+        const creator = el('span', 'd-inline-flex align-items-center gap-2');
+        const avatar = el('span', 'cd-avatar cd-avatar--sm');
+        avatar.setAttribute('aria-hidden', 'true');
+        creator.append(avatar, el('span', '', 'Created by'), emptyValue('fw-semibold'));
+
+        const rating = el('span', 'd-inline-flex align-items-center gap-1');
+        rating.append(icon('fa-regular fa-star'), emptyValue('fw-semibold'), el('span', '', 'course rating'));
+
+        meta.append(creator, rating);
+
+        if (Number.isFinite(course.slides) && course.slides > 0) {
+            meta.appendChild(createMetaItem('fa-regular fa-file-lines', `${course.slides} slides`));
+        }
+        if (hasText(course.format)) {
+            meta.appendChild(createMetaItem('fa-solid fa-layer-group', course.format.trim()));
+        }
+        return meta;
+    }
+
+    function createHeroArt(course) {
+        if (!hasText(course.bannerTheme) || !hasText(course.techIcon)) return null;
+
+        const wrap = el('div', 'cd-hero-art');
+        wrap.setAttribute('aria-hidden', 'true');
+
+        const banner = el('div', `ml-card-banner ml-card-banner--${course.bannerTheme.trim()}`);
+        if (hasText(course.tag)) banner.appendChild(el('span', 'ml-card-tag', course.tag.trim()));
+
+        const art = el('div', 'ml-card-editor-art');
+        const themeClass = TECH_THEME_CLASSES[course.techTheme] || TECH_THEME_CLASSES.default;
+        const techBadge = el('div', `ml-card-tech-badge ${themeClass}`);
+        techBadge.appendChild(icon(course.techIcon.trim()));
+        art.appendChild(techBadge);
+
+        if (hasText(course.codeSnippet)) {
+            const editor = el('div', 'ml-card-editor');
+            editor.append(
+                el('span', 'ml-card-editor-dots', '•••'),
+                el('span', 'ml-card-editor-code', course.codeSnippet.trim())
+            );
+            art.appendChild(editor);
+        }
+
+        banner.appendChild(art);
+        wrap.appendChild(banner);
+        return wrap;
+    }
+
+    function createHeroCard(course) {
+        const card = el('section', 'cd-hero-card p-4 p-lg-5 mb-4');
+        card.setAttribute('aria-labelledby', 'course-details-title');
+
+        const row = el('div', 'row g-4 align-items-center');
+        const textCol = el('div', 'col-12 col-md-7');
+
+        const badges = createHeroBadges(course);
+        if (badges) textCol.appendChild(badges);
+
+        const title = el('h1', 'cd-hero-title fw-bold display-6 mb-3', course.title);
+        title.id = 'course-details-title';
+        title.tabIndex = -1;
+        textCol.appendChild(title);
+
+        if (hasText(course.description)) {
+            textCol.appendChild(el('p', 'cd-hero-desc fs-6 mb-3', course.description.trim()));
+        }
+
+        textCol.appendChild(createHeroMeta(course));
+        row.appendChild(textCol);
+
+        const art = createHeroArt(course);
+        if (art) {
+            const artCol = el('div', 'col-12 col-md-5');
+            artCol.appendChild(art);
+            row.appendChild(artCol);
+        }
+
+        card.appendChild(row);
+        return card;
+    }
+
+    /* --------------------------------------------------------------------------
+       Stats Row (Duration / Sections / Pace)
+       -------------------------------------------------------------------------- */
+    function createStat(iconClass, value, label) {
+        const item = el('div', 'col-12 col-sm-4 d-flex align-items-start gap-2');
+        const text = el('div', 'd-flex flex-column min-w-0');
+const valueNode = hasText(value) ? el('span', 'cd-stat-value', value) : emptyValue('cd-stat-value');        text.append(valueNode, el('span', 'cd-stat-label', label));
+        item.append(icon(`${iconClass} cd-stat-icon`), text);
+        return item;
+    }
+
+    function createStatsRow(course) {
+        const row = el('div', 'row g-3 cd-stats pb-4 mb-4');
+        const sectionCount = Array.isArray(course.sections) ? course.sections.length : 0;
+        const selfPaced = Boolean(course.features && course.features.selfPaced === true);
+
+        row.append(
+            createStat('fa-regular fa-clock', null, 'Duration'),
+            createStat('fa-solid fa-book-open', sectionCount > 0 ? `${sectionCount} ${sectionCount === 1 ? 'section' : 'sections'}` : null, 'In this course'),
+            createStat('fa-regular fa-compass', selfPaced ? 'At your own pace' : null, 'Make room to grow')
         );
-    });
-    return frag.childNodes.length > 0 ? frag : null;
-}
-
-/* --------------------------------------------------------------------------
-   Features Checklist (Object iteration only, no Array checks)
-   -------------------------------------------------------------------------- */
-const FEATURE_LABELS = Object.freeze({
-    quiz:           'Quiz included',
-    glossary:       'Glossary',
-    furtherReading: 'Further reading',
-    selfPaced:      'Self-paced',
-    free:           'Free access'
-});
-
-function getFeatureLabel(key, value) {
-    if (key === 'interactiveCharts' && typeof value === 'number' && value > 0) {
-        return `${value} interactive charts`;
+        return row;
     }
-    if (value === true && FEATURE_LABELS[key]) {
-        return FEATURE_LABELS[key];
+
+    /* --------------------------------------------------------------------------
+       "What you'll build" (no API field — structure only)
+       -------------------------------------------------------------------------- */
+    function createBuildCard() {
+        const card = el('div', 'cd-build-card d-flex align-items-start gap-3 p-3 p-md-4 mb-4');
+
+        const badge = el('span', 'cd-build-icon');
+        badge.appendChild(icon('fa-solid fa-wand-magic-sparkles'));
+
+        const text = el('div', 'min-w-0');
+        text.append(
+            el('div', 'cd-eyebrow mb-1', 'From learning to doing'),
+            el('h2', 'h5 fw-bold mb-1', "What you'll build"),
+            emptyValue('d-block text-muted small')
+        );
+
+        card.append(badge, text);
+        return card;
     }
-    return '';
-}
 
-function createFeatures(features) {
-    if (!features || typeof features !== 'object' || Array.isArray(features)) return null;
+    /* --------------------------------------------------------------------------
+       Sections (string[] handling only)
+       -------------------------------------------------------------------------- */
+    function createSectionsHeader(count) {
+        const header = el('div', 'mb-4');
+        const titleRow = el('div', 'd-flex justify-content-between align-items-center mb-1 flex-wrap gap-2');
+        titleRow.appendChild(el('h2', 'h4 fw-bold mb-0', 'Your course sections'));
 
-    const list = el('ul', 'list-unstyled mb-4 d-flex flex-column gap-2');
-    const knownKeys = ['quiz', 'glossary', 'furtherReading', 'interactiveCharts', 'selfPaced', 'free'];
+        if (count > 0) {
+            titleRow.appendChild(el(
+                'span',
+                'badge bg-body-tertiary text-body-secondary border rounded-pill px-3 py-2 fw-medium',
+                `${count} ${count === 1 ? 'section' : 'sections'}`
+            ));
+        }
 
-    knownKeys.forEach((key) => {
-        const label = getFeatureLabel(key, features[key]);
-        if (!label) return;
+        header.append(
+            el('div', 'cd-eyebrow mb-1', 'One step at a time'),
+            titleRow,
+            el('p', 'text-muted small mb-0', 'Sections from the original course.')
+        );
+        return header;
+    }
 
-        const item = el('li', 'd-flex align-items-center gap-2 cd-features-item');
-        const icon = el('i', 'fa-solid fa-check text-success flex-shrink-0');
-        icon.setAttribute('aria-hidden', 'true');
-        const text = el('span', '', label);
+    function toggleSectionRow(row, toggle, panel) {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+        row.classList.toggle('is-open', open);
+    }
 
-        item.append(icon, text);
-        list.appendChild(item);
-    });
-
-    return list.childElementCount > 0 ? list : null;
-}
-
-/* --------------------------------------------------------------------------
-   Sections / Roadmap (string[] handling only)
-   -------------------------------------------------------------------------- */
-function createSectionsRoadmap(sections) {
-    const card = el('div', 'card border-0 shadow-sm p-4 p-md-5 cd-roadmap-card');
-    
-    // Header
-    const smallLabel = el('div', 'small text-uppercase text-muted fw-semibold mb-1', 'One step at a time');
-    const titleRow = el('div', 'd-flex justify-content-between align-items-center mb-1 flex-wrap gap-2');
-    const heading = el('h2', 'h4 fw-bold text-dark mb-0', 'Your course roadmap');
-    
-    const countBadge = el('span', 'badge bg-light text-secondary border rounded-pill px-3 py-2 fw-medium');
-    const count = Array.isArray(sections) ? sections.length : 0;
-    countBadge.textContent = `${count} ${count === 1 ? 'section' : 'sections'}`;
-    titleRow.append(heading, countBadge);
-
-    const subtitle = el('p', 'text-muted small mb-4', 'Small lessons. Practical skills. Real progress.');
-
-    // Sections List
-    const list = el('div', 'cd-sections-list d-flex flex-column gap-2');
+    function createSectionsRoadmap(sections) {
+    const card = el('section', 'cd-panel mb-4');
+    const list = el('ol', 'cd-sections-list list-unstyled d-flex flex-column mb-0');
     const fragment = document.createDocumentFragment();
+    let counter = 0;
 
-    sections.forEach((title, index) => {
+    sections.forEach((title) => {
         if (!hasText(title)) return;
+        counter += 1;
 
-        const row = el('div', 'cd-section-row d-flex align-items-center justify-content-between p-3');
-        const leftWrap = el('div', 'd-flex align-items-center gap-3 min-w-0');
-        
-        const numBadge = el('span', 'cd-section-num', String(index + 1).padStart(2, '0'));
-        const titleSpan = el('span', 'cd-section-title', title.trim());
-        leftWrap.append(numBadge, titleSpan);
+        const panelId = `cd-section-panel-${counter}`;
+        const row = el('li', 'cd-section-row');
 
-        const plusIcon = el('i', 'fa-solid fa-plus text-muted flex-shrink-0 ms-2');
-        plusIcon.setAttribute('aria-hidden', 'true');
+            const toggle = el('button', 'cd-section-toggle d-flex align-items-center justify-content-between w-100 p-3 text-start');
+            toggle.type = 'button';
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.setAttribute('aria-controls', panelId);
 
-        row.append(leftWrap, plusIcon);
-        fragment.appendChild(row);
-    });
+            const leftWrap = el('span', 'd-flex align-items-center gap-3 min-w-0');
+            leftWrap.append(
+                el('span', 'cd-section-num', String(counter).padStart(2, '0')),
+                el('span', 'cd-section-title', title.trim())
+            );
+            toggle.append(leftWrap, icon('fa-solid fa-plus cd-section-icon flex-shrink-0 ms-2'));
 
-    list.appendChild(fragment);
+            // Empty on purpose: the API has no per-section content.
+            const panel = el('div', 'cd-section-panel');
+            panel.id = panelId;
+            panel.setAttribute('aria-hidden', 'true');
+            panel.appendChild(el('div', 'cd-section-panel-body'));
 
-    // Static Footer Note
-    const footerNote = el('div', 'pt-3 border-top mt-3 d-flex align-items-center gap-2 text-muted small');
-    const bookIcon = el('i', 'fa-regular fa-book-open text-muted');
-    bookIcon.setAttribute('aria-hidden', 'true');
-    footerNote.append(bookIcon, el('span', '', 'Short readings, code examples, and a little practice of your own.'));
+            toggle.addEventListener('click', () => toggleSectionRow(row, toggle, panel));
 
-    card.append(smallLabel, titleRow, subtitle, list, footerNote);
-    return card;
-}
+            row.append(toggle, panel);
+            fragment.appendChild(row);
+        });
 
-/* --------------------------------------------------------------------------
-   Empty Roadmap (NO-SECTIONS state)
-   -------------------------------------------------------------------------- */
-function createEmptyRoadmap() {
-    const card = el('div', 'card border-0 shadow-sm p-4 p-md-5 cd-roadmap-card text-center');
-
-    const smallLabel = el('div', 'small text-uppercase text-muted fw-semibold mb-1 text-start', 'One step at a time');
-    const heading = el('h2', 'h4 fw-bold text-dark mb-4 text-start', 'Your course roadmap');
-
-    const emptyBody = el('div', 'py-4 text-center');
-    const icon = el('i', 'fa-regular fa-folder-open fs-1 text-muted mb-3 d-block');
-    icon.setAttribute('aria-hidden', 'true');
-    const title = el('h3', 'h6 fw-semibold text-dark mb-1', 'No sections available yet');
-    const subtext = el('p', 'text-muted small mb-0', 'This course does not include section information yet.');
-
-    emptyBody.append(icon, title, subtext);
-    card.append(smallLabel, heading, emptyBody);
-    return card;
-}
-
-/* --------------------------------------------------------------------------
-   Hero Block (Top green card)
-   -------------------------------------------------------------------------- */
-function createHeroCard(course) {
-    const card = el('div', 'cd-hero-card p-4 p-md-5 mb-4');
-
-    // Tags & Badges
-    const badgeRow = el('div', 'd-flex flex-wrap align-items-center gap-2 mb-3');
-    
-    const rawTrack = hasText(course.rawTrack) ? course.rawTrack.trim() : '';
-    const rawLevel = hasText(course.rawLevel) ? course.rawLevel.trim() : '';
-
-    if (rawTrack) {
-        const trackBadge = el('span', 'badge rounded-pill cd-tag-chip', rawTrack);
-        badgeRow.appendChild(trackBadge);
-    }
-    if (rawLevel) {
-        const levelBadge = el('span', 'badge rounded-pill cd-tag-chip', rawLevel);
-        badgeRow.appendChild(levelBadge);
+        list.appendChild(fragment);
+        card.append(createSectionsHeader(list.childElementCount), list);
+        return card;
     }
 
-    const tagsFrag = createTagsFragment(course.tags);
-    if (tagsFrag) badgeRow.appendChild(tagsFrag);
+    function createEmptyRoadmap() {
+        const card = el('section', 'cd-panel mb-4');
 
-    if (badgeRow.childElementCount > 0) card.appendChild(badgeRow);
+        const emptyBody = el('div', 'py-4 text-center');
+        emptyBody.append(
+            icon('fa-regular fa-folder-open fs-1 text-muted mb-3 d-block'),
+            el('h3', 'h6 fw-semibold mb-1', 'No sections available yet'),
+            el('p', 'text-muted small mb-0', 'This course does not include section information yet.')
+        );
 
-    // Title (h1 focused on render for a11y)
-    const title = el('h1', 'cd-hero-title fw-bold display-6 mb-3', course.title);
-    title.id = 'course-details-title';
-    title.tabIndex = -1;
-    card.appendChild(title);
-
-    // Description (if present)
-    if (hasText(course.description)) {
-        const desc = el('p', 'cd-hero-desc fs-6 mb-3', course.description.trim());
-        card.appendChild(desc);
+        card.append(createSectionsHeader(0), emptyBody);
+        return card;
     }
 
-    // Meta row (Slides, Format, etc. — strictly NO fake data)
-    const metaRow = el('div', 'd-flex flex-wrap align-items-center gap-3 text-muted small mt-3');
-    if (Number.isFinite(course.slides) && course.slides > 0) {
-        const slidesItem = el('span', 'd-inline-flex align-items-center gap-1');
-        const icon = el('i', 'fa-solid fa-file-lines text-secondary');
-        icon.setAttribute('aria-hidden', 'true');
-        slidesItem.append(icon, el('span', '', `${course.slides} slides`));
-        metaRow.appendChild(slidesItem);
-    }
-    if (hasText(course.format)) {
-        const formatItem = el('span', 'd-inline-flex align-items-center gap-1');
-        const icon = el('i', 'fa-solid fa-layer-group text-secondary');
-        icon.setAttribute('aria-hidden', 'true');
-        formatItem.append(icon, el('span', '', course.format.trim()));
-        metaRow.appendChild(formatItem);
-    }
+    /* --------------------------------------------------------------------------
+       Instructor (no API field — structure only)
+       -------------------------------------------------------------------------- */
+    function createInstructorCard() {
+        const card = el('section', 'cd-panel d-flex align-items-center gap-3');
 
-    if (metaRow.childElementCount > 0) card.appendChild(metaRow);
+        const avatar = el('span', 'cd-avatar cd-avatar--lg');
+        avatar.setAttribute('aria-hidden', 'true');
 
-    return card;
-}
+        const text = el('div', 'flex-grow-1 min-w-0');
+        text.append(
+            el('div', 'cd-eyebrow mb-1', 'Meet your instructor'),
+            emptyValue('d-block h5 fw-bold mb-0'),
+            emptyValue('d-block text-muted small')
+        );
 
-/* --------------------------------------------------------------------------
-   Right Panel ("Keep your curiosity going" Aside)
-   -------------------------------------------------------------------------- */
-function createCuriosityAside(course) {
-    const wrap = el('aside', 'd-flex flex-column');
-
-    const card = el('div', 'card border-0 shadow-sm p-4 cd-curiosity-card');
-
-    // Label & Heading
-    const smallLabel = el('div', 'small text-uppercase text-muted fw-semibold mb-1', 'Your next small step');
-    const heading = el('h2', 'h5 fw-bold text-dark mb-1', 'Keep your curiosity going.');
-    const subtitle = el('p', 'text-muted small mb-3', 'Explore lessons and build your skills at your own pace.');
-    card.append(smallLabel, heading, subtitle);
-
-    // Slides count block (only if slides exist, strictly no fake progress)
-    if (Number.isFinite(course.slides) && course.slides > 0) {
-        const slidesBox = el('div', 'p-3 rounded-3 bg-light border mb-3 d-flex align-items-center gap-2');
-        const icon = el('i', 'fa-solid fa-file-lines text-secondary');
-        icon.setAttribute('aria-hidden', 'true');
-        const text = el('span', 'small fw-semibold text-dark', `${course.slides} slides total`);
-        slidesBox.append(icon, text);
-        card.appendChild(slidesBox);
+        card.append(avatar, text, icon('fa-solid fa-wand-magic-sparkles text-muted'));
+        return card;
     }
 
-    // Primary CTA: Open original course (external link)
-    if (course.externalUrl && /^https:\/\//i.test(course.externalUrl)) {
-        const primaryCta = el('a', 'btn cd-btn-lime w-100 rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 mb-2');
-        primaryCta.href = course.externalUrl;
-        primaryCta.target = '_blank';
-        primaryCta.rel = 'noopener noreferrer';
-        primaryCta.append(el('span', '', 'Open original course'), el('i', 'fa-solid fa-arrow-up-right-from-square small'));
-        primaryCta.setAttribute('aria-label', 'Open original course in new window');
-        card.appendChild(primaryCta);
+    /* --------------------------------------------------------------------------
+       Right Panel ("Keep your curiosity going" Aside)
+       -------------------------------------------------------------------------- */
+    function createProgressBlock() {
+        const block = el('div', 'mb-3');
+
+        const labelRow = el('div', 'd-flex justify-content-between align-items-center small mb-2');
+        const percent = el('span', 'd-inline-flex gap-1 fw-semibold');
+        percent.append(emptyValue(), el('span', '', 'complete'));
+        labelRow.append(percent, emptyValue('text-muted'));
+
+        const track = el('div', 'cd-progress-track mb-3');
+        track.setAttribute('aria-hidden', 'true');
+
+        const upNext = el('div', 'small');
+        upNext.append(el('div', 'cd-eyebrow mb-1', 'Up next'), emptyValue('d-block fw-medium'));
+
+        block.append(labelRow, track, upNext);
+        return block;
     }
 
-    // Secondary CTA: Save to favorites button (wired to favorites storage)
-    const isFav = isCourseFavorited(course.id);
-    const favBtn = el('button', `btn btn-outline-secondary cd-btn-fav w-100 rounded-3 py-2 fw-medium d-flex align-items-center justify-content-center gap-2 mb-4 ${isFav ? 'is-favorited' : ''}`);
-    favBtn.type = 'button';
-    favBtn.setAttribute('data-action', 'favorite');
-    favBtn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
-    
-    const favIcon = el('i', isFav ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart');
-    favIcon.setAttribute('aria-hidden', 'true');
-    const favText = el('span', '', isFav ? 'Saved to favorites' : 'Save to favorites');
-    favBtn.append(favIcon, favText);
+    function createFavoriteButton(course) {
+        const isFav = isCourseFavorited(course.id);
+        const favBtn = el('button', 'btn cd-btn-fav w-100 rounded-3 py-2 fw-medium d-flex align-items-center justify-content-center gap-2 mb-4');
+        favBtn.type = 'button';
+        favBtn.setAttribute('data-action', 'favorite');
 
-    favBtn.addEventListener('click', () => {
-        const removed = toggleCourseFavorited(course.id);
-        const nextFav = !removed;
-        favBtn.classList.toggle('is-favorited', nextFav);
-        favBtn.setAttribute('aria-pressed', nextFav ? 'true' : 'false');
-        favIcon.className = nextFav ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart';
-        favText.textContent = nextFav ? 'Saved to favorites' : 'Save to favorites';
-    });
+        const favIcon = icon('');
+        const favText = el('span');
+        favBtn.append(favIcon, favText);
 
-    card.appendChild(favBtn);
+        const sync = (fav) => {
+            favBtn.classList.toggle('is-favorited', fav);
+            favBtn.setAttribute('aria-pressed', fav ? 'true' : 'false');
+            favIcon.className = fav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+            favText.textContent = fav ? 'Saved for later' : 'Save for later';
+        };
+        sync(isFav);
 
-    // Features Checklist
-    const featuresList = createFeatures(course.features);
-    if (featuresList) {
-        card.appendChild(featuresList);
+        favBtn.addEventListener('click', () => sync(!toggleCourseFavorited(course.id)));
+        return favBtn;
     }
 
-    // Card footer note
-    const footerNote = el('div', 'text-center pt-3 border-top');
-    footerNote.appendChild(el('span', 'text-muted small', 'A little progress, every single day.'));
-    card.appendChild(footerNote);
+    function createCuriosityAside(course) {
+        const wrap = el('aside', 'd-flex flex-column');
+        const card = el('div', 'cd-panel');
 
-    wrap.appendChild(card);
+        card.append(
+            el('div', 'cd-eyebrow mb-1', 'Your next small step'),
+            el('h2', 'cd-aside-title fw-bold mb-2', 'Keep your curiosity going.'),
+            el('p', 'text-muted small mb-3', 'Explore the course sections at your own pace.'),
+            createProgressBlock()
+        );
 
-    // Decorative quote below card
-    const quote = el('div', 'cd-quote text-center mt-3 px-2');
-    const sparkle = el('i', 'fa-solid fa-wand-magic-sparkles text-warning me-1');
-    sparkle.setAttribute('aria-hidden', 'true');
-    quote.append(sparkle, el('span', '', "You don't have to see the whole staircase. Just take the first step."));
-    wrap.appendChild(quote);
+        if (course.externalUrl && /^https:\/\//i.test(course.externalUrl)) {
+            const primaryCta = el('a', 'btn cd-btn-lime w-100 rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 mb-2');
+            primaryCta.href = course.externalUrl;
+            primaryCta.target = '_blank';
+            primaryCta.rel = 'noopener noreferrer';
+            primaryCta.append(el('span', '', 'Open original course'), icon('fa-solid fa-arrow-up-right-from-square small'));
+            primaryCta.setAttribute('aria-label', 'Open original course in new window');
+            card.appendChild(primaryCta);
+        }
 
-    return wrap;
-}
+        card.appendChild(createFavoriteButton(course));
 
-/* --------------------------------------------------------------------------
-   Top Navigation Bar (Back Link & Inspiration)
-   -------------------------------------------------------------------------- */
-function createTopNav() {
-    const wrap = el('div', 'd-flex justify-content-between align-items-center mb-3');
-    
-    const backLink = el('a', 'cd-back-link text-decoration-none d-inline-flex align-items-center gap-2');
-    backLink.href = 'index.html';
-    const icon = el('i', 'fa-solid fa-arrow-left');
-    icon.setAttribute('aria-hidden', 'true');
-    backLink.append(icon, el('span', '', 'Back to courses'));
+        const featuresList = createFeatures(course.features);
+        if (featuresList) card.appendChild(featuresList);
 
-    const tag = el('span', 'text-muted small d-none d-md-inline');
-    const compass = el('i', 'fa-regular fa-compass me-1');
-    compass.setAttribute('aria-hidden', 'true');
-    tag.append(compass, el('span', '', 'A little learning. A world of possibility.'));
+        const footerNote = el('div', 'text-center pt-3 border-top');
+        footerNote.appendChild(el('span', 'text-muted small', 'A little progress, every single day.'));
+        card.appendChild(footerNote);
 
-    wrap.append(backLink, tag);
-    return wrap;
-}
+        const quote = el('div', 'cd-quote d-flex justify-content-center align-items-start gap-2 mt-3 px-2');
+        const quoteText = el('span');
+        quoteText.append(
+            el('span', 'd-block', "You don't have to see the whole staircase."),
+            el('span', 'd-block fw-semibold', 'Just take the first step.')
+        );
+        quote.append(icon('fa-solid fa-wand-magic-sparkles cd-quote-icon'), quoteText);
 
-/* --------------------------------------------------------------------------
-   Two-Column Page Layout Builder (Desktop 2-col, Mobile single-col)
-   -------------------------------------------------------------------------- */
-function buildLeftColumn(course, roadmapNode) {
-    const mainCol = el('div', 'col-12 col-lg-8');
-    mainCol.append(createHeroCard(course), roadmapNode);
-    return mainCol;
-}
-
-function buildRightColumn(course) {
-    const sideCol = el('div', 'col-12 col-lg-4');
-    sideCol.appendChild(createCuriosityAside(course));
-    return sideCol;
-}
-
-function renderTwoColumnLayout(course, roadmapNode) {
-    const root = el('div', 'container my-3 my-lg-4');
-    root.appendChild(createTopNav());
-
-    const row = el('div', 'row g-4');
-    row.append(buildLeftColumn(course, roadmapNode), buildRightColumn(course));
-    root.appendChild(row);
-    return root;
-}
-
-/* --------------------------------------------------------------------------
-   State Renderers
-   -------------------------------------------------------------------------- */
-function renderSuccess(course) {
-    const roadmap = createSectionsRoadmap(course.sections);
-    return renderTwoColumnLayout(course, roadmap);
-}
-
-function renderNoSections(course) {
-    const emptyRoadmap = createEmptyRoadmap();
-    return renderTwoColumnLayout(course, emptyRoadmap);
-}
-
-function renderError() {
-    const wrap = el('div', 'container my-5 py-5 text-center');
-    wrap.setAttribute('role', 'alert');
-
-    const icon = el('i', 'fa-solid fa-triangle-exclamation fs-1 text-danger mb-3 d-block');
-    icon.setAttribute('aria-hidden', 'true');
-
-    const title = el('h1', 'h4 fw-bold text-dark mb-2', 'Something went wrong. Please try again.');
-    const desc = el('p', 'text-muted mb-4', "We couldn't load this course. Please check your connection and try again.");
-    
-    const retryBtn = el('button', 'btn btn-primary rounded-3 px-4 py-2 fw-medium', 'Try again');
-    retryBtn.type = 'button';
-    retryBtn.addEventListener('click', () => loadCourse(currentSlug), { once: true });
-
-    wrap.append(icon, title, desc, retryBtn);
-    return wrap;
-}
-
-function renderNotFound() {
-    const wrap = el('div', 'container my-5 py-5 text-center');
-
-    const icon = el('i', 'fa-regular fa-circle-question fs-1 text-muted mb-3 d-block');
-    icon.setAttribute('aria-hidden', 'true');
-
-    const title = el('h1', 'h4 fw-bold text-dark mb-2', 'Course not found');
-    const desc = el('p', 'text-muted mb-4', "The course you're looking for doesn't exist or was removed.");
-    
-    const backBtn = el('a', 'btn btn-outline-primary rounded-3 px-4 py-2 fw-medium', 'Browse courses');
-    backBtn.href = 'index.html';
-
-    wrap.append(icon, title, desc, backBtn);
-    return wrap;
-}
-
-/* --------------------------------------------------------------------------
-   Footer Attribution Sync
-   -------------------------------------------------------------------------- */
-function syncFooterAttribution(course) {
-    const attrEl = document.getElementById('cd-footer-attribution');
-    if (!attrEl) return;
-
-    const parts = ['Content © ImpactMojo'];
-    if (course && typeof course.license === 'string' && course.license.trim()) {
-        parts.push(course.license.trim());
-    }
-    parts.push('https://impactmojo.in');
-
-    attrEl.textContent = parts.join(' — ');
-}
-
-/* --------------------------------------------------------------------------
-   State Controller
-   -------------------------------------------------------------------------- */
-function setState(name, payload = {}) {
-    const containers = getStateContainers();
-    const main = document.querySelector('main.course-details-page');
-
-    STATE_NAMES.forEach((stateName) => {
-        const node = containers[stateName];
-        if (!node) return;
-        const match = stateName === name;
-        node.hidden = !match;
-        if (match) node.removeAttribute('hidden');
-    });
-
-    if (main) {
-        main.setAttribute('aria-busy', name === 'loading' ? 'true' : 'false');
+        wrap.append(card, quote);
+        return wrap;
     }
 
-    if (name === 'loading') return;
+    /* --------------------------------------------------------------------------
+       Top Navigation Bar (Back Link & Inspiration)
+       -------------------------------------------------------------------------- */
+    function createTopNav() {
+        const wrap = el('div', 'd-flex justify-content-between align-items-center mb-3');
 
-    const target = containers[name];
-    if (!target) return;
+        const backLink = el('a', 'cd-back-link text-decoration-none d-inline-flex align-items-center gap-2');
+        backLink.href = 'index.html';
+        backLink.append(icon('fa-solid fa-arrow-left'), el('span', '', 'Back to courses'));
 
-    let node = null;
-    if (name === 'success') {
-        node = renderSuccess(payload.course);
-        syncFooterAttribution(payload.course);
-    } else if (name === 'no-sections') {
-        node = renderNoSections(payload.course);
-        syncFooterAttribution(payload.course);
-    } else if (name === 'error') {
-        node = renderError();
-    } else if (name === 'not-found') {
-        node = renderNotFound();
+        const tag = el('span', 'text-muted small d-none d-md-inline');
+        tag.append(icon('fa-regular fa-compass me-1'), el('span', '', 'A little learning. A world of possibility.'));
+
+        wrap.append(backLink, tag);
+        return wrap;
     }
 
-    if (node) {
-        target.replaceChildren(node);
+    /* --------------------------------------------------------------------------
+       Page Layout (hero full width, then 2 columns from xl up)
+       -------------------------------------------------------------------------- */
+    function buildLeftColumn(course, roadmapNode) {
+        const mainCol = el('div', 'col-12 col-xl-8');
+        mainCol.append(createStatsRow(course), createBuildCard(), roadmapNode, createInstructorCard());
+        return mainCol;
     }
-}
 
-function focusPageHeading(container) {
-    if (!container) return;
-    const heading = container.querySelector('h1');
-    if (heading) heading.focus();
-}
+    function buildRightColumn(course) {
+        const sideCol = el('div', 'col-12 col-xl-4');
+        sideCol.appendChild(createCuriosityAside(course));
+        return sideCol;
+    }
 
-/* --------------------------------------------------------------------------
-   Data Loading & Page Initialization
-   -------------------------------------------------------------------------- */
-async function loadCourse(slug) {
-    setState('loading');
+    function renderTwoColumnLayout(course, roadmapNode) {
+        const root = el('div', 'container my-3 my-lg-4');
+        root.append(createTopNav(), createHeroCard(course));
 
-    try {
-        const course = await fetchCourseBySlug(slug);
-        const hasSections = Array.isArray(course.sections) && course.sections.length > 0;
-        const stateName = hasSections ? 'success' : 'no-sections';
-        setState(stateName, { course });
-        focusPageHeading(getStateContainers()[stateName]);
-    } catch (err) {
-        if (err && (err.status === 404 || err.status === 400)) {
-            setState('not-found');
-        } else {
-            setState('error');
+        const row = el('div', 'row g-4');
+        row.append(buildLeftColumn(course, roadmapNode), buildRightColumn(course));
+        root.appendChild(row);
+        return root;
+    }
+
+    /* --------------------------------------------------------------------------
+       State Renderers
+       -------------------------------------------------------------------------- */
+    function renderSuccess(course) {
+        return renderTwoColumnLayout(course, createSectionsRoadmap(course.sections));
+    }
+
+    function renderNoSections(course) {
+        return renderTwoColumnLayout(course, createEmptyRoadmap());
+    }
+
+    function renderError() {
+        const wrap = el('div', 'container my-5 py-5 text-center');
+        wrap.setAttribute('role', 'alert');
+
+        const title = el('h1', 'h4 fw-bold mb-2', 'Something went wrong. Please try again.');
+        const desc = el('p', 'text-muted mb-4', "We couldn't load this course. Please check your connection and try again.");
+
+        const retryBtn = el('button', 'btn btn-primary rounded-3 px-4 py-2 fw-medium', 'Try again');
+        retryBtn.type = 'button';
+        retryBtn.addEventListener('click', () => loadCourse(currentSlug), { once: true });
+
+        wrap.append(icon('fa-solid fa-triangle-exclamation fs-1 text-danger mb-3 d-block'), title, desc, retryBtn);
+        return wrap;
+    }
+
+    function renderNotFound() {
+        const wrap = el('div', 'container my-5 py-5 text-center');
+        wrap.setAttribute('role', 'alert');
+
+        const title = el('h1', 'h4 fw-bold mb-2', 'Course not found');
+        title.tabIndex = -1;
+        const desc = el('p', 'text-muted mb-4', "The course you're looking for doesn't exist or was removed.");
+
+        const backBtn = el('a', 'btn btn-outline-primary rounded-3 px-4 py-2 fw-medium', 'Browse courses');
+        backBtn.href = 'index.html';
+
+        wrap.append(icon('fa-regular fa-circle-question fs-1 text-muted mb-3 d-block'), title, desc, backBtn);
+        return wrap;
+    }
+
+    /* --------------------------------------------------------------------------
+       Footer Attribution Sync
+       -------------------------------------------------------------------------- */
+    function syncFooterAttribution(course) {
+        const attrEl = document.getElementById('cd-footer-attribution');
+        if (!attrEl) return;
+
+        const parts = ['Content © ImpactMojo'];
+        if (course && hasText(course.license)) parts.push(course.license.trim());
+        parts.push('https://impactmojo.in');
+
+        attrEl.textContent = parts.join(' — ');
+    }
+
+    /* --------------------------------------------------------------------------
+       State Controller
+       -------------------------------------------------------------------------- */
+    function setState(name, payload = {}) {
+        const containers = getStateContainers();
+        const main = document.querySelector('main.course-details-page');
+
+        STATE_NAMES.forEach((stateName) => {
+            const node = containers[stateName];
+            if (node) node.hidden = stateName !== name;
+        });
+
+        if (main) {
+            main.setAttribute('aria-busy', name === 'loading' ? 'true' : 'false');
+        }
+
+        const loadingStatus = document.querySelector('[data-loading-status]');
+        if (loadingStatus) loadingStatus.textContent = name === 'loading' ? 'Loading course…' : '';
+
+        if (name === 'loading') return;
+
+        const target = containers[name];
+        if (!target) return;
+
+        let node = null;
+        if (name === 'success') {
+            node = renderSuccess(payload.course);
+            syncFooterAttribution(payload.course);
+        } else if (name === 'no-sections') {
+            node = renderNoSections(payload.course);
+            syncFooterAttribution(payload.course);
+        } else if (name === 'error') {
+            node = renderError();
+        } else if (name === 'not-found') {
+            node = renderNotFound();
+        }
+
+        if (node) target.replaceChildren(node);
+    }
+
+    function focusPageHeading(container) {
+        if (!container) return;
+        const heading = container.querySelector('h1');
+        if (heading) heading.focus();
+    }
+
+    /* --------------------------------------------------------------------------
+       Data Loading & Page Initialization
+       -------------------------------------------------------------------------- */
+    async function loadCourse(slug) {
+        setState('loading');
+
+        try {
+            const course = await fetchCourseBySlug(slug);
+            const hasSections = Array.isArray(course.sections) && course.sections.length > 0;
+            const stateName = hasSections ? 'success' : 'no-sections';
+            setState(stateName, { course });
+            document.title = `${course.title} · MyCourses`;
+            focusPageHeading(getStateContainers()[stateName]);
+        } catch (err) {
+            document.title = DEFAULT_TITLE;
+            if (err && (err.status === 404 || err.status === 400)) {
+                setState('not-found');
+                focusPageHeading(getStateContainers()['not-found']);
+            } else {
+                setState('error');
+            }
         }
     }
-}
 
-function init() {
-    const params = new URLSearchParams(window.location.search);
-    const slug = (params.get('course') || '').trim();
+    function init() {
+        const params = new URLSearchParams(window.location.search);
+        const slug = (params.get('course') || '').trim();
 
-    // Missing or invalid slug -> immediately not-found (no fetch)
-    if (!slug || !SLUG_RE.test(slug)) {
-        setState('not-found');
-        return;
+        if (!slug || !SLUG_RE.test(slug)) {
+            setState('not-found');
+            focusPageHeading(getStateContainers()['not-found']);
+            return;
+        }
+
+        currentSlug = slug;
+        loadCourse(currentSlug);
     }
 
-    currentSlug = slug;
-    loadCourse(currentSlug);
-}
-
-init();
+    init();
+})();
