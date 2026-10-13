@@ -56,9 +56,15 @@ function createCourseCard(course) {
     const mobileContentDiv = document.createElement('div');
     mobileContentDiv.className = 'flex-grow-1';
 
+    const detailsHref = `course-details.html?course=${encodeURIComponent(course.slug)}`;
+
     const mobileTitle = document.createElement('h6');
     mobileTitle.className = 'fw-bold text-dark mb-1 fs-6';
-    mobileTitle.textContent = course.title;
+    const mobileTitleLink = document.createElement('a');
+    mobileTitleLink.href = detailsHref;
+    mobileTitleLink.className = 'text-dark text-decoration-none';
+    mobileTitleLink.textContent = course.title;
+    mobileTitle.appendChild(mobileTitleLink);
 
     const mobileSub1 = document.createElement('p');
     mobileSub1.className = 'text-muted mb-1 small';
@@ -87,7 +93,11 @@ function createCourseCard(course) {
 
     const desktopTitle = document.createElement('h5');
     desktopTitle.className = 'card-title fw-bold text-dark mb-2';
-    desktopTitle.textContent = course.title;
+    const desktopTitleLink = document.createElement('a');
+    desktopTitleLink.href = detailsHref;
+    desktopTitleLink.className = 'text-dark text-decoration-none';
+    desktopTitleLink.textContent = course.title;
+    desktopTitle.appendChild(desktopTitleLink);
 
     const badgeContainer = document.createElement('div');
     const badge = document.createElement('span');
@@ -143,12 +153,10 @@ function createCourseCard(course) {
     if (detailsDiv.childElementCount > 0) desktopDiv.appendChild(detailsDiv);
 
     /* --- Action --- */
-    const viewDetailsButton = document.createElement('button');
-    viewDetailsButton.type = 'button';
+    const viewDetailsButton = document.createElement('a');
+    viewDetailsButton.href = detailsHref;
     viewDetailsButton.className = 'btn btn-outline-primary w-100 rounded-3 py-2 fw-medium mt-3';
     viewDetailsButton.textContent = 'View Details';
-    viewDetailsButton.dataset.action = 'view-details';
-    viewDetailsButton.dataset.courseId = course.id;
     viewDetailsButton.setAttribute('aria-label', `View details for ${course.title}`);
 
     card.append(mobileDiv, desktopDiv, viewDetailsButton);

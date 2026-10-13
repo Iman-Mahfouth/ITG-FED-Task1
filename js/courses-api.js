@@ -1,5 +1,7 @@
 /* ==========================================================================
    Courses API Integration (API-01)
+   Fetch + Normalize the ImpactMojo Education API into our internal
+   course model. The rendering layer must NEVER know about the API shape.
    ========================================================================== */
 
 const COURSES_API_URL = 'https://www.impactmojo.in/api/v1/courses';
@@ -80,7 +82,7 @@ function deriveCardTag(apiCourse) {
 }
 
 function deriveCodeSnippet(apiCourse) {
-    const title = asTrimmedString(apiCourse.title);
+    const title = asDecodedString(apiCourse.title);
     if (!title) return '';
     const short = title.length > 42 ? `${title.slice(0, 39)}…` : title;
     return `// ${short}`;
@@ -106,6 +108,31 @@ function asTrimmedString(value) {
     return typeof value === 'string' ? value.trim() : '';
 }
 
+const HTML_ENTITIES = Object.freeze({
+    amp: '&', lt: '<', gt: '>', quot: '"', apos: "'",
+    ndash: '–', mdash: '—', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”'
+});
+
+// The API returns HTML-encoded strings; the UI renders via textContent, so decode here.
+function decodeEntities(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (match, entity) => {
+        if (entity[0] === '#') {
+            const code = entity[1].toLowerCase() === 'x'
+                ? parseInt(entity.slice(2), 16)
+                : parseInt(entity.slice(1), 10);
+            return Number.isInteger(code) && code > 0 && code <= 0x10FFFF
+                ? String.fromCodePoint(code)
+                : match;
+        }
+        return HTML_ENTITIES[entity.toLowerCase()] ?? match;
+    });
+}
+
+function asDecodedString(value) {
+    return decodeEntities(asTrimmedString(value)).trim();
+}
+
 function normalizeCategory(rawTrack) {
     const track = asTrimmedString(rawTrack);
     return track || DEFAULT_CATEGORY;
@@ -117,32 +144,36 @@ function normalizeLevel(rawLevel) {
 }
 
 /* --------------------------------------------------------------------------
-   Main Normalization Function
+   Main Normalization Function (Catalog)
    -------------------------------------------------------------------------- */
 function normalizeCourse(apiCourse) {
     if (!apiCourse || typeof apiCourse !== 'object') return null;
 
-    const id    = asTrimmedString(apiCourse.id ?? apiCourse.slug);
-    const title = asTrimmedString(apiCourse.title);
+    const id    = String(apiCourse.id ?? apiCourse.slug ?? '').trim();
+    const slug  = String(apiCourse.slug ?? apiCourse.id ?? '').trim();
+    const title = asDecodedString(apiCourse.title);
 
     if (!id || !title) return null;
 
-    const category     = normalizeCategory(apiCourse.track);
-    const level        = normalizeLevel(apiCourse.level);
+    const category     = decodeEntities(normalizeCategory(apiCourse.track));
+    const level        = decodeEntities(normalizeLevel(apiCourse.level));
     const style        = getCategoryStyle(category);
     const presentation = getCardPresentation(category);
 
     return {
         id,
+        slug,
         title,
-        description: asTrimmedString(apiCourse.description),
+        description: asDecodedString(apiCourse.description),
 
         category,
         level,
         duration: '',       
         instructor: '',
         rating:     null,
-        tags: Array.isArray(apiCourse.tags) ? apiCourse.tags.slice() : [],
+        tags: Array.isArray(apiCourse.tags)
+            ? apiCourse.tags.map(asDecodedString).filter(Boolean)
+            : [],
         url:  asTrimmedString(apiCourse.url),
 
         visual: {
@@ -161,7 +192,7 @@ function normalizeCourse(apiCourse) {
 }
 
 /* 
-   Fetch Layer */
+   Fetch Laye */
 async function loadCoursesFromApi() {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), COURSES_API_TIMEOUT_MS);
@@ -183,6 +214,83 @@ async function loadCoursesFromApi() {
         return list
             .map(normalizeCourse)
             .filter(Boolean); 
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Details Layer (API-03)
+   -------------------------------------------------------------------------- */
+function normalizeSections(raw) {
+    if (!Array.isArray(raw)) return [];
+    return raw
+        .map(asDecodedString)
+        .filter(Boolean);
+}
+
+function normalizeCourseDetail(apiCourse) {
+    const base = normalizeCourse(apiCourse);
+    if (!base) return null;
+
+    const slidesNum = Number(apiCourse.slides);
+    const license   = asTrimmedString(apiCourse.license);
+    const feats     = apiCourse.features;
+    const hasFeats  = feats && typeof feats === 'object'
+                    && !Array.isArray(feats)
+                    && Object.entries(feats).some(([k, v]) =>
+                         v === true || (k === 'interactiveCharts' && typeof v === 'number' && v > 0));
+
+    const sections = normalizeSections(apiCourse.sections);
+
+    return {
+        ...base,
+        format:      asTrimmedString(apiCourse.format) || null,
+        slides:      Number.isFinite(slidesNum) && slidesNum > 0 ? slidesNum : null,
+        features:    hasFeats ? { ...feats } : null,
+        sections:    sections.length > 0 ? sections : null,
+        externalUrl: typeof apiCourse.url === 'string' && /^https:\/\//i.test(apiCourse.url.trim()) ? apiCourse.url.trim() : null,
+        license:     license || null,
+        rawTrack:    asDecodedString(apiCourse.track),
+        rawLevel:    asDecodedString(apiCourse.level)
+    };
+}
+
+async function fetchCourseBySlug(slug) {
+    if (typeof slug !== 'string' || !/^[a-z0-9-]+$/i.test(slug)) {
+        const err = new Error('Invalid slug');
+        err.status = 400;
+        throw err;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), COURSES_API_TIMEOUT_MS);
+    const url = `${COURSES_API_URL}/${encodeURIComponent(slug)}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+            cache: 'default',
+            signal: controller.signal
+        });
+
+        if (!response.ok) {
+            const err = new Error(`HTTP ${response.status}`);
+            err.status = response.status;
+            throw err;
+        }
+
+        const payload = await response.json();
+        const course = normalizeCourseDetail(payload?.course);
+
+        if (!course) {
+            const err = new Error('Not found');
+            err.status = 404;
+            throw err;
+        }
+
+        return course;
     } finally {
         clearTimeout(timer);
     }
