@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to Sign Up — MyCourses</title>
+    <meta http-equiv="refresh" content="0; url=sign-up.html">
+    <link rel="canonical" href="sign-up.html">
+    <!-- FED-40 — apply appearance before first paint to prevent FOUC -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('mycourses:appearance');
+                var resolved = stored;
+                if (stored !== 'light' && stored !== 'dark') {
+                    resolved = window.matchMedia('(prefers-color-scheme: dark)').matches
+                        ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-bs-theme', resolved);
+            } catch (e) {
+                document.documentElement.setAttribute('data-bs-theme', 'light');
+            }
+        })();
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/appearance.css">
+    <style>
+        .register-redirect-page {
+            align-items: center;
+            background: #f7f8f6;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .register-redirect-card {
+            background: #ffffff;
+            border: 1px solid #dfe4df;
+            border-radius: 1rem;
+            max-width: 28rem;
+            padding: 2rem 1.75rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .register-redirect-card h1 {
+            color: var(--app-ink, #212a30);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 0.75rem;
+        }
+
+        .register-redirect-card p {
+            color: var(--app-muted, #66707a);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0 0 1.25rem;
+        }
+
+        .register-redirect-link {
+            align-items: center;
+            background: var(--app-green, #c4e538);
+            border-radius: 0.7rem;
+            color: #1d2b25;
+            display: inline-flex;
+            font-weight: 700;
+            justify-content: center;
+            padding: 0.75rem 1.1rem;
+            text-decoration: none;
+        }
+
+        .register-redirect-link:hover {
+            background: #b6d633;
+            color: #1d2b25;
+        }
+
+        [data-bs-theme="dark"] .register-redirect-page {
+            background: #121518;
+        }
+
+        [data-bs-theme="dark"] .register-redirect-card {
+            background: #1a1e22;
+            border-color: #2f353d;
+        }
+
+        [data-bs-theme="dark"] .register-redirect-card h1 {
+            color: #e6e8e6;
+        }
+
+        [data-bs-theme="dark"] .register-redirect-card p {
+            color: #9aa3ad;
+        }
+    </style>
+</head>
+<body class="register-redirect-page">
+    <div class="register-redirect-card">
+        <h1>Redirecting to Sign Up…</h1>
+        <p>If you are not redirected automatically, continue below.</p>
+        <a class="register-redirect-link" href="sign-up.html">Continue to Sign Up →</a>
+    </div>
+</body>
+</html>

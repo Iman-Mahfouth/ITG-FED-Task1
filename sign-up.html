@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up — MyCourses</title>
+    <!-- FED-40 — apply appearance before first paint to prevent FOUC -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('mycourses:appearance');
+                var resolved = stored;
+                if (stored !== 'light' && stored !== 'dark') {
+                    resolved = window.matchMedia('(prefers-color-scheme: dark)').matches
+                        ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-bs-theme', resolved);
+            } catch (e) {
+                document.documentElement.setAttribute('data-bs-theme', 'light');
+            }
+        })();
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/appearance.css">
+    <link rel="stylesheet" href="css/sign-in.css">
+    <link rel="stylesheet" href="css/sign-up.css">
+</head>
+<body class="signin-page signup-page ">
+    <div class="signin-shell">
+        <!-- LEFT PANEL — static branding (no JS) -->
+        <aside class="signin-brand">
+            <div class="signin-brand-inner">
+                <div class="signin-brand-logo">
+                    <span class="signin-brand-logo-icon" aria-hidden="true">
+                        <i class="fa-solid fa-book-open"></i>
+                    </span>
+                    <span class="signin-brand-logo-text">MyCourses<span class="signin-brand-logo-dot">.</span></span>
+                </div>
+
+                <div class="signin-brand-body">
+                    <p class="signin-brand-eyebrow">
+                        <span class="signin-brand-eyebrow-dot" aria-hidden="true"></span>
+                        THE LEARNING STUDIO
+                    </p>
+                    <h1 class="signin-brand-headline">
+                        Big things.<br>
+                        Small<br>
+                        beginnings.<br>
+                        <span class="signin-brand-headline-accent">Your next<br>chapter.</span>
+                    </h1>
+                    <p class="signin-brand-subtext">
+                        A space to follow your curiosity, build something meaningful, and grow a little every day.
+                    </p>
+                </div>
+
+                <div class="signin-brand-card" aria-hidden="true">
+                    <p class="signin-brand-card-eyebrow">A LITTLE PROGRESS, EVERY DAY</p>
+                    <p class="signin-brand-card-title">Learn. Make. Keep growing.</p>
+                    <div class="signin-brand-progress">
+                        <span class="signin-brand-progress-node is-done">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="signin-brand-progress-line"></span>
+                        <span class="signin-brand-progress-node is-done">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="signin-brand-progress-line"></span>
+                        <span class="signin-brand-progress-node is-done">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </div>
+                    <span class="signin-brand-badge">+ Made for your next chapter.</span>
+                </div>
+
+                <p class="signin-brand-footer">
+                    <span class="signin-brand-footer-star" aria-hidden="true">*</span>
+                    At your own pace. In your own direction.
+                </p>
+            </div>
+        </aside>
+
+        <!-- RIGHT PANEL — interactive form -->
+        <main class="signin-panel">
+            <div class="signin-panel-top">
+                <span class="signin-panel-top-label">Your workspace, your way.</span>
+                <button class="app-theme-toggle" type="button" aria-label="Toggle appearance" data-theme-toggle>
+                    <i class="fa-regular fa-moon theme-toggle-moon" aria-hidden="true"></i>
+                    <i class="fa-solid fa-sun theme-toggle-sun" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="signin-panel-content">
+                <p class="signin-eyebrow">EVERY CHAPTER STARTS SOMEWHERE</p>
+                <h2 class="signin-heading">Make room to grow.</h2>
+                <p class="signin-signup-line">
+                    Already have an account?
+                    <a href="sign-in.html" class="signin-signup-link">Sign in →</a>
+                </p>
+                <p class="signin-lead">
+                    Create your account and make this space yours. A little curiosity is all you need to begin.
+                </p>
+
+                <div id="signup-success" class="signup-success d-none" role="status" aria-live="polite">
+                    <h3 class="signup-success-title">Registration request completed</h3>
+                    <p id="signup-success-message" class="signup-success-message"></p>
+                    <a href="sign-in.html" class="signup-success-link">Go to Sign In</a>
+                </div>
+
+                <div id="signup-form-section">
+                    <div id="form-alert"
+                         class="signin-alert d-none"
+                         role="alert"
+                         aria-live="polite"></div>
+
+                    <form id="sign-up-form" class="signin-form" novalidate>
+                        <div class="signin-field">
+                            <label for="full-name-input" class="signin-label">Full name</label>
+                            <input type="text"
+                                   id="full-name-input"
+                                   name="fullName"
+                                   required
+                                   class="form-control signin-input"
+                                   autocomplete="name"
+                                   placeholder="What should we call you?"
+                                   spellcheck="false">
+                            <div id="full-name-error"
+                                 class="signin-field-error d-none"
+                                 aria-live="polite"></div>
+                        </div>
+
+                        <div class="signin-field">
+                            <label for="username-input" class="signin-label">Username</label>
+                            <input type="text"
+                                   id="username-input"
+                                   name="username"
+                                   required
+                                   class="form-control signin-input"
+                                   autocomplete="username"
+                                   placeholder="Choose a username"
+                                   spellcheck="false">
+                            <div id="username-error"
+                                 class="signin-field-error d-none"
+                                 aria-live="polite"></div>
+                        </div>
+
+                        <div class="signin-field">
+                            <label for="email-input" class="signin-label">Email address</label>
+                            <input type="email"
+                                   id="email-input"
+                                   name="email"
+                                   required
+                                   class="form-control signin-input"
+                                   autocomplete="email"
+                                   placeholder="you@example.com"
+                                   spellcheck="false">
+                            <div id="email-error"
+                                 class="signin-field-error d-none"
+                                 aria-live="polite"></div>
+                        </div>
+
+                        <div class="signin-field">
+                            <label for="password-input" class="signin-label">Password</label>
+                            <div class="signin-password-wrap">
+                                <input type="password"
+                                       id="password-input"
+                                       required
+                                       name="password"
+                                       class="form-control signin-input"
+                                       autocomplete="new-password"
+                                       placeholder="Create a password">
+                                <button type="button"
+                                        id="password-toggle"
+                                        class="signin-password-toggle"
+                                        aria-label="Show password">Show</button>
+                            </div>
+                            <p class="signup-password-hint">
+                                Use at least 8 characters. Choose a password just for this demo.
+                            </p>
+                            <div id="password-error"
+                                 class="signin-field-error d-none"
+                                 aria-live="polite"></div>
+                        </div>
+
+                        <div class="signin-field">
+                            <label for="confirm-password-input" class="signin-label">Confirm password</label>
+                            <input type="password"
+                                   id="confirm-password-input"
+                                   required
+                                   name="confirmPassword"
+                                   class="form-control signin-input"
+                                   autocomplete="new-password"
+                                   placeholder="Enter your password again">
+                            <div id="confirm-password-error"
+                                 class="signin-field-error d-none"
+                                 aria-live="polite"></div>
+                        </div>
+
+                        <button type="submit" id="sign-up-btn" class="btn signin-submit">
+                            Create account
+                        </button>
+                    </form>
+
+                    <p class="signup-form-note">
+                        This is a training environment. Accounts are not persisted.
+                    </p>
+
+                    <div class="signin-divider" role="separator">
+                        <span>A LITTLE CURIOUS FIRST?</span>
+                    </div>
+
+                    <a href="index.html" id="explore-demo-btn" class="btn signin-demo-btn">
+                        Explore the demo →
+                    </a>
+                </div>
+            </div>
+
+            <footer class="signin-panel-footer">
+                <span>Made for your next chapter.</span>
+                <span>MyCourses • Keep growing</span>
+            </footer>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/auth-api.js"></script>
+    <script src="js/sign-up.js"></script>
+</body>
+</html>
