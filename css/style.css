@@ -380,6 +380,10 @@ header.navbar {
     white-space: nowrap;
 }
 
+.app-breadcrumb:empty {
+    display: none;
+}
+
 .app-breadcrumb-root {
     color: var(--app-muted, #66707a);
 }

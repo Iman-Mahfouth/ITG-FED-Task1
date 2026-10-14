@@ -645,12 +645,19 @@ const valueNode = hasText(value) ? el('span', 'cd-stat-value', value) : emptyVal
         setState('loading');
 
         try {
-            const course = await fetchCourseBySlug(slug);
-            const hasSections = Array.isArray(course.sections) && course.sections.length > 0;
-            const stateName = hasSections ? 'success' : 'no-sections';
-            setState(stateName, { course });
-            document.title = `${course.title} · MyCourses`;
-            focusPageHeading(getStateContainers()[stateName]);
+        const course = await fetchCourseBySlug(slug);
+        const hasSections = Array.isArray(course.sections) && course.sections.length > 0;
+        const stateName = hasSections ? 'success' : 'no-sections';
+        setState(stateName, { course });
+        document.title = `${course.title} · MyCourses`;
+        
+        // Update breadcrumb dynamically
+        document.dispatchEvent(new CustomEvent('course:loaded', {
+            bubbles: true,
+            detail: { title: course.title }
+        }));
+        
+        focusPageHeading(getStateContainers()[stateName]);
         } catch (err) {
             document.title = DEFAULT_TITLE;
             if (err && (err.status === 404 || err.status === 400)) {
