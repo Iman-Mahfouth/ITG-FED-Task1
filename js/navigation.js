@@ -183,6 +183,12 @@ function createSidebarFooter() {
         label: 'Sign out',
         trailing: 'fa-solid fa-arrow-up-right-from-square sidebar-footer-link-trailing'
     });
+    signOut.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (typeof signOutUser === 'function') {
+            signOutUser();
+        }
+    });
 
     footer.append(helpLink, divider, userCard, signOut);
     return footer;
@@ -240,19 +246,44 @@ function renderBreadcrumb() {
    Sidebar User Sync
    ============================================ */
 
-function updateSidebarUser(profile) {
+function updateSidebarUser() {
     const avatarEl = document.querySelector('[data-sidebar-user-avatar]');
     const nameEl = document.querySelector('[data-sidebar-user-name]');
     if (!avatarEl && !nameEl) return;
 
-    const data = profile || (typeof getProfile === 'function' ? getProfile() : null);
-    if (!data) return;
+    const session = typeof getSession === 'function' ? getSession() : null;
+    if (!session || !session.user) return;
 
-    if (avatarEl && typeof getInitials === 'function') {
-        avatarEl.textContent = getInitials(data.fullName);
-    }
+    const user = session.user;
+    const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username;
+
     if (nameEl) {
-        nameEl.textContent = data.fullName;
+        nameEl.textContent = fullName;
+    }
+
+    if (!avatarEl) return;
+
+    avatarEl.replaceChildren();
+
+    const imageUrl = user.image ? String(user.image).trim() : '';
+    if (imageUrl.startsWith('https://')) {
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = '';
+        img.referrerPolicy = 'no-referrer';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = 'inherit';
+
+        img.onerror = function () {
+            avatarEl.replaceChildren();
+            avatarEl.textContent = typeof getInitials === 'function' ? getInitials(fullName) : '?';
+        };
+
+        avatarEl.appendChild(img);
+    } else if (typeof getInitials === 'function') {
+        avatarEl.textContent = getInitials(fullName);
     }
 }
 
@@ -346,7 +377,8 @@ function setupNavigation() {
     updateSidebarUser();
     updateNavigationBadges();
 
-     document.addEventListener('profile:updated', (e) => updateSidebarUser(e.detail));
+    document.addEventListener('profile:updated', updateSidebarUser);
+    document.addEventListener('auth:user', updateSidebarUser);
 
     document.addEventListener('nav:badge', (e) => {
     const { id, value } = e.detail || {};

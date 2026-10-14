@@ -1,0 +1,111 @@
+/* ==========================================================================
+   Sign Out Page — additional styles beyond sign-in.css
+   ========================================================================== */
+
+/* Icon tile */
+.signout-icon {
+    align-items: center;
+    background: #e8f5e0;
+    border-radius: 0.85rem;
+    color: #4a7c3a;
+    display: inline-flex;
+    font-size: 1.75rem;
+    height: 4rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    width: 4rem;
+}
+
+/* Status card */
+.signout-card {
+    background: #f7f8f6;
+    border: 1px solid #dfe4df;
+    border-radius: 0.85rem;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem 1.5rem;
+}
+
+.signout-card-title {
+    align-items: center;
+    color: #212a30;
+    display: flex;
+    font-size: 0.95rem;
+    font-weight: 700;
+    gap: 0.5rem;
+    line-height: 1.4;
+    margin: 0 0 0.65rem;
+}
+
+.signout-card-icon {
+    color: #4a7c3a;
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.signout-card-body {
+    color: #66707a;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Note text */
+.signout-note {
+    color: #9aa3ad;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 1.5rem 0 0;
+    text-align: center;
+}
+
+/* Dark theme */
+[data-bs-theme="dark"] .signout-icon {
+    background: #2a3d25;
+    color: #b8d9a8;
+}
+
+[data-bs-theme="dark"] .signout-card {
+    background: #1a1e22;
+    border-color: #2f353d;
+}
+
+[data-bs-theme="dark"] .signout-card-title {
+    color: #e6e8e6;
+}
+
+[data-bs-theme="dark"] .signout-card-icon {
+    color: #b8d9a8;
+}
+
+[data-bs-theme="dark"] .signout-card-body {
+    color: #9aa3ad;
+}
+
+[data-bs-theme="dark"] .signout-note {
+    color: #66707a;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .signout-icon {
+        font-size: 1.5rem;
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+
+    .signout-card {
+        padding: 1rem 1.25rem;
+    }
+
+    .signout-card-title {
+        font-size: 0.9rem;
+    }
+
+    .signout-card-body {
+        font-size: 0.85rem;
+    }
+
+    .signout-note {
+        font-size: 0.8rem;
+    }
+}

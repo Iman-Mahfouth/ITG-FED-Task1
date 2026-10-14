@@ -215,12 +215,48 @@
         });
     }
 
+    // KEEP IN SYNC with sign-up.js — duplicated per AUTH-03.
+    async function handleExploreDemo() {
+        // Defensive guard: if already authenticated, just navigate
+        if (typeof getSession === 'function' && getSession()) {
+            window.location.replace('index.html');
+            return;
+        }
+
+        if (!refs.exploreBtn) return;
+
+        // Set loading state
+        refs.exploreBtn.disabled = true;
+        refs.exploreBtn.setAttribute('aria-busy', 'true');
+        setButtonLabel(refs.exploreBtn, 'Signing in to demo…');
+
+        try {
+            // Auto-login with working DummyJSON test credentials
+            const loginData = await loginRequest('emilys', 'emilyspass');
+            const userData = await fetchCurrentUser(loginData.accessToken);
+
+            saveSession({
+                accessToken: loginData.accessToken,
+                refreshToken: loginData.refreshToken,
+                user: userData
+            });
+
+            window.location.replace('index.html');
+        } catch (error) {
+            // Restore button state
+            refs.exploreBtn.disabled = false;
+            refs.exploreBtn.removeAttribute('aria-busy');
+            setButtonLabel(refs.exploreBtn, 'Explore the demo →');
+
+            // Show error using existing alert helper
+            showAlert('Demo sign-in failed. Please try again.');
+        }
+    }
+
     function initSecondaryActions() {
         if (!refs.exploreBtn) return;
 
-        refs.exploreBtn.addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
+        refs.exploreBtn.addEventListener('click', handleExploreDemo);
     }
 
     function initFieldListeners() {

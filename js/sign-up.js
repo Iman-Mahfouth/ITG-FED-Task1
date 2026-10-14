@@ -43,6 +43,7 @@
             formAlert: document.getElementById('form-alert'),
             submitBtn: document.getElementById('sign-up-btn'),
             passwordToggle: document.getElementById('password-toggle'),
+            exploreBtn: document.getElementById('explore-demo-btn'),
             inputs: {
                 fullName: document.getElementById('full-name-input'),
                 username: document.getElementById('username-input'),
@@ -390,6 +391,53 @@
         });
     }
 
+    // KEEP IN SYNC with sign-in.js — duplicated per AUTH-03.
+    async function handleExploreDemo(event) {
+        if (event) event.preventDefault();
+
+        // Defensive guard: if already authenticated, just navigate
+        if (typeof getSession === 'function' && getSession()) {
+            window.location.replace('index.html');
+            return;
+        }
+
+        const button = refs.exploreBtn;
+        if (!button) return;
+
+        // Set loading state
+        button.setAttribute('aria-disabled', 'true');
+        button.setAttribute('aria-busy', 'true');
+        const originalText = button.textContent;
+        button.textContent = 'Signing in to demo…';
+
+        try {
+            // Auto-login with working DummyJSON test credentials
+            const loginData = await loginRequest('emilys', 'emilyspass');
+            const userData = await fetchCurrentUser(loginData.accessToken);
+
+            saveSession({
+                accessToken: loginData.accessToken,
+                refreshToken: loginData.refreshToken,
+                user: userData
+            });
+
+            window.location.replace('index.html');
+        } catch (error) {
+            // Restore button state
+            button.removeAttribute('aria-disabled');
+            button.removeAttribute('aria-busy');
+            button.textContent = originalText;
+
+            // Show error
+            showAlert('Demo sign-in failed. Please try again.');
+        }
+    }
+
+    function initSecondaryActions() {
+        if (!refs.exploreBtn) return;
+        refs.exploreBtn.addEventListener('click', handleExploreDemo);
+    }
+
     function init() {
         refs = getRefs();
 
@@ -408,6 +456,7 @@
         refs.form.addEventListener('submit', handleSubmit);
         initPasswordToggle();
         initFieldListeners();
+        initSecondaryActions();
         setState(STATES.DEFAULT);
     }
 

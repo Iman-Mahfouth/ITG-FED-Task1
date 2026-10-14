@@ -28,6 +28,16 @@
         };
     }
 
+    function writeSession(raw) {
+        try {
+            localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(raw));
+        } catch (_) {
+            const error = new Error('Failed to persist session.');
+            error.status = 500;
+            throw error;
+        }
+    }
+    
     function getSession() {
         try {
             const raw = localStorage.getItem(SESSION_STORAGE_KEY);
@@ -66,13 +76,7 @@
             refreshToken: safeRefreshToken,
             user: safeUser
         };
-        try {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
-} catch (_) {
-    const error = new Error('Failed to persist session.');
-    error.status = 500;
-    throw error;
-}
+        writeSession(session);
     }
 
     function clearSession() {
@@ -83,7 +87,27 @@
         }
     }
 
+    function updateSessionUser(user) {
+        const session = getSession();
+        if (!session) return false;
+
+        const normalizedUser = normalizeUser(user);
+        if (!normalizedUser) return false;
+
+        try {
+            writeSession({
+                accessToken: session.accessToken,
+                refreshToken: session.refreshToken,
+                user: normalizedUser
+            });
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+
     global.getSession = getSession;
     global.saveSession = saveSession;
     global.clearSession = clearSession;
+    global.updateSessionUser = updateSessionUser;
 })(window);
