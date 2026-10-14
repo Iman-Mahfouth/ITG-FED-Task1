@@ -1,0 +1,144 @@
+/* ==========================================================================
+   404 Not Found Page (FED-33) — standalone centered layout
+   ========================================================================== */
+
+.notfound-page {
+    background: var(--appearance-surface-sunken);
+    color: var(--app-ink);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Theme toggle — top-right */
+.notfound-theme-toggle {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    z-index: 1;
+}
+
+/* Centered content area */
+.notfound-main {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    padding: 1.5rem;
+    width: 100%;
+}
+
+.notfound-content {
+    max-width: 26rem;
+    text-align: center;
+    width: 100%;
+}
+
+/* Icon tile */
+.notfound-icon {
+    align-items: center;
+    background: var(--app-green-bg);
+    border-radius: 0.85rem;
+    color: var(--app-green-dark);
+    display: inline-flex;
+    font-size: 1.75rem;
+    height: 4rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    width: 4rem;
+}
+
+/* Eyebrow */
+.notfound-eyebrow {
+    color: var(--app-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+}
+
+/* Heading */
+.notfound-heading {
+    color: var(--app-ink);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+}
+
+/* Lead */
+.notfound-lead {
+    color: var(--app-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem;
+}
+
+/* CTA */
+.notfound-cta {
+    align-items: center;
+    background: var(--appearance-accent);
+    border: 0;
+    border-radius: 0.85rem;
+    color: var(--appearance-accent-ink);
+    display: inline-flex;
+    font-size: 1rem;
+    font-weight: 700;
+    justify-content: center;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    width: 100%;
+}
+
+.notfound-cta:hover,
+.notfound-cta:focus-visible {
+    background: var(--appearance-accent-hover);
+    color: var(--appearance-accent-ink);
+}
+
+/* Footer */
+.notfound-footer {
+    border-top: 1px solid var(--appearance-border);
+    color: var(--app-muted);
+    font-size: 0.72rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive — mobile
+   -------------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+    .notfound-icon {
+        font-size: 1.5rem;
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+
+    .notfound-heading {
+        font-size: 1.75rem;
+    }
+
+    .notfound-theme-toggle {
+        right: 1rem;
+        top: 1rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive — desktop
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+    .notfound-main {
+        padding: 2.5rem;
+    }
+
+    .notfound-footer {
+        padding: 1rem 2.5rem;
+    }
+}
