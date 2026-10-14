@@ -1,0 +1,518 @@
+/* ==========================================================================
+   Course Details Page Styles (API-03)
+   Responsive layout, custom panels, skeleton sizing, and theme adaptation.
+   ========================================================================== */
+
+/* Layout & Back Link */
+.cd-back-link {
+    color: var(--app-muted, #66707a);
+    font-size: 0.9rem;
+    transition: color 0.15s ease;
+}
+
+.cd-back-link:hover {
+    color: var(--app-ink, #212a30);
+}
+
+.cd-eyebrow {
+    color: var(--bs-secondary-color);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Panels (replaces .card, whose padding is forced by style.css) */
+.cd-panel {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 1.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .cd-panel {
+        padding: 2rem;
+    }
+}
+
+/* Empty slots: mockup fields the API does not provide */
+.cd-empty-value {
+    display: inline-block;
+    min-height: 1em;
+    min-width: 2rem;
+}
+
+/* Hero banner card */
+.cd-hero-card {
+    background-color: #e9eedf;
+    border: 1px solid #dde4d0;
+    border-radius: 1.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.cd-hero-title {
+    color: #172116;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+.cd-hero-title:focus,
+.cd-hero-title:focus-visible {
+    outline: none;
+}
+
+.cd-hero-desc {
+    color: #435441;
+    line-height: 1.55;
+    max-width: 36rem;
+}
+
+.cd-hero-meta {
+    color: #5b6b59;
+}
+
+/* Hero art: decorative banner reusing cards.css (.ml-card-*) */
+.cd-hero-art .ml-card-banner {
+    border-radius: 1rem;
+    min-height: 15rem;
+}
+
+/* Mobile: horizontal card below the text (badge left, code window right) */
+@media (max-width: 767.98px) {
+    .cd-hero-art .ml-card-banner {
+        min-height: 9.5rem;
+    }
+
+    .cd-hero-art .ml-card-editor-art {
+        bottom: 1.25rem;
+        left: 1.25rem;
+        right: 1.25rem;
+    }
+
+    .cd-hero-art .ml-card-tech-badge {
+        flex-basis: 3.5rem;
+        font-size: 1.5rem;
+        height: 3.5rem;
+    }
+
+    .cd-hero-art .ml-card-editor {
+        gap: 0.75rem;
+        min-height: 6rem;
+        transform: rotate(-4deg);
+    }
+}
+
+/* Tablet: side by side, smaller badge + code window so the title keeps room */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .cd-hero-art .ml-card-banner {
+        min-height: 12rem;
+    }
+
+    .cd-hero-art .ml-card-editor-art {
+        bottom: 1rem;
+        gap: 0.75rem;
+        left: 1rem;
+        right: 1rem;
+    }
+
+    .cd-hero-art .ml-card-tech-badge {
+        flex-basis: 2.75rem;
+        font-size: 1.15rem;
+        height: 2.75rem;
+    }
+
+    .cd-hero-art .ml-card-editor {
+        gap: 0.6rem;
+        min-height: 5.5rem;
+        padding: 0.6rem;
+    }
+
+    .cd-hero-art .ml-card-editor-code {
+        font-size: 0.6rem;
+    }
+
+    .cd-hero-art .ml-card-tag {
+        font-size: 0.62rem;
+        left: 0.75rem;
+        top: 0.75rem;
+    }
+
+    .cd-hero-title {
+        font-size: 1.85rem;
+    }
+}
+
+/* Avatars (empty: no instructor data in the API) */
+.cd-avatar {
+    align-items: center;
+    background-color: #e7e0f5;
+    border-radius: 50%;
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+}
+
+.cd-avatar--sm {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.cd-avatar--lg {
+    height: 3.5rem;
+    width: 3.5rem;
+}
+
+/* Tag Chips */
+.cd-tag-chip {
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(23, 33, 22, 0.14);
+    border-radius: 0.4rem;
+    color: #3d4a3b;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.35rem 0.6rem;
+}
+
+.cd-tag-chip--highlight {
+    background-color: #d2fa62;
+    border-color: #c2ea52;
+    color: #171e27;
+}
+
+/* Stats Row */
+.cd-stats {
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.cd-stat-icon {
+    color: var(--bs-secondary-color);
+    margin-top: 0.2rem;
+}
+
+.cd-stat-value {
+    color: var(--bs-emphasis-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.cd-stat-label {
+    color: var(--bs-secondary-color);
+    font-size: 0.75rem;
+}
+
+/* "What you'll build" block */
+.cd-build-card {
+    background-color: #eef2e6;
+    border: 1px solid #e0e7d4;
+    border-radius: 1.25rem;
+}
+
+.cd-build-icon {
+    align-items: center;
+    background-color: #dfe8cf;
+    border-radius: 0.65rem;
+    color: #4a6b1e;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    height: 2.5rem;
+    justify-content: center;
+    width: 2.5rem;
+}
+
+/* Sections list: one bordered list with dividers */
+.cd-sections-list {
+    border: 1px solid #e8ecf1;
+    border-radius: 0.9rem;
+    gap: 0 !important;
+    list-style: none;
+    overflow: hidden;
+}
+
+.cd-section-row {
+    background-color: #fff;
+    border: 0;
+    border-radius: 0;
+    border-top: 1px solid #e8ecf1;
+}
+
+.cd-section-row:first-child {
+    border-top: 0;
+}
+
+.cd-section-toggle {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    transition: background-color 0.15s ease;
+}
+
+.cd-section-toggle:hover {
+    background-color: #f7f9fb;
+}
+
+.cd-section-toggle:focus-visible {
+    outline: 2px solid #4a6b1e;
+    outline-offset: 2px;
+}
+
+.cd-section-icon {
+    color: var(--bs-secondary-color);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+/* "+" turns into "×" with a half-turn when the row opens */
+.cd-section-row.is-open .cd-section-icon {
+    transform: rotate(45deg);
+}
+
+/* Collapsed by default; padding lives on the body so max-height: 0 fully hides it */
+.cd-section-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+}
+.cd-section-row.is-open .cd-section-panel {
+    grid-template-rows: 1fr;
+}
+.cd-section-panel > * {
+    overflow: hidden;
+}
+
+.cd-section-panel-body {
+    min-height: 2.5rem;
+    padding: 0 1rem 1rem calc(1rem + 2.25rem + 1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cd-section-icon,
+    .cd-section-panel {
+        transition: none;
+    }
+}
+
+/* Neutral number badge: the API has no completion state */
+.cd-section-num {
+    align-items: center;
+    background-color: #f4f5f0;
+    border: 1px solid #e3e6dc;
+    border-radius: 0.5rem;
+    color: #5b6159;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    height: 2.25rem;
+    justify-content: center;
+    width: 2.25rem;
+}
+
+.cd-section-title {
+    color: #1a2228;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+/* Curiosity Aside Panel */
+.cd-aside-title {
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.cd-progress-track {
+    background-color: #e6e9dc;
+    border-radius: 999px;
+    height: 0.375rem;
+}
+
+.cd-btn-lime {
+    background-color: #d2fa62;
+    border: 1px solid #c2ea52;
+    color: #171e27;
+    font-weight: 600;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.cd-btn-lime:hover,
+.cd-btn-lime:focus {
+    background-color: #c4ec54;
+    color: #171e27;
+}
+
+.cd-btn-fav {
+    border: 1px solid #d0d7de;
+    color: #24292f;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.cd-btn-fav:hover {
+    background-color: #f6f8fa;
+    color: #24292f;
+}
+
+.cd-btn-fav.is-favorited {
+    background-color: #fff1f2;
+    border-color: #fda4af;
+    color: #e11d48;
+}
+
+.cd-features-item {
+    font-size: 0.86rem;
+    color: #4a5568;
+}
+
+.cd-features-icon {
+    color: #6b7a4f;
+    font-size: 0.8rem;
+}
+
+.cd-quote {
+    color: #5b6470;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.cd-quote-icon {
+    color: #6b7a4f;
+    margin-top: 0.15rem;
+}
+
+/* Skeleton Loaders (Fixed dimensions to ensure zero CLS) */
+.cd-skeleton-hero {
+    min-height: 17rem;
+}
+
+.cd-skeleton-stats {
+    min-height: 4rem;
+}
+
+.cd-skeleton-build {
+    min-height: 5.5rem;
+}
+
+.cd-skeleton-content {
+    min-height: 17rem;
+}
+
+.cd-skeleton-aside {
+    min-height: 21rem;
+}
+
+.cd-skeleton-title {
+    height: 2.5rem;
+    max-width: 28rem;
+    width: 75%;
+}
+
+.cd-skeleton-badge {
+    border-radius: 999px;
+    height: 1.5rem;
+    width: 6.5rem;
+}
+
+/* Dark mode overrides (data-bs-theme="dark" on <html>) */
+[data-bs-theme="dark"] .cd-hero-card {
+    background-color: #162218;
+    border-color: #253929;
+}
+
+[data-bs-theme="dark"] .cd-hero-title {
+    color: #ecfdf3;
+}
+
+[data-bs-theme="dark"] .cd-hero-desc {
+    color: #a7bfa7;
+}
+
+[data-bs-theme="dark"] .cd-hero-meta {
+    color: #a7bfa7;
+}
+
+[data-bs-theme="dark"] .cd-avatar {
+    background-color: #2d2640;
+}
+
+[data-bs-theme="dark"] .cd-tag-chip {
+    background-color: #1e2e21;
+    border-color: #2c4230;
+    color: #d1fae5;
+}
+
+[data-bs-theme="dark"] .cd-tag-chip--highlight {
+    background-color: #d2fa62;
+    border-color: #c2ea52;
+    color: #171e27;
+}
+
+[data-bs-theme="dark"] .cd-build-card {
+    background-color: #1a271c;
+    border-color: #273b2a;
+}
+
+[data-bs-theme="dark"] .cd-build-icon {
+    background-color: #253927;
+    color: #a3e635;
+}
+
+[data-bs-theme="dark"] .cd-sections-list {
+    border-color: #283340;
+}
+
+[data-bs-theme="dark"] .cd-section-row {
+    background-color: #1b232d;
+    border-top-color: #283340;
+}
+
+[data-bs-theme="dark"] .cd-section-row:first-child {
+    border-top: 0;
+}
+
+[data-bs-theme="dark"] .cd-section-toggle:hover {
+    background-color: #202b37;
+}
+
+[data-bs-theme="dark"] .cd-section-num {
+    background-color: #222b35;
+    border-color: #323d4a;
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .cd-progress-track {
+    background-color: #2a3340;
+}
+
+[data-bs-theme="dark"] .cd-features-icon,
+[data-bs-theme="dark"] .cd-quote-icon {
+    color: #a3e635;
+}
+
+[data-bs-theme="dark"] .cd-section-title {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .cd-btn-fav {
+    border-color: #3b4554;
+    color: #e2e8f0;
+    background-color: #1b232d;
+}
+
+[data-bs-theme="dark"] .cd-btn-fav:hover {
+    background-color: #242e3b;
+}
+
+[data-bs-theme="dark"] .cd-btn-fav.is-favorited {
+    background-color: #3b1922;
+    border-color: #7f1d39;
+    color: #f43f5e;
+}
+
+[data-bs-theme="dark"] .cd-features-item,
+[data-bs-theme="dark"] .cd-quote {
+    color: #94a3b8;
+}

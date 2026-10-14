@@ -224,6 +224,14 @@ function renderBreadcrumb() {
 
     const sidebar = document.querySelector('[data-sidebar]');
     const currentPage = sidebar?.dataset.current || '';
+    
+    // Skip rendering for top-level pages (they get empty breadcrumb)
+    const topLevelPages = ['explore', 'learning', 'favorites', 'profile'];
+    if (topLevelPages.includes(currentPage)) {
+        breadcrumbEl.replaceChildren(); // Clear/empty
+        return;
+    }
+
     const label = BREADCRUMB_LABELS[currentPage] || '';
 
     const root = el('span', 'app-breadcrumb-root', 'Workspace');
@@ -234,6 +242,29 @@ function renderBreadcrumb() {
     const current = el('span', 'app-breadcrumb-current', label);
 
     breadcrumbEl.replaceChildren(root, sep, current);
+}
+
+/* ============================================
+   Update Breadcrumb (Dynamic Pages)
+   ============================================ */
+
+function updateBreadcrumb({ parent, parentHref, current }) {
+    const breadcrumbEl = document.querySelector('[data-breadcrumb]');
+    if (!breadcrumbEl) return;
+
+    // Parent link (clickable)
+    const parentLink = el('a', 'app-breadcrumb-root text-decoration-none');
+    parentLink.href = parentHref || '#';
+    parentLink.textContent = parent || '';
+
+    // Separator
+    const sep = el('span', 'app-breadcrumb-sep', '/');
+    sep.setAttribute('aria-hidden', 'true');
+
+    // Current page (not clickable)
+    const currentSpan = el('span', 'app-breadcrumb-current', current || '');
+
+    breadcrumbEl.replaceChildren(parentLink, sep, currentSpan);
 }
 
 /* ============================================
@@ -364,6 +395,18 @@ function setupNavigation() {
     if (document.getElementById('favorites-container')) return;
     const count = typeof getFavoriteIds === 'function' ? getFavoriteIds().length : 0;
     setNavBadge('favorites', count);
+});
+
+  // Listen for dynamic breadcrumb updates (e.g., course details)
+  document.addEventListener('course:loaded', (e) => {
+    const { title } = e.detail || {};
+    if (title) {
+        updateBreadcrumb({
+            parent: 'Explore courses',
+            parentHref: 'index.html',
+            current: title
+        });
+    }
 });
 }
 
