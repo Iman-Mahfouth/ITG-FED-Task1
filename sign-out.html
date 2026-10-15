@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Out — MyCourses</title>
+    <!-- FED-40 — apply appearance before first paint to prevent FOUC -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('mycourses:appearance');
+                var resolved = stored;
+                if (stored !== 'light' && stored !== 'dark') {
+                    resolved = window.matchMedia('(prefers-color-scheme: dark)').matches
+                        ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-bs-theme', resolved);
+            } catch (e) {
+                document.documentElement.setAttribute('data-bs-theme', 'light');
+            }
+        })();
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/appearance.css">
+    <link rel="stylesheet" href="css/sign-in.css">
+    <link rel="stylesheet" href="css/sign-out.css">
+</head>
+<body class="signin-page signout-page">
+    <div class="signin-shell">
+        <!-- LEFT PANEL — static branding (shared with sign-in) -->
+        <aside class="signin-brand">
+            <div class="signin-brand-inner">
+                <div class="signin-brand-logo">
+                    <span class="signin-brand-logo-icon" aria-hidden="true">
+                        <i class="fa-solid fa-book-open"></i>
+                    </span>
+                    <span class="signin-brand-logo-text">MyCourses<span class="signin-brand-logo-dot">.</span></span>
+                </div>
+
+                <div class="signin-brand-body">
+                    <p class="signin-brand-eyebrow">
+                        <span class="signin-brand-eyebrow-dot" aria-hidden="true"></span>
+                        THE LEARNING STUDIO
+                    </p>
+                    <h1 class="signin-brand-headline">
+                        Big things.<br>
+                        Small<br>
+                        beginnings.<br>
+                        <span class="signin-brand-headline-accent">Your next<br>chapter.</span>
+                    </h1>
+                    <p class="signin-brand-subtext">
+                        A space to follow your curiosity, build something meaningful, and grow a little every day.
+                    </p>
+                </div>
+
+                <div class="signin-brand-card" aria-hidden="true">
+                    <p class="signin-brand-card-eyebrow">A LITTLE PROGRESS, EVERY DAY</p>
+                    <p class="signin-brand-card-title">Learn. Make. Keep growing.</p>
+                    <div class="signin-brand-progress">
+                        <span class="signin-brand-progress-node is-done">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="signin-brand-progress-line"></span>
+                        <span class="signin-brand-progress-node is-done">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="signin-brand-progress-line"></span>
+                        <span class="signin-brand-progress-node is-done">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </div>
+                    <span class="signin-brand-badge">+ Made for your next chapter.</span>
+                </div>
+
+                <p class="signin-brand-footer">
+                    <span class="signin-brand-footer-star" aria-hidden="true">*</span>
+                    At your own pace. In your own direction.
+                </p>
+            </div>
+        </aside>
+
+        <!-- RIGHT PANEL — sign-out confirmation -->
+        <main class="signin-panel">
+            <div class="signin-panel-top">
+                <span class="signin-panel-top-label">Your workspace, your way.</span>
+                <button class="app-theme-toggle" type="button" aria-label="Toggle appearance" data-theme-toggle>
+                    <i class="fa-regular fa-moon theme-toggle-moon" aria-hidden="true"></i>
+                    <i class="fa-solid fa-sun theme-toggle-sun" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="signin-panel-content">
+                <div class="signout-icon" aria-hidden="true">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </div>
+
+                <p class="signin-eyebrow">UNTIL YOUR NEXT CHAPTER</p>
+                <h2 class="signin-heading">A pause, not a goodbye.</h2>
+                <p class="signin-lead">
+                    You're signed out. Come back whenever you're ready for your next small step.
+                </p>
+
+                <div class="signout-card" role="status">
+                    <p class="signout-card-title">
+                        <i class="fa-solid fa-check signout-card-icon" aria-hidden="true"></i>
+                        Your progress has a home here.
+                    </p>
+                    <p class="signout-card-body">
+                        Your saved courses, lesson progress, and notes are still in this browser, ready for when you return.
+                    </p>
+                </div>
+
+                <a href="sign-in.html" class="btn signin-submit">
+                    Back to sign in →
+                </a>
+
+                <p class="signout-note">
+                    A little rest is part of the journey, too.
+                </p>
+            </div>
+
+            <footer class="signin-panel-footer">
+                <span>Made for your next chapter.</span>
+                <span>MyCourses ✦ Keep growing.</span>
+            </footer>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/auth-storage.js"></script>
+    <script src="js/sign-out.js"></script>
+</body>
+</html>

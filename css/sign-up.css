@@ -1,0 +1,101 @@
+/* ==========================================================================
+   Sign Up page — form extras not covered by sign-in.css
+   ========================================================================== */
+
+.signup-password-hint {
+    color: var(--app-muted, #66707a);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.signup-form-note {
+    color: var(--app-muted, #66707a);
+    font-size: 0.8rem;
+    line-height: 1.45;
+    margin: 0 0 1.25rem;
+    text-align: center;
+}
+
+.signup-success {
+    background: #ffffff;
+    border: 1px solid #dfe4df;
+    border-radius: 0.9rem;
+    margin-bottom: 1.5rem;
+    padding: 1.35rem 1.25rem;
+}
+
+.signup-success-title {
+    color: var(--app-ink, #212a30);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+}
+
+.signup-success-message {
+    color: var(--app-muted, #66707a);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0 0 1.15rem;
+}
+
+.signup-success-link {
+    align-items: center;
+    background: var(--app-green, #c4e538);
+    border-radius: 0.7rem;
+    color: #1d2b25;
+    display: inline-flex;
+    font-size: 0.95rem;
+    font-weight: 700;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    width: 100%;
+}
+
+.signup-success-link:hover {
+    background: #b6d633;
+    color: #1d2b25;
+}
+
+.signin-demo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+[data-bs-theme="dark"] .signup-password-hint,
+[data-bs-theme="dark"] .signup-form-note {
+    color: #9aa3ad;
+}
+
+[data-bs-theme="dark"] .signup-success {
+    background: #1a1e22;
+    border-color: #2f353d;
+}
+
+[data-bs-theme="dark"] .signup-success-title {
+    color: #e6e8e6;
+}
+
+[data-bs-theme="dark"] .signup-success-message {
+    color: #9aa3ad;
+}
+@media (min-width: 992px) {
+    .signup-page .signin-shell {
+        align-items: start;
+    }
+
+    .signup-page .signin-brand {
+        height: 100vh;
+        overflow: hidden;
+        position: sticky;
+        top: 0;
+    }
+
+    .signup-page .signin-brand-inner {
+        height: 100vh;
+        min-height: unset;
+    }
+}

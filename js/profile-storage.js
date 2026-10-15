@@ -61,9 +61,38 @@ function updateHeaderGreeting() {
     const nameEl = document.getElementById('header-greeting-name');
     const avatarEl = document.getElementById('header-avatar');
 
-    const profile = getProfile();
+    const session = typeof getSession === 'function' ? getSession() : null;
+    if (!session || !session.user) return;
 
-    if (nameEl) nameEl.textContent = `Hi, ${profile.fullName}!`;
-    if (avatarEl) avatarEl.textContent = getInitials(profile.fullName);
+    const user = session.user;
+    const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username;
+
+    if (nameEl) nameEl.textContent = `Hi, ${fullName}!`;
+
+    if (avatarEl) {
+        avatarEl.replaceChildren();
+
+        const imageUrl = user.image ? String(user.image).trim() : '';
+        if (imageUrl.startsWith('https://')) {
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = '';
+            img.referrerPolicy = 'no-referrer';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = 'inherit';
+
+            img.onerror = function () {
+                avatarEl.replaceChildren();
+                avatarEl.textContent = getInitials(fullName);
+            };
+
+            avatarEl.appendChild(img);
+        } else {
+            avatarEl.textContent = getInitials(fullName);
+        }
+    }
 }
 updateHeaderGreeting();
+document.addEventListener('auth:user', updateHeaderGreeting);
