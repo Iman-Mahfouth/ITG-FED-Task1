@@ -12,22 +12,17 @@
         location.replace(url);
     }
 
-    // Immediate session check (synchronous)
     const session = getSession();
     if (!session) {
         redirectTo(SIGN_IN_URL);
-        // Script stops here - no further registration
     } else {
-        // Session exists - register async validation and listeners
 
-        // Background validation on DOMContentLoaded (ONE TIME)
         document.addEventListener('DOMContentLoaded', async function () {
             const snapshotToken = session.accessToken;
 
             try {
                 const user = await fetchCurrentUser(snapshotToken);
 
-                // Only update if session hasn't changed
                 const currentSession = getSession();
                 if (currentSession && currentSession.accessToken === snapshotToken) {
                     if (updateSessionUser(user)) {
@@ -44,53 +39,43 @@
                     clearSession();
                     redirectTo(SIGN_IN_URL);
                 } else {
-                    // Network or other error - keep cached session, don't redirect
                     console.warn('Session validation failed, keeping cached session');
                 }
             }
         }, { once: true });
 
-        // Back/forward cache detection
         window.addEventListener('pageshow', function (event) {
             if (event.persisted && !getSession()) {
                 redirectTo(SIGN_IN_URL);
             }
         });
 
-        // Cross-tab logout detection
         window.addEventListener('storage', function (event) {
-            if ((event.key === 'ml_session' || event.key === null) && !getSession()) {
+            if ((event.key === SESSION_STORAGE_KEY || event.key === null) && !getSession()) {
                 redirectTo(SIGN_IN_URL);
             }
         });
     }
 
-    // Global sign-out function (idempotent)
     function signOutUser() {
         clearSession();
         
-        // Verify session cleared
         if (getSession()) {
             try {
-                localStorage.removeItem('ml_session');
+                localStorage.removeItem(SESSION_STORAGE_KEY);
             } catch (_) {
-                // Ignore errors
             }
             
-            // Re-verify after fallback
             if (getSession()) {
                 console.warn('Session could not be cleared - sign-out proceeding anyway');
             }
         }
         
-        // Set sessionStorage flag to prevent stale session restoration
         try {
-            sessionStorage.setItem('ml_signed_out', '1');
+            sessionStorage.setItem(SIGNED_OUT_FLAG_KEY, '1');
         } catch (_) {
-            // Ignore sessionStorage errors
         }
         
-        // Always redirect regardless of clear success
         redirectTo(SIGN_OUT_URL);
     }
 

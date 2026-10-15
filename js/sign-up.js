@@ -15,6 +15,7 @@
 
     const MESSAGES = {
         FULL_NAME_REQUIRED: 'Enter your full name.',
+        FULL_NAME_TWO_WORDS: 'Please enter both your first and last name.',
         USERNAME_REQUIRED: 'Enter a username.',
         EMAIL_REQUIRED: 'Enter your email address.',
         EMAIL_INVALID: 'Enter a valid email address.',
@@ -87,9 +88,18 @@
     }
 
     function validateFullName(value) {
-        if (!String(value || '').trim()) {
+        const trimmed = String(value || '').trim();
+
+        if (!trimmed) {
             return MESSAGES.FULL_NAME_REQUIRED;
         }
+
+        const parts = trimmed.split(/\s+/).filter(Boolean);
+
+        if (parts.length < 2) {
+            return MESSAGES.FULL_NAME_TWO_WORDS;
+        }
+
         return '';
     }
 
@@ -391,7 +401,6 @@
         });
     }
 
-    // KEEP IN SYNC with sign-in.js — duplicated per AUTH-03.
     async function handleExploreDemo(event) {
         if (event) event.preventDefault();
 
@@ -404,14 +413,11 @@
         const button = refs.exploreBtn;
         if (!button) return;
 
-        // Set loading state
-        button.setAttribute('aria-disabled', 'true');
+        button.disabled = true;
         button.setAttribute('aria-busy', 'true');
-        const originalText = button.textContent;
-        button.textContent = 'Signing in to demo…';
+        setButtonLabel(button, 'Signing in to demo…');
 
         try {
-            // Auto-login with working DummyJSON test credentials
             const loginData = await loginRequest('emilys', 'emilyspass');
             const userData = await fetchCurrentUser(loginData.accessToken);
 
@@ -423,12 +429,10 @@
 
             window.location.replace('index.html');
         } catch (error) {
-            // Restore button state
-            button.removeAttribute('aria-disabled');
+            button.disabled = false;
             button.removeAttribute('aria-busy');
-            button.textContent = originalText;
+            setButtonLabel(button, 'Explore the demo →');
 
-            // Show error
             showAlert('Demo sign-in failed. Please try again.');
         }
     }

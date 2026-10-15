@@ -5,6 +5,8 @@
     'use strict';
 
     const SESSION_STORAGE_KEY = 'ml_session';
+    // Shared with auth-guard.js / sign-out.js — keep a single source of truth
+    const SIGNED_OUT_FLAG_KEY = 'ml_signed_out';
 
     function isValidUser(user) {
         return !!(
@@ -110,4 +112,6 @@
     global.saveSession = saveSession;
     global.clearSession = clearSession;
     global.updateSessionUser = updateSessionUser;
+    global.SESSION_STORAGE_KEY = SESSION_STORAGE_KEY;
+    global.SIGNED_OUT_FLAG_KEY = SIGNED_OUT_FLAG_KEY;
 })(window);

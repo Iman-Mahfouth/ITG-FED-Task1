@@ -170,13 +170,23 @@
             throw createAuthError('Invalid registration response.');
         }
 
-        return {
+        if (!data || typeof data !== 'object' || Array.isArray(data)) {
+            throw createAuthError('Invalid response from registration server.');
+        }
+
+        const user = {
             id: data.id,
             firstName: data.firstName,
             lastName: data.lastName,
             username: data.username,
             email: data.email
         };
+
+        if (user.id == null || typeof user.username !== 'string' || !user.username) {
+            throw createAuthError('Invalid user data from registration server.');
+        }
+
+        return user;
     }
 
     global.loginRequest = loginRequest;

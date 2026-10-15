@@ -5,15 +5,11 @@
     'use strict';
 
     function checkAndRedirect() {
-        // Use the sign-out flag only. NEVER call getSession() here —
-        // a failed clearSession() could leave a stale session and bounce
-        // the learner back into the app as if still signed in.
         try {
-            if (sessionStorage.getItem('ml_signed_out') === '1') {
-                sessionStorage.removeItem('ml_signed_out');
+            if (sessionStorage.getItem(SIGNED_OUT_FLAG_KEY) === '1') {
+                sessionStorage.removeItem(SIGNED_OUT_FLAG_KEY);
             }
         } catch (_) {
-            /* ignore sessionStorage errors */
         }
     }
 
