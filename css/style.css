@@ -299,20 +299,21 @@ header.navbar {
 
 @media (min-width: 768px) {
     .header-search {
-        flex: 0 1 480px;
+        flex: 0 1 560px;
         margin-left: auto;
-        max-width: 480px;
+        max-width: 560px;
     }
 }
 
 .header-search .input-group {
+    height: 38px;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .header-search .input-group:focus-within {
     background-color: #fff !important;
-    border-color: #0d6efd !important;
-    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+    border-color: var(--app-green) !important;
+    box-shadow: 0 0 0 0.15rem rgba(196, 229, 56, 0.15);
 }
 
 .header-search .form-control::placeholder {
@@ -322,6 +323,23 @@ header.navbar {
 .header-search .form-control:focus {
     box-shadow: none;
     border-color: transparent;
+}
+
+/* Header search badge (Ctrl K) */
+/* NOTE: reference design has a dark header; current header is light.
+   Header theming is FED-38, not this task. */
+.header-search-badge {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    color: var(--app-muted);
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.15rem 0.45rem;
+    margin: 0 0.5rem 0 0.25rem;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 /* ==========================================================================
@@ -474,12 +492,6 @@ header.navbar {
 
     .header-search {
         flex: 1 1 auto;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .app-icon-btn {
-        display: none;
     }
 }
 /* ==========================================================================
