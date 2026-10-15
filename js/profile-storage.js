@@ -66,4 +66,17 @@ function updateHeaderGreeting() {
     if (nameEl) nameEl.textContent = `Hi, ${profile.fullName}!`;
     if (avatarEl) avatarEl.textContent = getInitials(profile.fullName);
 }
-updateHeaderGreeting();
+
+// Listen for shell:ready event (header/footer built by shell.js)
+document.addEventListener('shell:ready', updateHeaderGreeting);
+
+// Fallback: if header already exists (e.g., dev tools reload or shell loaded first)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('header-avatar')) {
+            updateHeaderGreeting();
+        }
+    });
+} else if (document.getElementById('header-avatar')) {
+    updateHeaderGreeting();
+}

@@ -34,55 +34,7 @@
         <aside class="sidebar-nav" id="mainSidebar" data-sidebar data-current="explore"></aside>
 
         <div class="app-content">
-            <header class="navbar navbar-light bg-white border-bottom py-3 sticky-top">
-                <div class="container">
-                    <div class="header-container d-flex w-100 align-items-center gap-2 gap-md-3">
-
-                        <button class="navbar-toggler border-0 shadow-none d-md-none flex-shrink-0"
-                                type="button"
-                                data-sidebar-toggle="mainSidebar"
-                                aria-controls="mainSidebar"
-                                aria-expanded="false"
-                                aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-
-                        <nav class="app-breadcrumb" data-breadcrumb aria-label="Breadcrumb"></nav>
-
-                        <div class="header-search" dir="ltr">
-                            <div class="input-group rounded-3 overflow-hidden border bg-light">
-                                <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </span>
-                                <input type="search"
-                                       class="form-control border-0 shadow-none bg-transparent"
-                                       placeholder="Search courses, instructors, levels..."
-                                       aria-label="Global search">
-                            </div>
-                        </div>
-
-                        <div class="header-actions">
-                            <button class="app-icon-btn" type="button" aria-label="Notifications">
-                                <i class="fa-regular fa-bell" aria-hidden="true"></i>
-                            </button>
-
-                            <button class="app-theme-toggle" type="button" aria-label="Toggle appearance" data-theme-toggle>
-                                <i class="fa-regular fa-moon theme-toggle-moon" aria-hidden="true"></i>
-                                <i class="fa-solid fa-sun theme-toggle-sun" aria-hidden="true"></i>
-                            </button>
-
-                            <div class="profile-section d-flex align-items-center gap-2 cursor-pointer flex-shrink-0">
-                                <div class="avatar-icon">
-                                    <span class="avatar-initials" id="header-avatar">L</span>
-                                </div>
-                                <span class="fw-medium text-secondary fs-6 d-none d-lg-inline" id="header-greeting-name">Hi, Learner!</span>
-                                <i class="fa-solid fa-chevron-down text-secondary fs-6 d-none d-lg-inline"></i>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </header>
+            <header id="appHeader" data-header data-page="explore" data-has-bell="true"></header>
 
             <main class="app-main course-details-page" aria-busy="true">
                 <span class="visually-hidden" role="status" data-loading-status>Loading course…</span>
@@ -140,12 +92,7 @@
                 <section data-state="no-sections" hidden></section>
             </main>
 
-            <footer class="bg-white border-top py-3 mt-auto">
-                <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                    <span class="text-muted small">&copy; 2024 MyCourses. All rights reserved.</span>
-                    <span class="text-muted small" id="cd-footer-attribution">Content © ImpactMojo — CC BY-NC-ND 4.0 — https://impactmojo.in</span>
-                </div>
-            </footer>
+            <footer id="appFooter" data-footer data-variant="attribution"></footer>
         </div>
     </div>
 
@@ -153,6 +100,7 @@
     <script defer src="js/theme.js"></script>
     <script defer src="js/profile-storage.js"></script>
     <script defer src="js/favorites-storage.js"></script>
+    <script defer src="js/shell.js"></script>
     <script defer src="js/navigation.js"></script>
     <script defer src="js/courses-api.js"></script>
     <script defer src="js/course-details.js"></script>
